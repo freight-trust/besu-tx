@@ -1,0 +1,13 @@
+{
+  "name": "hyperledger-besu-terraform",
+  "version": "1.0.0",
+  "description": "besu-terraform fork",
+  "main": "index.js",
+  "repository": "https://github.com/freight-trust/besu-terraform",
+  "author": "Sam Bacha <sam@freighttrust.com>",
+  "license": "ISC",
+  "private": null,
+  "dependencies": {
+    "@smburrows/terraform-npm": "^0.13.0"
+  }
+}
