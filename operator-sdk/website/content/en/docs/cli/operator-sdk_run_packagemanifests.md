@@ -1,6 +1,7 @@
 ---
 title: "operator-sdk run packagemanifests"
 ---
+
 ## operator-sdk run packagemanifests
 
 Deploy an Operator in the package manifests format with OLM
@@ -33,5 +34,4 @@ operator-sdk run packagemanifests [flags]
 
 ### SEE ALSO
 
-* [operator-sdk run](../operator-sdk_run)	 - Run an Operator in a variety of environments
-
+- [operator-sdk run](../operator-sdk_run) - Run an Operator in a variety of environments

@@ -1,6 +1,7 @@
 # Improved Scorecard Config Proposal for Operator SDK
 
 Implementation Owner: AlexNPavel
+
 > Status: **implemented**
 >
 > See the [scorecard documentation](https://sdk.operatorframework.io/docs/scorecard/) for up-to-date information.

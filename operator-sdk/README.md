@@ -33,7 +33,7 @@ operators easier by providing:
 Operator SDK is under Apache 2.0 license. See the [LICENSE][license_file] file for details.
 
 [controller-runtime]: https://github.com/kubernetes-sigs/controller-runtime
-[license_file]:./LICENSE
+[license_file]: ./LICENSE
 [of-home]: https://github.com/operator-framework
 [of-blog]: https://coreos.com/blog/introducing-operator-framework
 [operator-link]: https://coreos.com/operators/

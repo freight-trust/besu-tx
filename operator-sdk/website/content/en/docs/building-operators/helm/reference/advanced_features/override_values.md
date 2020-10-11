@@ -49,8 +49,8 @@ By setting `image.repository` to `quay.io/mycustomrepo` you are ensuring that
 It is now possible to reference environment variables in the `overrideValues` section:
 
 ```yaml
-  overrideValues:
-    image.repository: $IMAGE_REPOSITORY # or ${IMAGE_REPOSITORY}
+overrideValues:
+  image.repository: $IMAGE_REPOSITORY # or ${IMAGE_REPOSITORY}
 ```
 
 By using an environment variable reference in `overrideValues` you enable these override

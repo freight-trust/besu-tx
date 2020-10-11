@@ -5,4 +5,3 @@
   playbook: playbook.yaml
   finalizer:
     name:
-

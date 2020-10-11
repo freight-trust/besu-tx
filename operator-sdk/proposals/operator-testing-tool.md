@@ -12,7 +12,7 @@ creation-date: 2019-09-13
 last-updated: 2019-11-07
 status: provisional|implementable|implemented|deferred|rejected|withdrawn|replaced
 see-also:
-  - "/enhancements/this-other-neat-thing.md"  
+  - "/enhancements/this-other-neat-thing.md"
 replaces:
   - "/enhancements/that-less-than-great-idea.md"
 superseded-by:
@@ -20,7 +20,6 @@ superseded-by:
 ---
 
 # Tooling for Testing Operators
-
 
 ## Release Signoff Checklist
 
@@ -42,13 +41,12 @@ Having high quality Operators is crucial to the success of the Operator Framewor
 
 ### Goals
 
- * Operator Developers can use a tool that reports on recommended, required and optional packaging requirements of a given bundle on disk
- * Operator Developers can use the same tool that reports on recommended, required and optional common black box tests of a deployed operator on cluster
- * Operator Developers can rely on a central source of truth of a valid Operator bundles shared among all Operator Framework components
- * Operator Developers can use the same tool to run custom functional tests of a deployed operator on their local cluster
- * Operator Developers can expose labels on custom functional tests that can be filtered upon in the same way as built-in labels
- * Operator Developers can use the tool to test Operator updates with OLM from a user-defined starting version to another version using a CR throughout the process
-
+- Operator Developers can use a tool that reports on recommended, required and optional packaging requirements of a given bundle on disk
+- Operator Developers can use the same tool that reports on recommended, required and optional common black box tests of a deployed operator on cluster
+- Operator Developers can rely on a central source of truth of a valid Operator bundles shared among all Operator Framework components
+- Operator Developers can use the same tool to run custom functional tests of a deployed operator on their local cluster
+- Operator Developers can expose labels on custom functional tests that can be filtered upon in the same way as built-in labels
+- Operator Developers can use the tool to test Operator updates with OLM from a user-defined starting version to another version using a CR throughout the process
 
 ### Non-Goals
 
@@ -56,93 +54,107 @@ not in scope: Operator Developers can use the same tool to run custom, functiona
 
 ## Proposal
 
-### User Stories 
+### User Stories
 
 #### Story 1 - Show pass/fail in Scorecard Output
-Today, the scorecard output shows a percentage of tests that were successful to the end user. This story is to change the scorecard output to show a pass or fail for each test that is run in the output instead of a success percentage. 
 
-The scorecard would by default run all tests regardless if a single test fails.  Using a CLI flag such as below would cause the test execution to stop on a failure:
- * operator-sdk scorecard -l ‘necessity=required’ --fail-fast
+Today, the scorecard output shows a percentage of tests that were successful to the end user. This story is to change the scorecard output to show a pass or fail for each test that is run in the output instead of a success percentage.
+
+The scorecard would by default run all tests regardless if a single test fails. Using a CLI flag such as below would cause the test execution to stop on a failure:
+
+- operator-sdk scorecard -l ‘necessity=required’ --fail-fast
 
 Tasks for this story include:
- * change scorecard by removing earnedPoints and maximumPoints from each test
- * change scorecard output by removing totalScorePercent, partialPass, earnedPoints, maximumPoints from scorecard output
- * change scorecard existing tests to remove partialPass, instead only returning a pass or fail
- * change scorecard CLI to return an exit code based on the pass/fail results from the set of executed tests 
- * (stretch goal) add support for --fast-fail CLI flag
 
+- change scorecard by removing earnedPoints and maximumPoints from each test
+- change scorecard output by removing totalScorePercent, partialPass, earnedPoints, maximumPoints from scorecard output
+- change scorecard existing tests to remove partialPass, instead only returning a pass or fail
+- change scorecard CLI to return an exit code based on the pass/fail results from the set of executed tests
+- (stretch goal) add support for --fast-fail CLI flag
 
 Rough point estimate is 8 points.
 
-
 #### Story 2 - Change Scorecard Test Selection
+
 Today, the scorecard lets you select which tests are run by the plugins defined in the scorecard configuration (basic, olm). This story would change how users determine which tests are executed by scorecard.
 
 This story would introduce labels for each test and then allow the scorecard CLI to filter which tests it runs based on label selectors.
 
 Tests can fall into 3 groups: required, recommended, or optional. Tests can also be categorized as static or runtime. Labels for these groups and categories would allow a test to be more precisely specified by an end user.
 
-Possible examples of specifying what tests to run are as follows: 
- * operator-sdk scorecard -l ‘testgroup in (required,recommended,optional)’ 
- * operator-sdk scorecard -l ‘testtype in (runtime,static)’
- * operator-sdk scorecard -l updatecrtest=true
- * operator-sdk scorecard -l someplugintest=true
+Possible examples of specifying what tests to run are as follows:
+
+- operator-sdk scorecard -l ‘testgroup in (required,recommended,optional)’
+- operator-sdk scorecard -l ‘testtype in (runtime,static)’
+- operator-sdk scorecard -l updatecrtest=true
+- operator-sdk scorecard -l someplugintest=true
 
 Tasks for this story include:
- * Update the test interfaces to support arbitrary test-defined labels
- * Add the labels to the tests
- * Update the CLI and scorecard library to support label selectors to filter scorecard runs
- * A stretch goal would include the ability of the CLI to perform a dry-run of tests based on label selectors to show the user which tests would be executed for a given label selector value.
+
+- Update the test interfaces to support arbitrary test-defined labels
+- Add the labels to the tests
+- Update the CLI and scorecard library to support label selectors to filter scorecard runs
+- A stretch goal would include the ability of the CLI to perform a dry-run of tests based on label selectors to show the user which tests would be executed for a given label selector value.
 
 Rough point estimate for this story is 8 points.
-#### Story 3 - Common Validation
-The scorecard would use a common validation codebase to verify bundle contents. This story supports a single “source of truth” and avoids duplication or variance of validation logic. The scorecard user would be able to specify a bundle on the command line, that bundle would then be validated.  For example:
- * operator-sdk scorecard --bundle ./my-operator
 
+#### Story 3 - Common Validation
+
+The scorecard would use a common validation codebase to verify bundle contents. This story supports a single “source of truth” and avoids duplication or variance of validation logic. The scorecard user would be able to specify a bundle on the command line, that bundle would then be validated. For example:
+
+- operator-sdk scorecard --bundle ./my-operator
 
 Tasks for this story include:
- * determine the correct validation library to use
- * add support for a bundle directory flag to the CLI
- * change the scorecard code to use that validation library when validating a CR, CSV, or given a bundle directory
- * format the validation output to present to the CLI user in text or json
+
+- determine the correct validation library to use
+- add support for a bundle directory flag to the CLI
+- change the scorecard code to use that validation library when validating a CR, CSV, or given a bundle directory
+- format the validation output to present to the CLI user in text or json
 
 Rough point estimate in this story is 5 points.
 
 #### Story 4 - Update scorecard Documentation
-Tasks:
- * Document changes to CLI
- * Document new output formats
- * Document changes to configuration
- * Update the CHANGELOG and Migration files with breaking changes and removals
 
+Tasks:
+
+- Document changes to CLI
+- Document new output formats
+- Document changes to configuration
+- Update the CHANGELOG and Migration files with breaking changes and removals
 
 #### Story 5 - Design Custom Tests
-Tasks:
- * Design the custom test format (e.g. bash, golang, other)
- * Design the custom test interface (e.g. naming, labels, exit codes, output)
- * Design how a custom test is packaged (e.g. container image, source directory, other)
- * Design the custom test configuration (e.g. config file, command line flag, image path, other)
- * Document the custom test design for end-users
 
+Tasks:
+
+- Design the custom test format (e.g. bash, golang, other)
+- Design the custom test interface (e.g. naming, labels, exit codes, output)
+- Design how a custom test is packaged (e.g. container image, source directory, other)
+- Design the custom test configuration (e.g. config file, command line flag, image path, other)
+- Document the custom test design for end-users
 
 #### Story 6 - Support Custom Tests
-Tasks:
- * Document how a custom test is developed, providing an example
- * Add support for custom tests in the v1alpha2 API
- * Update tests to include execution of a custom test using v1alpha2
 
+Tasks:
+
+- Document how a custom test is developed, providing an example
+- Add support for custom tests in the v1alpha2 API
+- Update tests to include execution of a custom test using v1alpha2
 
 #### Story 7 - Support User-Defined Labels on Custom Tests
+
 Tasks:
- * Document rules for adding labels onto custom tests
- * Add support for handling user-defined labels on custom tests in the v1alpha2 API
- * Add test to include handling user-defined labels on custom tests using v1alpha2
+
+- Document rules for adding labels onto custom tests
+- Add support for handling user-defined labels on custom tests in the v1alpha2 API
+- Add test to include handling user-defined labels on custom tests using v1alpha2
 
 #### Story 8 - Support Testing Operator Upgrades with OLM
+
 Tasks:
- * Add support for testing an operator upgrade with OLM
- * Document and provide an example of how to test an operator upgrade
- * Add test to perform an operator upgrade test
+
+- Add support for testing an operator upgrade with OLM
+- Document and provide an example of how to test an operator upgrade
+- Add test to perform an operator upgrade test
 
 ### Implementation Details/Notes/Constraints
 
@@ -161,8 +173,8 @@ Reuse apimachinery for parsing and matching.
 ### Risks and Mitigations
 
 The scorecard would implement a version flag in the CLI to allow users to migrate from current functionality to the proposed functionality (e.g. v1alpha2):
- * operator-sdk scorecard --version v1alpha2
 
+- operator-sdk scorecard --version v1alpha2
 
 ## Design Details
 
@@ -175,21 +187,23 @@ For example, the following jq command would exit with a failure if any required 
     jq --exit-status '[.[] | select(.labels.necessity == "required" and (.status == "fail" or .status == "error"))] | length == 0'
 
 Two separate meanings for exit codes would be produced by the scorecard:
- * One, to handle the case where the scorecard subcommand itself fails for some reason (e.g. couldn't read the kubernetes config, couldn't connect to the apiserver, etc.)
- * Second, to handle the pass/fail case where a test that was expected to pass did not pass. In this case, the output would be guaranteed to be valid text or JSON.
+
+- One, to handle the case where the scorecard subcommand itself fails for some reason (e.g. couldn't read the kubernetes config, couldn't connect to the apiserver, etc.)
+- Second, to handle the pass/fail case where a test that was expected to pass did not pass. In this case, the output would be guaranteed to be valid text or JSON.
 
 For pipelines, the test tool can be run twice:
 
- * with the required tests and then bail if the exit code is non-zero.
- * with the recommended tests and then bail of the exit code is 1 or bail or not bail if the exit code is 2.
+- with the required tests and then bail if the exit code is non-zero.
+- with the recommended tests and then bail of the exit code is 1 or bail or not bail if the exit code is 2.
 
 To drive better reports the JSON structure allows for proper querying using JSONPath.
 
 ### Test Plan
 
-**Note:** *Section not required until targeted at a release.*
+**Note:** _Section not required until targeted at a release._
 
 Consider the following in developing a test plan for this enhancement:
+
 - Will there be e2e and integration tests, in addition to unit tests?
 - How will it be tested in isolation vs with other components?
 
@@ -202,7 +216,7 @@ expectations).
 
 ### Graduation Criteria
 
-**Note:** *Section not required until targeted at a release.*
+**Note:** _Section not required until targeted at a release._
 
 Define graduation milestones.
 
@@ -212,6 +226,7 @@ determine graduation.
 
 Consider the following in developing the graduation criteria for this
 enhancement:
+
 - Maturity levels - `Dev Preview`, `Tech Preview`, `GA`
 - Deprecation
 
@@ -229,7 +244,7 @@ maturity levels.
 - Sufficient test coverage
 - Gather feedback from users rather than just developers
 
-##### Tech Preview -> GA 
+##### Tech Preview -> GA
 
 - More testing (upgrade, downgrade, scale)
 - Sufficient time for feedback
@@ -241,13 +256,12 @@ end to end tests.**
 ##### Removing a deprecated feature
 
 - We are adding a new --version flag to allow users to switch between
-v1alpha1 and the proposed v1alpha2 or vice-versa for backward compatiblity
+  v1alpha1 and the proposed v1alpha2 or vice-versa for backward compatiblity
 - The output spec for v1alpha2 is added and the v1alpha1 spec is
-retained to support the existing output format
+  retained to support the existing output format
 - The default spec version will be v1alpha2, users will need to modify
-their usage to specify --version v1alpha1 to retain the older output
+  their usage to specify --version v1alpha1 to retain the older output
 - In a subsequent release, the v1alpha1 support will be removed.
-
 
 ### Upgrade / Downgrade Strategy
 
@@ -256,6 +270,7 @@ is in the test plan.
 
 Consider the following in developing an upgrade/downgrade strategy for this
 enhancement:
+
 - What changes (in invocations, configurations, API use, etc.) is an existing
   cluster required to make on upgrade in order to keep previous behavior?
 - What changes (in invocations, configurations, API use, etc.) is an existing
@@ -268,6 +283,7 @@ What are the guarantees? Make sure this is in the test plan.
 
 Consider the following in developing a version skew strategy for this
 enhancement:
+
 - During an upgrade, we will always have skew among components, how will this impact your work?
 - Does this enhancement involve coordinating behavior in the control plane and
   in the kubelet? How does an n-2 kubelet without this feature available behave
@@ -277,8 +293,7 @@ enhancement:
 
 ## Implementation History
 
-Major milestones in the life cycle of a proposal should be tracked in `Implementation
-History`.
+Major milestones in the life cycle of a proposal should be tracked in `Implementation History`.
 
 ## Drawbacks
 

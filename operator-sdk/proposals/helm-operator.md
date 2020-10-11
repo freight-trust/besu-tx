@@ -1,7 +1,7 @@
 # Helm based-Operator Proposal for Operator SDK
 
 > Status: **implemented**
-> 
+>
 > See also: [Helm documentation][helm_docs].
 
 - [Background](#background)
@@ -35,32 +35,36 @@ This proposal creates a new type of operator called `helm`. The new type is used
 
 Packages will be added to the operator-sdk. These packages are designed to be usable by the end user if they choose to and should have a well documented public API. The proposed packages are:
 
-* /operator-sdk/pkg/helm/client
-  * Will contain a helper function to create a Helm client from `controller-runtime` manager.
+- /operator-sdk/pkg/helm/client
 
-* /operator-sdk/pkg/helm/controller
-  * Will contain an exported `HelmOperatorReconciler` that implements the `controller-runtime` `reconcile.Reconciler` interface.
-  * Will contain an exported `Add` function that creates a controller using the `HelmOperatorReconciler` and adds watches based on a set of watch options passed to the `Add` function.
+  - Will contain a helper function to create a Helm client from `controller-runtime` manager.
 
-* /operator-sdk/pkg/helm/engine
-  * Will contain a Helm Engine implementation that adds owner references to generated Kubernetes resource assets, which is necessary for garbage collection of Helm chart resources.
+- /operator-sdk/pkg/helm/controller
 
-* /operator-sdk/pkg/helm/internal
-  * Will contain types and utilities used by other Helm packages in the SDK.
+  - Will contain an exported `HelmOperatorReconciler` that implements the `controller-runtime` `reconcile.Reconciler` interface.
+  - Will contain an exported `Add` function that creates a controller using the `HelmOperatorReconciler` and adds watches based on a set of watch options passed to the `Add` function.
 
-* /operator-sdk/pkg/helm/release
-  * Will contain the `Manager` types and interfaces. A `Manager` is responsible for:
-    * Implementing Helm's Tiller functions that are necessary to install, update, and uninstall releases.
-    * Reconciling an existing release's resources.
-  * A default `Manager` implementation is provided in this package but is not exported.
-  * Package functions:
-    * `NewManager` - function that returns a new Manager for a provided helm chart.
-    * `NewManagersFromEnv` - function that returns a map of GVK to Manager types based on environment variables.
-    * `NewManagersFromFile` - function that returns a map of GVK to Manager types based on a provided config file.
+- /operator-sdk/pkg/helm/engine
+
+  - Will contain a Helm Engine implementation that adds owner references to generated Kubernetes resource assets, which is necessary for garbage collection of Helm chart resources.
+
+- /operator-sdk/pkg/helm/internal
+
+  - Will contain types and utilities used by other Helm packages in the SDK.
+
+- /operator-sdk/pkg/helm/release
+  - Will contain the `Manager` types and interfaces. A `Manager` is responsible for:
+    - Implementing Helm's Tiller functions that are necessary to install, update, and uninstall releases.
+    - Reconciling an existing release's resources.
+  - A default `Manager` implementation is provided in this package but is not exported.
+  - Package functions:
+    - `NewManager` - function that returns a new Manager for a provided helm chart.
+    - `NewManagersFromEnv` - function that returns a map of GVK to Manager types based on environment variables.
+    - `NewManagersFromFile` - function that returns a map of GVK to Manager types based on a provided config file.
 
 ### Commands
 
-We are adding and updating existing commands to accommodate the Helm operator.  Changes to the `cmd` package as well as changes to the generator are needed.
+We are adding and updating existing commands to accommodate the Helm operator. Changes to the `cmd` package as well as changes to the generator are needed.
 
 #### New
 
@@ -71,17 +75,19 @@ operator-sdk new <project-name> --type=helm --kind=<kind> --api-version=<group/v
 ```
 
 Flags:
-* `--type=helm` is required to create Helm operator project.
-* **Required:** --kind - the kind for the CRD.
-* **Required:** --api-version - the group/version for the CRD.
+
+- `--type=helm` is required to create Helm operator project.
+- **Required:** --kind - the kind for the CRD.
+- **Required:** --api-version - the group/version for the CRD.
 
 This will be new scaffolding for the above command under the hood. We will:
-* Create a `./<project-name>` directory.
-* Create a `./<project-name>/helm-charts` directory.
-* Generate a simple default chart at `./<project-name>/helm-charts/<kind>`.
-* Create a new watches file at `./<project-name>/watches.yaml`. The chart and GVK will be defaulted based on input to the `new` command.
-* Create a `./<project-name>/deploy` with the Kubernetes resource files necessary to run the operator.
-* Create a `./build/Dockerfile` that uses the watches file and the helm chart. It will use the Helm operator as its base image.
+
+- Create a `./<project-name>` directory.
+- Create a `./<project-name>/helm-charts` directory.
+- Generate a simple default chart at `./<project-name>/helm-charts/<kind>`.
+- Create a new watches file at `./<project-name>/watches.yaml`. The chart and GVK will be defaulted based on input to the `new` command.
+- Create a `./<project-name>/deploy` with the Kubernetes resource files necessary to run the operator.
+- Create a `./build/Dockerfile` that uses the watches file and the helm chart. It will use the Helm operator as its base image.
 
 The resulting structure will be:
 
@@ -119,9 +125,10 @@ operator-sdk add crd --api-version=<group>/<version> --kind=<kind> --update-watc
 ```
 
 Flags:
-* **Required:** --kind - the kind for the CRD.
-* **Required:** --api-version - the group/version for the CRD.
-* **Optional:** --update-watches - whether or not to update watches.yaml file (default: false).
+
+- **Required:** --kind - the kind for the CRD.
+- **Required:** --api-version - the group/version for the CRD.
+- **Optional:** --update-watches - whether or not to update watches.yaml file (default: false).
 
 **NOTE:** `operator-sdk add` subcommands `api` and `controller` will not be supported, since they are only valid for Go operators. Running these subcommands in a Helm operator project will result in an error.
 
@@ -150,8 +157,9 @@ The SDK `test` command currently only supports Go projects, so there will be no 
 ## Base Image
 
 The SDK team will maintain a build job for the `helm-operator` base image with the following tagging methodology:
-* Builds on the master branch that pass nightly CI tests will be tagged with `:master`
-* Builds for tags that pass CI will be tagged with `:<tag>`. If the tag is also the greatest semantic version for the repository, the image will also be tagged with `:latest`.
+
+- Builds on the master branch that pass nightly CI tests will be tagged with `:master`
+- Builds for tags that pass CI will be tagged with `:<tag>`. If the tag is also the greatest semantic version for the repository, the image will also be tagged with `:latest`.
 
 The go binary included in the base image will be built with `GOOS=linux` and `GOARCH=amd64`.
 
@@ -159,8 +167,8 @@ The base image repository will be `quay.io/water-hole/helm-operator`.
 
 ## Observations and open questions
 
-* There will be a large amount of overlap in the `operator-sdk` commands for the Ansible and Helm operators. We should take care to extract the reusable features of the Ansible operator commands into a shared library, usable by both Helm and Ansible commands.
+- There will be a large amount of overlap in the `operator-sdk` commands for the Ansible and Helm operators. We should take care to extract the reusable features of the Ansible operator commands into a shared library, usable by both Helm and Ansible commands.
 
-* There is a moderate amount of complexity already related to how operator types are handled between the `go` and `ansible` types. With the addition of a third type, there may need to be a larger design proposal for operator types. For example, do we need to define an `Operator` interface that each of the operator types can implement for flag verification, scaffolding, project detection, etc.?
+- There is a moderate amount of complexity already related to how operator types are handled between the `go` and `ansible` types. With the addition of a third type, there may need to be a larger design proposal for operator types. For example, do we need to define an `Operator` interface that each of the operator types can implement for flag verification, scaffolding, project detection, etc.?
 
 [helm_docs]: https://sdk.operatorframework.io/docs/helm/

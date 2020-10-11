@@ -23,11 +23,11 @@ Major version changes can break compatibility between the previous major version
 
 ## Minor versions
 
-Minor version changes will not break compatibility between the previous minor versions; to do so is a bug. SDK changes will involve addition of optional features, non-breaking enhancements, and *minor* bug fixes identified from previous versions.
+Minor version changes will not break compatibility between the previous minor versions; to do so is a bug. SDK changes will involve addition of optional features, non-breaking enhancements, and _minor_ bug fixes identified from previous versions.
 
 ## Patch versions
 
 Patch versions changes are meant only for bug fixes, and will not break compatibility of the current minor version. A patch release will contain a collection of minor bug fixes, or individual major and security bug fixes, depending on severity.
 
-[link-semver]:https://semver.org/
+[link-semver]: https://semver.org/
 [link-github-milestones]: https://help.github.com/en/articles/about-milestones

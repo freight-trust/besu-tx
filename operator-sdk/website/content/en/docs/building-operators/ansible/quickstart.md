@@ -9,7 +9,7 @@ This guide walks through an example of building a simple memcached-operator powe
 
 ## Prerequisites
 
-- [Install `operator-sdk`][operator_install] and the [Ansible prequisites][ansible-operator-install] 
+- [Install `operator-sdk`][operator_install] and the [Ansible prequisites][ansible-operator-install]
 - Access to a Kubernetes v1.16.0+ cluster.
 - User authorized with `cluster-admin` permissions.
 
@@ -31,7 +31,7 @@ operator-sdk init --plugins=ansible --domain=example.com
 Let's create a new API with a role for it:
 
 ```sh
-operator-sdk create api --group cache --version v1 --kind Memcached --generate-role 
+operator-sdk create api --group cache --version v1 --kind Memcached --generate-role
 ```
 
 ### Build and push the operator image
@@ -44,8 +44,7 @@ make docker-build docker-push IMG=<some-registry>/<project-name>:<tag>
 ```
 
 **NOTE**: To allow the cluster pull the image the repository needs to be
-          set as public or you must configure an image pull secret.
-
+set as public or you must configure an image pull secret.
 
 ### Run the operator
 
@@ -60,11 +59,13 @@ make deploy IMG=<some-registry>/<project-name>:<tag>
 ### Create a sample custom resource
 
 Create a sample CR:
+
 ```sh
 kubectl apply -f config/samples/cache_v1_memcached.yaml
 ```
 
 Watch for the CR be reconciled by the operator:
+
 ```sh
 kubectl logs deployment.apps/memcached-operator-controller-manager -n memcached-operator-system -c manager
 ```
@@ -72,11 +73,13 @@ kubectl logs deployment.apps/memcached-operator-controller-manager -n memcached-
 ### Clean up
 
 Delete the CR to uninstall memcached:
+
 ```sh
-kubectl delete -f config/samples/cache_v1_memcached.yaml 
+kubectl delete -f config/samples/cache_v1_memcached.yaml
 ```
 
 Use `make undeploy` to uninstall the operator and its CRDs:
+
 ```sh
 make undeploy
 ```
@@ -86,6 +89,6 @@ make undeploy
 Read the [tutorial][tutorial] for an in-depth walkthough of building a Ansible operator.
 
 [operator_install]: /docs/installation/install-operator-sdk
-[layout-doc]:../reference/scaffolding
+[layout-doc]: ../reference/scaffolding
 [tutorial]: /docs/building-operators/ansible/tutorial/
-[ansible-link]: https://www.ansible.com/ 
+[ansible-link]: https://www.ansible.com/

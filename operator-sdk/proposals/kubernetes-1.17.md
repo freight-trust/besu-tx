@@ -68,6 +68,7 @@ upgrade Operator SDK's Kubernetes dependencies until these other projects have
 releases that also include the Kubernetes dependency updates.
 
 The two projects that fall into this category are:
+
 1. [`kubernetes-sigs/controller-runtime`][controller-runtime]
 2. [`helm/helm`][helm]
 
@@ -79,7 +80,7 @@ changes.
 
 ### Test Plan
 
-**Note:** *Section not required until targeted at a release.*
+**Note:** _Section not required until targeted at a release._
 
 Operator SDK's existing e2e suite will be used to verify these changes. At a minimum,
 the e2e suite will need to be updated to run the tests against a Kubernetes 1.17
@@ -113,8 +114,7 @@ See the [`kubernetes/client-go` documentation about versioning][version-skew], w
 
 ## Implementation History
 
-Major milestones in the life cycle of a proposal should be tracked in `Implementation
-History`.
+Major milestones in the life cycle of a proposal should be tracked in `Implementation History`.
 
 ## Drawbacks
 
@@ -131,6 +131,6 @@ None
 
 N/A
 
-[operator-sdk-doc]:  https://sdk.operatorframework.io/
+[operator-sdk-doc]: https://sdk.operatorframework.io/
 [controller-runtime]: https://github.com/kubernetes-sigs/controller-runtime
 [helm]: https://github.com/helm/helm

@@ -88,8 +88,7 @@ and reviewers to improve code coverage over time.
 #### Story 3 - Refactor CRD generation
 
 Improvements to the generate subcommand will include the deprecation and
-removal of the `generate openapi` subcommand (to be replaced with the `generate
-crds` subcommand) and the internal refactoring of the `generate crds` subcommand
+removal of the `generate openapi` subcommand (to be replaced with the `generate crds` subcommand) and the internal refactoring of the `generate crds` subcommand
 to use a more flexible entrypoint into the underlying `controller-tools` package
 that actually implements the CRD generation.
 
@@ -135,8 +134,7 @@ N/A
 
 ## Implementation History
 
-Major milestones in the life cycle of a proposal should be tracked in `Implementation
-History`.
+Major milestones in the life cycle of a proposal should be tracked in `Implementation History`.
 
 ## Drawbacks
 
@@ -150,4 +148,4 @@ None
 
 None
 
-[operator-sdk-doc]:  https://sdk.operatorframework.io/
+[operator-sdk-doc]: https://sdk.operatorframework.io/

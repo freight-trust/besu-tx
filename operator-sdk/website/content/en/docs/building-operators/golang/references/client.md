@@ -9,6 +9,7 @@ weight: 10
 The [`controller-runtime`][repo-controller-runtime] library provides various abstractions to watch and reconcile resources in a Kubernetes cluster via CRUD (Create, Update, Delete, as well as Get and List in this case) operations. Operators use at least one controller to perform a coherent set of tasks within a cluster, usually through a combination of CRUD operations. The Operator SDK uses controller-runtime's [Client][doc-client-client] interface, which provides the interface for these operations.
 
 controller-runtime defines several interfaces used for cluster interaction:
+
 - `client.Client`: implementers perform CRUD operations on a Kubernetes cluster.
 - `manager.Manager`: manages shared dependencies, such as Caches and Clients.
 - `reconcile.Reconciler`: compares provided state with actual cluster state and updates the cluster on finding state differences using a Client.
@@ -22,6 +23,7 @@ Clients are the focus of this document. A separate document will discuss Manager
 The SDK relies on a `manager.Manager` to create a `client.Client` interface that performs Create, Update, Delete, Get, and List operations within a `reconcile.Reconciler`'s Reconcile function. The SDK will generate code to create a Manager, which holds a Cache and a Client to be used in CRUD operations and communicate with the API server. By default a Controller's Reconciler will be populated with the Manager's Client which is a [split-client][doc-split-client].
 
 `controllers/<kind>_controller.go`:
+
 ```Go
 import ctrl "sigs.k8s.io/controller-runtime"
 
@@ -63,7 +65,9 @@ type Options struct {
     Mapper meta.RESTMapper
 }
 ```
+
 Example:
+
 ```Go
 import (
     "sigs.k8s.io/controller-runtime/pkg/client/config"
@@ -76,7 +80,7 @@ c, err := client.New(cfg, client.Options{})
 ...
 ```
 
-**Note**: defaults are set by `client.New` when Options are empty. The default [scheme][code-scheme-default] will have the [core][doc-k8s-core] Kubernetes resource types registered. The caller *must* set a scheme that has custom operator types registered for the new Client to recognize these types.
+**Note**: defaults are set by `client.New` when Options are empty. The default [scheme][code-scheme-default] will have the [core][doc-k8s-core] Kubernetes resource types registered. The caller _must_ set a scheme that has custom operator types registered for the new Client to recognize these types.
 
 Creating a new Client is not usually necessary nor advised, as the default Client is sufficient for most use cases.
 
@@ -118,9 +122,11 @@ Reconcile is where Controller business logic lives, i.e. where Client API calls 
 // and stores it in obj.
 func (c Client) Get(ctx context.Context, key ObjectKey, obj runtime.Object) error
 ```
+
 **Note**: An `ObjectKey` is simply a `client` package alias for [`types.NamespacedName`][doc-types-nsname].
 
 Example:
+
 ```Go
 import (
     "context"
@@ -178,10 +184,10 @@ func (r *AppReconciler) Reconcile(req ctrl.Request) (ctrl.Request, error) {
 }
 ```
 
-[list-options]:https://godoc.org/sigs.k8s.io/controller-runtime/pkg/client#ListOptions
-[matching-labels]:https://godoc.org/sigs.k8s.io/controller-runtime/pkg/client#MatchingLabels
-[matching-fields]:https://godoc.org/sigs.k8s.io/controller-runtime/pkg/client#MatchingFields
-[in-namespace]:https://godoc.org/sigs.k8s.io/controller-runtime/pkg/client#InNamespace
+[list-options]: https://godoc.org/sigs.k8s.io/controller-runtime/pkg/client#ListOptions
+[matching-labels]: https://godoc.org/sigs.k8s.io/controller-runtime/pkg/client#MatchingLabels
+[matching-fields]: https://godoc.org/sigs.k8s.io/controller-runtime/pkg/client#MatchingFields
+[in-namespace]: https://godoc.org/sigs.k8s.io/controller-runtime/pkg/client#InNamespace
 
 #### Create
 
@@ -215,7 +221,7 @@ func (r *AppReconciler) Reconcile(req ctrl.Request) (ctrl.Request, error) {
 }
 ```
 
-[create-options]:https://godoc.org/sigs.k8s.io/controller-runtime/pkg/client#CreateOptions
+[create-options]: https://godoc.org/sigs.k8s.io/controller-runtime/pkg/client#CreateOptions
 
 #### Update
 
@@ -254,7 +260,7 @@ func (r *AppReconciler) Reconcile(req ctrl.Request) (ctrl.Request, error) {
 }
 ```
 
-[update-options]:https://godoc.org/sigs.k8s.io/controller-runtime/pkg/client#UpdateOptions
+[update-options]: https://godoc.org/sigs.k8s.io/controller-runtime/pkg/client#UpdateOptions
 
 #### Patch
 
@@ -294,9 +300,9 @@ func (r *AppReconciler) Reconcile(req ctrl.Request) (ctrl.Request, error) {
 }
 ```
 
-[patch-options]:https://godoc.org/sigs.k8s.io/controller-runtime/pkg/client#PatchOption
-[dry-run-all]:https://godoc.org/sigs.k8s.io/controller-runtime/pkg/client#DryRunAll
-[force-ownership]:https://godoc.org/sigs.k8s.io/controller-runtime/pkg/client#ForceOwnership
+[patch-options]: https://godoc.org/sigs.k8s.io/controller-runtime/pkg/client#PatchOption
+[dry-run-all]: https://godoc.org/sigs.k8s.io/controller-runtime/pkg/client#DryRunAll
+[force-ownership]: https://godoc.org/sigs.k8s.io/controller-runtime/pkg/client#ForceOwnership
 
 ##### Updating Status Subresource
 
@@ -313,6 +319,7 @@ func (c Client) Status() (client.StatusWriter, error)
 ```
 
 Example:
+
 ```Go
 import (
     "context"
@@ -344,7 +351,7 @@ func (r *AppReconciler) Reconcile(req ctrl.Request) (ctrl.Request, error) {
 }
 ```
 
-[status-writer]:https://godoc.org/sigs.k8s.io/controller-runtime/pkg/client#StatusWriter
+[status-writer]: https://godoc.org/sigs.k8s.io/controller-runtime/pkg/client#StatusWriter
 
 #### Delete
 
@@ -384,10 +391,10 @@ func (r *AppReconciler) Reconcile(req ctrl.Request) (ctrl.Request, error) {
 }
 ```
 
-[delete-opts]:https://godoc.org/sigs.k8s.io/controller-runtime/pkg/client#DeleteOptions
-[grace-period-seconds]:https://godoc.org/sigs.k8s.io/controller-runtime/pkg/client#GracePeriodSeconds
-[preconditions]:https://godoc.org/sigs.k8s.io/controller-runtime/pkg/client#Preconditions
-[propagation-policy]:https://godoc.org/sigs.k8s.io/controller-runtime/pkg/client#PropagationPolicy
+[delete-opts]: https://godoc.org/sigs.k8s.io/controller-runtime/pkg/client#DeleteOptions
+[grace-period-seconds]: https://godoc.org/sigs.k8s.io/controller-runtime/pkg/client#GracePeriodSeconds
+[preconditions]: https://godoc.org/sigs.k8s.io/controller-runtime/pkg/client#Preconditions
+[propagation-policy]: https://godoc.org/sigs.k8s.io/controller-runtime/pkg/client#PropagationPolicy
 
 #### DeleteAllOf
 
@@ -428,7 +435,7 @@ func (r *AppReconciler) Reconcile(req ctrl.Request) (ctrl.Request, error) {
 }
 ```
 
-[deleteallof-opts]:https://godoc.org/sigs.k8s.io/controller-runtime/pkg/client#DeleteAllOfOptions
+[deleteallof-opts]: https://godoc.org/sigs.k8s.io/controller-runtime/pkg/client#DeleteAllOfOptions
 
 ### Example usage
 
@@ -481,7 +488,7 @@ func (r *AppReconciler) Reconcile(req ctrl.Request) (ctrl.Result, error) {
             }
             return ctrl.Result{Requeue: true}, nil
         } else {
-            return ctrl.Result{}, err            
+            return ctrl.Result{}, err
         }
     }
 
@@ -565,13 +572,13 @@ func labelsForApp(name string) map[string]string {
 }
 ```
 
-[repo-controller-runtime]:https://github.com/kubernetes-sigs/controller-runtime
-[doc-client-client]:https://godoc.org/github.com/kubernetes-sigs/controller-runtime/pkg/client#Client
-[doc-split-client]:https://godoc.org/github.com/kubernetes-sigs/controller-runtime/pkg/client#DelegatingClient
-[doc-client-constr]:https://godoc.org/github.com/kubernetes-sigs/controller-runtime/pkg/client#New
-[code-scheme-default]:https://github.com/kubernetes-sigs/controller-runtime/blob/master/pkg/client/client.go#L51
-[doc-k8s-core]:https://godoc.org/k8s.io/api/core/v1
-[doc-reconcile-reconciler]:https://godoc.org/github.com/kubernetes-sigs/controller-runtime/pkg/reconcile#Reconciler
-[doc-osdk-handle]:https://github.com/operator-framework/operator-sdk/blob/master/design/milestone-0.0.2/action-api.md#handler
-[doc-types-nsname]:https://godoc.org/k8s.io/apimachinery/pkg/types#NamespacedName
-[cr-status-subresource]:https://kubernetes.io/docs/tasks/extend-kubernetes/custom-resources/custom-resource-definitions/#status-subresource
+[repo-controller-runtime]: https://github.com/kubernetes-sigs/controller-runtime
+[doc-client-client]: https://godoc.org/github.com/kubernetes-sigs/controller-runtime/pkg/client#Client
+[doc-split-client]: https://godoc.org/github.com/kubernetes-sigs/controller-runtime/pkg/client#DelegatingClient
+[doc-client-constr]: https://godoc.org/github.com/kubernetes-sigs/controller-runtime/pkg/client#New
+[code-scheme-default]: https://github.com/kubernetes-sigs/controller-runtime/blob/master/pkg/client/client.go#L51
+[doc-k8s-core]: https://godoc.org/k8s.io/api/core/v1
+[doc-reconcile-reconciler]: https://godoc.org/github.com/kubernetes-sigs/controller-runtime/pkg/reconcile#Reconciler
+[doc-osdk-handle]: https://github.com/operator-framework/operator-sdk/blob/master/design/milestone-0.0.2/action-api.md#handler
+[doc-types-nsname]: https://godoc.org/k8s.io/apimachinery/pkg/types#NamespacedName
+[cr-status-subresource]: https://kubernetes.io/docs/tasks/extend-kubernetes/custom-resources/custom-resource-definitions/#status-subresource

@@ -27,7 +27,6 @@ entries:
     # What is the pull request number (without the "#")?
     # pull_request_override: 0
 
-
     # Migration can be defined to automatically add a section to
     # the migration guide. This is required for breaking changes.
     migration:

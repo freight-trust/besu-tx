@@ -1,6 +1,7 @@
 ---
 title: "operator-sdk scorecard"
 ---
+
 ## operator-sdk scorecard
 
 Runs scorecard
@@ -38,5 +39,4 @@ operator-sdk scorecard [flags]
 
 ### SEE ALSO
 
-* [operator-sdk](../operator-sdk)	 - Development kit for building Kubernetes extensions and tools.
-
+- [operator-sdk](../operator-sdk) - Development kit for building Kubernetes extensions and tools.

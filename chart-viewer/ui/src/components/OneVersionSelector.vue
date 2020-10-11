@@ -31,7 +31,7 @@
         ></v-autocomplete>
       </v-col>
     </v-row>
-    
+
     <v-row v-if="progressing">
       <v-progress-linear
         indeterminate
@@ -42,102 +42,106 @@
 </template>
 
 <script>
-  import api from '../api/api'
-  import yaml from 'json-to-pretty-yaml'
+import api from "../api/api";
+import yaml from "json-to-pretty-yaml";
 
-  export default {
-    name: 'OneVersionSelector',
-    data () {
-      return {
-        repos: [],
-        selectedRepo: "",
-        charts: [],
-        selectedChart: "",
-        versions: [],
-        selectedVersion: "",
-        values: "",
-        templates: [],
-        progressing: false
-      }
+export default {
+  name: "OneVersionSelector",
+  data() {
+    return {
+      repos: [],
+      selectedRepo: "",
+      charts: [],
+      selectedChart: "",
+      versions: [],
+      selectedVersion: "",
+      values: "",
+      templates: [],
+      progressing: false,
+    };
+  },
+  mounted() {
+    this.fetchRepoList();
+  },
+  methods: {
+    async fetchRepoList() {
+      this.resetState();
+
+      const response = await api.fetchRepos();
+      this.repos = response.data;
     },
-    mounted() {
-      this.fetchRepoList()
+    async fetchChartList() {
+      this.resetState();
+      this.selectedChart = "";
+
+      const response = await api.fetchCharts(this.selectedRepo);
+      this.charts = response.data;
     },
-    methods: {
-      async fetchRepoList() {
-        this.resetState()
+    async fetchChart() {
+      this.values = "";
+      this.templates = [];
 
-        const response = await api.fetchRepos()
-        this.repos = response.data
-      },
-      async fetchChartList() {
-        this.resetState()
-        this.selectedChart = ""
+      this.progressing = true;
+      const response = await api.fetchChart(
+        this.selectedRepo,
+        this.selectedChart,
+        this.selectedVersion
+      );
+      this.progressing = false;
 
-        const response = await api.fetchCharts(this.selectedRepo)
-        this.charts = response.data
-      },
-      async fetchChart() {
-        this.values = ""
-        this.templates = []
-
-        this.progressing = true
-        const response = await api.fetchChart(this.selectedRepo, this.selectedChart, this.selectedVersion)
-        this.progressing = false
-        
-        this.values = yaml.stringify(response.data.values)
-        const templates = response.data.templates
-        this.templates = this.simplifyTemplateName(templates)
-        this.templates.push({
-          name: "values.yaml",
-          content: this.values
-        })
-      },
-      fetchVersionList() {
-        this.templates = []
-        for(let i=0; i < this.charts.length; i++) {
-          if(this.charts[i].name === this.selectedChart) {
-            this.versions = this.charts[i].versions
-            break
-          }
+      this.values = yaml.stringify(response.data.values);
+      const templates = response.data.templates;
+      this.templates = this.simplifyTemplateName(templates);
+      this.templates.push({
+        name: "values.yaml",
+        content: this.values,
+      });
+    },
+    fetchVersionList() {
+      this.templates = [];
+      for (let i = 0; i < this.charts.length; i++) {
+        if (this.charts[i].name === this.selectedChart) {
+          this.versions = this.charts[i].versions;
+          break;
         }
-      },
-      simplifyTemplateName(templates) {
-        var temps = []
-        templates.forEach((template) => {
-          const newName = template.name.replace("templates/", "")
-          temps.push({
-            name: newName,
-            content: template.content
-          })
-        })
-
-        return temps
-      },
-      contructChartName(repo) {
-        return repo.name + " (" + repo.url + ")"
-      },
-      resetState() {
-        this.versions = []
-        this.templates = []
       }
     },
-    watch: {
-      templates() {
-        this.$emit("templatesChanged", this.templates);
-      },
-      values() {
-        this.$emit("valuesChanged", this.values)
-      },
-      selectedRepo(){
-        this.$emit("repoChanged", this.selectedRepo)
-      },
-      selectedChart(){
-        this.$emit("chartChanged", this.selectedChart)
-      },
-      selectedVersion(){
-        this.$emit("versionChanged", this.selectedVersion)
-      }
-    }
-  }
+    simplifyTemplateName(templates) {
+      var temps = [];
+      templates.forEach((template) => {
+        const newName = template.name.replace("templates/", "");
+        temps.push({
+          name: newName,
+          content: template.content,
+        });
+      });
+
+      return temps;
+    },
+    contructChartName(repo) {
+      return repo.name + " (" + repo.url + ")";
+    },
+    resetState() {
+      this.versions = [];
+      this.templates = [];
+    },
+  },
+  watch: {
+    templates() {
+      this.$emit("templatesChanged", this.templates);
+    },
+    values() {
+      this.$emit("valuesChanged", this.values);
+    },
+    selectedRepo() {
+      this.$emit("repoChanged", this.selectedRepo);
+    },
+    selectedChart() {
+      this.$emit("chartChanged", this.selectedChart);
+    },
+    selectedVersion() {
+      this.$emit("versionChanged", this.selectedVersion);
+    },
+  },
+};
 </script>

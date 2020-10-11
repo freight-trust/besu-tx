@@ -1,6 +1,7 @@
 ---
 title: "operator-sdk cleanup"
 ---
+
 ## operator-sdk cleanup
 
 Clean up an Operator deployed with the 'run' subcommand
@@ -30,5 +31,4 @@ operator-sdk cleanup <operatorPackageName> [flags]
 
 ### SEE ALSO
 
-* [operator-sdk](../operator-sdk)	 - Development kit for building Kubernetes extensions and tools.
-
+- [operator-sdk](../operator-sdk) - Development kit for building Kubernetes extensions and tools.

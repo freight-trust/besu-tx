@@ -7,7 +7,7 @@
       kind: SubresourcesTest
       metadata:
         name: subresources-test
-        namespace: '{{ namespace }}'
+        namespace: "{{ namespace }}"
       spec:
         execCommand: "echo 'hello world'"
         logMessage: "Running..."

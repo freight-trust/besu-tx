@@ -1,4 +1,4 @@
-# Plugin System for the `operator-sdk scorecard` feature Proposal for Operator SDK 
+# Plugin System for the `operator-sdk scorecard` feature Proposal for Operator SDK
 
 Implementation Owner: AlexNPavel
 
@@ -116,36 +116,36 @@ JSON output for `ScorecardResult` object (for the initial `v1alpha1` of the scor
 
 ```json
 {
-    "error": 0,
-    "pass": 1,
-    "partial_pass": 1,
-    "fail": 0,
-    "total_tests": 2,
-    "total_score_percent": 71,
-    "tests": [
+  "error": 0,
+  "pass": 1,
+  "partial_pass": 1,
+  "fail": 0,
+  "total_tests": 2,
+  "total_score_percent": 71,
+  "tests": [
+    {
+      "state": "partial_pass",
+      "name": "Operator Actions Reflected In Status",
+      "description": "The operator updates the Custom Resources status when the application state is updated",
+      "earnedPoints": 2,
+      "maximumPoints": 3,
+      "suggestions": [
         {
-            "state": "partial_pass",
-            "name": "Operator Actions Reflected In Status",
-            "description": "The operator updates the Custom Resources status when the application state is updated",
-            "earnedPoints": 2,
-            "maximumPoints": 3,
-            "suggestions": [
-                {
-                    "suggestion": "Operator should update status when scaling cluster down"
-                }
-            ],
-            "errors": []
-        },
-        {
-            "state": "pass",
-            "name": "Verify health of cluster",
-            "description": "The cluster created by the operator is working properly",
-            "earnedPoints": 1,
-            "maximumPoints": 1,
-            "suggestions": [],
-            "errors": []
+          "suggestion": "Operator should update status when scaling cluster down"
         }
-    ]
+      ],
+      "errors": []
+    },
+    {
+      "state": "pass",
+      "name": "Verify health of cluster",
+      "description": "The cluster created by the operator is working properly",
+      "earnedPoints": 1,
+      "maximumPoints": 1,
+      "suggestions": [],
+      "errors": []
+    }
+  ]
 }
 ```
 

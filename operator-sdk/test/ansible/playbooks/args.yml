@@ -14,7 +14,7 @@
           apiVersion: v1
           kind: ConfigMap
           metadata:
-            name: '{{ meta.name }}'
-            namespace: '{{ meta.namespace }}'
+            name: "{{ meta.name }}"
+            namespace: "{{ meta.namespace }}"
           data:
             msg: The decrypted value is {{the_secret.the_secret}}

@@ -1,12 +1,12 @@
 ---
 title: "operator-sdk generate packagemanifests"
 ---
+
 ## operator-sdk generate packagemanifests
 
 Generates package manifests data for the operator
 
 ### Synopsis
-
 
 Note: while the package manifests format is not yet deprecated, the operator-framework is migrated
 towards using bundles by default. Run 'operator-sdk generate bundle -h' for more information.
@@ -21,7 +21,6 @@ Set '--version' to supply a semantic version for your new package. This is a req
 
 More information on the package manifests format:
 https://github.com/operator-framework/operator-registry/#manifest-format
-
 
 ```
 operator-sdk generate packagemanifests [flags]
@@ -85,5 +84,4 @@ operator-sdk generate packagemanifests [flags]
 
 ### SEE ALSO
 
-* [operator-sdk generate](../operator-sdk_generate)	 - Invokes a specific generator
-
+- [operator-sdk generate](../operator-sdk_generate) - Invokes a specific generator

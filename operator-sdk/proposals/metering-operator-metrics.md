@@ -34,7 +34,6 @@ memcached_info{namespace="default",memcached="example-memcached"} 1
 
 The solution makes use of Kubernetes list/watch to populate a Prometheus metrics registry, kube-state-metrics implements its own registry for performance reasons. [kube-state-metrics](https://github.com/kubernetes/kube-state-metrics#overview) is used because it solves exactly the same problem we are facing but it does it for upstream known resources. The operator-sdk can re-use its functionality to perform the same thing but with custom resources. The kube-state-metrics library can only be used for constant (/static) metrics, metrics that are immutable and thereby entirely regenerated on change. This is perfect for our above mentioned use-case. It is not meant to do e.g. counting in performance critical code paths. Thereby an operator would need kube-state-metrics library for exposing the amount of custom resources that it manages and its details and Prometheus client_golang to expose metrics of its own internals e.g. count of reconciliation loops.
 
-
 ```go
 // NewCollectors returns a collection of metrics in the namespaces provided, per the api/kind resource.
 // The metrics are registered in the custom generateStore function that needs to be defined.

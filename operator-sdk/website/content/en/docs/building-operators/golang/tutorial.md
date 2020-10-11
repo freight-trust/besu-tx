@@ -5,7 +5,7 @@ weight: 30
 description: This guide walks through an example of building a simple memcached-operator using the operator-sdk CLI tool and controller-runtime library API.
 ---
 
-**NOTE:** For the SDK versions prior to `v0.19.0` please consult the [legacy docs][legacy_quickstart_doc] for the [legacy CLI][legacy_CLI] and project.
+**NOTE:** For the SDK versions prior to `v0.19.0` please consult the [legacy docs][legacy_quickstart_doc] for the [legacy CLI][legacy_cli] and project.
 
 ## Prerequisites
 
@@ -32,21 +32,25 @@ To learn about the project directory structure, see [Kubebuilder project layout]
 `operator-sdk init` generates a `go.mod` file to be used with [Go modules][go_mod_wiki]. The `--repo=<path>` flag is required when creating a project outside of `$GOPATH/src`, as scaffolded files require a valid module path. Ensure you [activate module support][activate_modules] by running `export GO111MODULE=on` before using the SDK.
 
 ### Manager
+
 The main program for the operator `main.go` initializes and runs the [Manager][manager_go_doc].
 
 See the [Kubebuilder entrypoint doc][kubebuilder_entrypoint_doc] for more details on how the manager registers the Scheme for the custom resource API defintions, and sets up and runs controllers and webhooks.
 
-
 The Manager can restrict the namespace that all controllers will watch for resources:
+
 ```Go
 mgr, err := ctrl.NewManager(cfg, manager.Options{Namespace: namespace})
 ```
+
 By default this will be the namespace that the operator is running in. To watch all namespaces leave the namespace option empty:
+
 ```Go
 mgr, err := ctrl.NewManager(cfg, manager.Options{Namespace: ""})
 ```
 
 It is also possible to use the [MultiNamespacedCacheBuilder][multi-namespaced-cache-builder] to watch a specific set of namespaces:
+
 ```Go
 var namespaces []string // List of Namespaces
 // Create a new Cmd to provide shared dependencies and start components
@@ -61,7 +65,7 @@ Read the [operator scope][operator_scope] documentation on how to run your opera
 
 ### Multi-Group APIs
 
-Before creating an API and controller, consider if your operator's API requires multiple [groups][API-groups].
+Before creating an API and controller, consider if your operator's API requires multiple [groups][api-groups].
 If yes then add the line `multigroup: true` in the `PROJECT` file which should look like the following:
 
 ```YAML
@@ -70,6 +74,7 @@ layout: go.kubebuilder.io/v2
 multigroup: true
 ...
 ```
+
 For multi-group projects, the API Go type files are created under `apis/<group>/<version>/` and the controllers under `controllers/<group>/`.
 
 This guide will cover the default case of a single group API.
@@ -163,6 +168,7 @@ To learn more about OpenAPI v3.0 validation schemas in CRDs, refer to the [Kuber
 For this example replace the generated controller file `controllers/memcached_controller.go` with the example [`memcached_controller.go`][memcached_controller] implementation.
 
 The example controller executes the following reconciliation logic for each Memcached CR:
+
 - Create a memcached Deployment if it doesn't exist
 - Ensure that the Deployment size is the same as specified by the Memcached CR spec
 - Update the Memcached CR status using the status writer with the names of the memcached pods
@@ -192,7 +198,7 @@ The `NewControllerManagedBy()` provides a controller builder that allows various
 
 There are a number of other useful configurations that can be made when initialzing a controller. For more details on these configurations consult the upstream [builder][builder_godocs] and [controller][controller_godocs] godocs.
 
-- Set the max number of concurrent Reconciles for the controller via the [`MaxConcurrentReconciles`][controller_options]  option. Defaults to 1.
+- Set the max number of concurrent Reconciles for the controller via the [`MaxConcurrentReconciles`][controller_options] option. Defaults to 1.
   ```Go
     func (r *MemcachedReconciler) SetupWithManager(mgr ctrl.Manager) error {
         return ctrl.NewControllerManagedBy(mgr).
@@ -206,7 +212,6 @@ There are a number of other useful configurations that can be made when initialz
   ```
 - Filter watch events using [predicates][event_filtering]
 - Choose the type of [EventHandler][event_handler_godocs] to change how a watch event will translate to reconcile requests for the reconcile loop. For operator relationships that are more complex than primary and secondary resources, the [`EnqueueRequestsFromMapFunc`][enqueue_requests_from_map_func] handler can be used to transform a watch event into an arbitrary set of reconcile requests.
-
 
 #### Reconcile loop
 
@@ -240,6 +245,7 @@ return ctrl.Result{Requeue: true}, nil
 ```
 
 You can set the `Result.RequeueAfter` to requeue the `Request` after a grace period as well:
+
 ```Go
 import "time"
 
@@ -312,6 +318,7 @@ you have access to. You can obtain an account for storing containers at
 repository sites such quay.io or hub.docker.com. This example uses quay.
 
 Build the image:
+
 ```sh
 $ export USERNAME=<quay-username>
 
@@ -341,7 +348,7 @@ Run the following to deploy the operator. This will also install the RBAC manife
 $ make deploy IMG=quay.io/$USERNAME/memcached-operator:v0.0.1
 ```
 
-*NOTE* If you have enabled webhooks in your deployments, you will need to have cert-manager already installed
+_NOTE_ If you have enabled webhooks in your deployments, you will need to have cert-manager already installed
 in the cluster or `make deploy` will fail when creating the cert-manager resources.
 
 Verify that the memcached-operator is up and running:
@@ -441,7 +448,6 @@ $ kubectl delete deployments,service -l control-plane=controller-manager
 $ kubectl delete role,rolebinding --all
 ```
 
-
 ## Further steps
 
 The following guides build off the operator created in this example, adding advanced features:
@@ -450,23 +456,21 @@ The following guides build off the operator created in this example, adding adva
 
 Also see the [advanced topics][advanced_topics] doc for more use cases and under the hood details.
 
-
-[go_tool]:https://golang.org/dl/
-[docker_tool]:https://docs.docker.com/install/
-[kubectl_tool]:https://kubernetes.io/docs/tasks/tools/install-kubectl/
+[go_tool]: https://golang.org/dl/
+[docker_tool]: https://docs.docker.com/install/
+[kubectl_tool]: https://kubernetes.io/docs/tasks/tools/install-kubectl/
 [kustomize_tool]: https://sigs.k8s.io/kustomize/docs/INSTALL.md
-
 [enqueue_requests_from_map_func]: https://godoc.org/sigs.k8s.io/controller-runtime/pkg/handler#EnqueueRequestsFromMapFunc
 [event_handler_godocs]: https://godoc.org/sigs.k8s.io/controller-runtime/pkg/handler#hdr-EventHandlers
-[event_filtering]:/docs/building-operators/golang/references/event-filtering/
+[event_filtering]: /docs/building-operators/golang/references/event-filtering/
 [controller_options]: https://godoc.org/github.com/kubernetes-sigs/controller-runtime/pkg/controller#Options
 [controller_godocs]: https://godoc.org/github.com/kubernetes-sigs/controller-runtime/pkg/controller
-[operator_scope]:/docs/building-operators/golang/operator-scope/
-[kubebuilder_layout_doc]:https://book.kubebuilder.io/cronjob-tutorial/basic-project.html
-[homebrew_tool]:https://brew.sh/
+[operator_scope]: /docs/building-operators/golang/operator-scope/
+[kubebuilder_layout_doc]: https://book.kubebuilder.io/cronjob-tutorial/basic-project.html
+[homebrew_tool]: https://brew.sh/
 [go_mod_wiki]: https://github.com/golang/go/wiki/Modules
 [go_vendoring]: https://blog.gopheracademy.com/advent-2015/vendor-folder/
-[doc_client_api]:/docs/building-operators/golang/references/client/
+[doc_client_api]: /docs/building-operators/golang/references/client/
 [manager_go_doc]: https://godoc.org/github.com/kubernetes-sigs/controller-runtime/pkg/manager#Manager
 [controller-go-doc]: https://godoc.org/github.com/kubernetes-sigs/controller-runtime/pkg#hdr-Controller
 [request-go-doc]: https://godoc.org/github.com/kubernetes-sigs/controller-runtime/pkg/reconcile#Request
@@ -474,7 +478,6 @@ Also see the [advanced topics][advanced_topics] doc for more use cases and under
 [multi-namespaced-cache-builder]: https://godoc.org/github.com/kubernetes-sigs/controller-runtime/pkg/cache#MultiNamespacedCacheBuilder
 [cli-run-olm]: /docs/olm-integration/cli-overview
 [kubebuilder_entrypoint_doc]: https://book.kubebuilder.io/cronjob-tutorial/empty-main.html
-
 [api_terms_doc]: https://book.kubebuilder.io/cronjob-tutorial/gvks.html
 [kb_controller_doc]: https://book.kubebuilder.io/cronjob-tutorial/controller-overview.html
 [kb_api_doc]: https://book.kubebuilder.io/cronjob-tutorial/new-api.html
@@ -486,13 +489,13 @@ Also see the [advanced topics][advanced_topics] doc for more use cases and under
 [rbac-markers]: https://book.kubebuilder.io/reference/markers/rbac.html
 [memcached_controller]: https://github.com/operator-framework/operator-sdk/blob/master/example/memcached-operator/memcached_controller.go.tmpl
 [builder_godocs]: https://godoc.org/github.com/kubernetes-sigs/controller-runtime/pkg/builder#example-Builder
-[legacy_quickstart_doc]:https://v0-19-x.sdk.operatorframework.io/docs/golang/legacy/quickstart/
+[legacy_quickstart_doc]: https://v0-19-x.sdk.operatorframework.io/docs/golang/legacy/quickstart/
 [activate_modules]: https://github.com/golang/go/wiki/Modules#how-to-install-and-activate-module-support
 [advanced_topics]: /docs/building-operators/golang/advanced-topics/
 [create_a_webhook]: /docs/building-operators/golang/webhooks/
 [status_marker]: https://book.kubebuilder.io/reference/generating-crd.html#status
 [status_subresource]: https://kubernetes.io/docs/tasks/extend-kubernetes/custom-resources/custom-resource-definitions/#status-subresource
-[API-groups]:https://kubernetes.io/docs/concepts/overview/kubernetes-api/#api-groups
-[legacy_CLI]:https://v0-19-x.sdk.operatorframework.io/docs/cli/
+[api-groups]: https://kubernetes.io/docs/concepts/overview/kubernetes-api/#api-groups
+[legacy_cli]: https://v0-19-x.sdk.operatorframework.io/docs/cli/
 [env-test-setup]: /docs/building-operators/golang/references/envtest-setup
 [role-based-access-control]: https://cloud.google.com/kubernetes-engine/docs/how-to/role-based-access-control#iam-rolebinding-bootstrap

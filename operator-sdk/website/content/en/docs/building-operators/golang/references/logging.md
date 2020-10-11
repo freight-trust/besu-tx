@@ -16,12 +16,12 @@ In the simple example below, we add the zap flagset to the operator's command li
 
 By default, `zap.Options{}` will return a logger that is ready for production use. It uses a JSON encoder, logs starting at the `info` level. To customize the default behavior, users can use the zap flagset and specify flags on the command line. The zap flagset includes the following flags that can be used to configure the logger:
 
-* `--zap-devel`: Development Mode defaults(encoder=consoleEncoder,logLevel=Debug,stackTraceLevel=Warn)
-			  Production Mode defaults(encoder=jsonEncoder,logLevel=Info,stackTraceLevel=Error)
-* `--zap-encoder`: Zap log encoding ('json' or 'console')
-* `--zap-log-level`: Zap Level to configure the verbosity of logging. Can be one of 'debug', 'info', 'error',
-			       or any integer value > 0 which corresponds to custom debug levels of increasing verbosity")
-* `--zap-stacktrace-level`: Zap Level at and above which stacktraces are captured (one of 'warn' or 'error')
+- `--zap-devel`: Development Mode defaults(encoder=consoleEncoder,logLevel=Debug,stackTraceLevel=Warn)
+  Production Mode defaults(encoder=jsonEncoder,logLevel=Info,stackTraceLevel=Error)
+- `--zap-encoder`: Zap log encoding ('json' or 'console')
+- `--zap-log-level`: Zap Level to configure the verbosity of logging. Can be one of 'debug', 'info', 'error',
+  or any integer value > 0 which corresponds to custom debug levels of increasing verbosity")
+- `--zap-stacktrace-level`: Zap Level at and above which stacktraces are captured (one of 'warn' or 'error')
 
 Consult the controller-runtime [godocs][logging_godocs] for more detailed flag information.
 
@@ -33,7 +33,7 @@ Operators set the logger for all operator logging in [`cmd/manager/main.go`][cod
 package main
 
 import (
-	"sigs.k8s.io/controller-runtime/pkg/log/zap"  
+	"sigs.k8s.io/controller-runtime/pkg/log/zap"
 	logf "sigs.k8s.io/controller-runtime/pkg/log"
 )
 
@@ -44,7 +44,7 @@ func main() {
 	opts := zap.Options{}
 	opts.BindFlags(flag.CommandLine)
 	flag.Parse()
-    
+
 	logger := zap.New(zap.UseFlagOptions(&opts))
 	logf.SetLogger(logger)
 
@@ -58,22 +58,25 @@ func main() {
 ```
 
 #### Output using the defaults
+
 ```console
 $ go run main.go
-INFO[0000] Running the operator locally in namespace default. 
+INFO[0000] Running the operator locally in namespace default.
 {"level":"info","ts":1587741740.407766,"logger":"global","msg":"Printing at INFO level"}
 {"level":"info","ts":1587741740.407855,"logger":"scoped","msg":"Printing at INFO level"}
 ```
 
 #### Output overriding the log level to 1 (debug)
+
 ```console
 $ go run main.go --zap-log-level=debug
-INFO[0000] Running the operator locally in namespace default. 
+INFO[0000] Running the operator locally in namespace default.
 {"level":"info","ts":1587741837.602911,"logger":"global","msg":"Printing at INFO level"}
 {"level":"debug","ts":1587741837.602964,"logger":"global","msg":"Printing at DEBUG level"}
 {"level":"info","ts":1587741837.6029708,"logger":"scoped","msg":"Printing at INFO level"}
 {"level":"debug","ts":1587741837.602973,"logger":"scoped","msg":"Printing at DEBUG level"}
 ```
+
 ## Custom zap logger
 
 In order to use a custom zap logger, [`zap`][controller_runtime_zap] from controller-runtime can be utilized to wrap it in a `logr` implementation.
@@ -141,6 +144,7 @@ When running locally with `make run ENABLE_WEBHOOKS=false`, you can use the `ARG
 ```console
 $ make run ARGS="--zap-encoder=console" ENABLE_WEBHOOKS=false
 ```
+
 Make sure to have your `run` target to take `ARGS` as shown below in `Makefile`.
 
 ```makefile
@@ -163,22 +167,22 @@ spec:
   template:
     spec:
       containers:
-      - name: kube-rbac-proxy
-        image: gcr.io/kubebuilder/kube-rbac-proxy:v0.5.0
-        args:
-        - "--secure-listen-address=0.0.0.0:8443"
-        - "--upstream=http://127.0.0.1:8080/"
-        - "--logtostderr=true"
-        - "--v=10"
-        ports:
-        - containerPort: 8443
-          name: https
-      - name: manager
-        args:
-        - "--metrics-addr=127.0.0.1:8080"
-        - "--enable-leader-election"
-        - "--zap-encoder=console"
-        - "--zap-log-level=debug"
+        - name: kube-rbac-proxy
+          image: gcr.io/kubebuilder/kube-rbac-proxy:v0.5.0
+          args:
+            - "--secure-listen-address=0.0.0.0:8443"
+            - "--upstream=http://127.0.0.1:8080/"
+            - "--logtostderr=true"
+            - "--v=10"
+          ports:
+            - containerPort: 8443
+              name: https
+        - name: manager
+          args:
+            - "--metrics-addr=127.0.0.1:8080"
+            - "--enable-leader-election"
+            - "--zap-encoder=console"
+            - "--zap-log-level=debug"
 ```
 
 ## Creating a structured log statement
@@ -255,13 +259,12 @@ Log records will look like the following (from `log.Error()` above):
 
 If you do not want to use `logr` as your logging tool, you can remove `logr`-specific statements without issue from your operator's code, including the `logr` [setup code][code_set_logger] in `main.go`, and add your own. Note that removing `logr` setup code will prevent `controller-runtime` from logging.
 
-
-[godoc_logr]:https://godoc.org/github.com/go-logr/logr
-[repo_zapr]:https://godoc.org/github.com/go-logr/zapr
-[godoc_logr_logger]:https://godoc.org/github.com/go-logr/logr#Logger
-[site_struct_logging]:https://www.client9.com/structured-logging-in-golang/
-[code_memcached_controller]:https://github.com/operator-framework/operator-sdk/blob/master/example/memcached-operator/memcached_controller.go.tmpl
-[code_set_logger]:https://github.com/operator-framework/operator-sdk/blob/4d66be409a69d169aaa29d470242a1defbaf08bb/internal/pkg/scaffold/cmd.go#L92-L96
-[logfmt_repo]:https://github.com/jsternberg/zap-logfmt
-[controller_runtime_zap]:https://github.com/kubernetes-sigs/controller-runtime/tree/master/pkg/log/zap
+[godoc_logr]: https://godoc.org/github.com/go-logr/logr
+[repo_zapr]: https://godoc.org/github.com/go-logr/zapr
+[godoc_logr_logger]: https://godoc.org/github.com/go-logr/logr#Logger
+[site_struct_logging]: https://www.client9.com/structured-logging-in-golang/
+[code_memcached_controller]: https://github.com/operator-framework/operator-sdk/blob/master/example/memcached-operator/memcached_controller.go.tmpl
+[code_set_logger]: https://github.com/operator-framework/operator-sdk/blob/4d66be409a69d169aaa29d470242a1defbaf08bb/internal/pkg/scaffold/cmd.go#L92-L96
+[logfmt_repo]: https://github.com/jsternberg/zap-logfmt
+[controller_runtime_zap]: https://github.com/kubernetes-sigs/controller-runtime/tree/master/pkg/log/zap
 [logging_godocs]: https://godoc.org/github.com/kubernetes-sigs/controller-runtime/pkg/log/zap#Options.BindFlags

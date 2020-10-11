@@ -1,6 +1,7 @@
 ---
 title: "operator-sdk completion zsh"
 ---
+
 ## operator-sdk completion zsh
 
 Generate zsh completions
@@ -27,5 +28,4 @@ operator-sdk completion zsh [flags]
 
 ### SEE ALSO
 
-* [operator-sdk completion](../operator-sdk_completion)	 - Generators for shell completions
-
+- [operator-sdk completion](../operator-sdk_completion) - Generators for shell completions

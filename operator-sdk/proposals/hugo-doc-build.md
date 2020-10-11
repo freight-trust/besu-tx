@@ -24,7 +24,7 @@ status: TBD
 ## Motivation
 
 Hosted documentation will improve the Operator SDK user experience by
-increasing the visibility and accessibility of the content. 
+increasing the visibility and accessibility of the content.
 
 ## Summary
 
@@ -32,12 +32,13 @@ This enhancement proposes a technology stack that will be used to write,
 build, and host the documentation for the Operator SDK project.
 
 Hugo will be used for static site generation from Markdown. Neflify will
-be used to host the site. 
+be used to host the site.
 
 Highlights:
-  - Files will remain markdown, few syntax changes necessary.
-  - Stack is aligned with current Golang/Kubernetes community.
-  - Proof of concept: https://operator-sdk.netlify.com/
+
+- Files will remain markdown, few syntax changes necessary.
+- Stack is aligned with current Golang/Kubernetes community.
+- Proof of concept: https://operator-sdk.netlify.com/
 
 ## Open Questions (optional)
 
@@ -49,7 +50,7 @@ Highlights:
 1. Implementation of this proposal will result in a website that hosts
    the documentation that currently exists in the `doc` directory of
    [the Operator SDK
-   project](https://github.com/operator-framework/operator-sdk/). 
+   project](https://github.com/operator-framework/operator-sdk/).
 1. A minimal landing page will be created.
 1. Docs will build automatically when code merges to master branch.
 
@@ -62,12 +63,13 @@ Highlights:
 ## Proposal
 
 Docs will be built with [Hugo](https://gohugo.io/). Highlights:
- - Static site generator
- - Files will remain markdown, with minor syntactical changes.
- - Fast builds
- - Commonly used for Golang projects, including Docker and Kubernetes. 
- - Open source (Apache 2.0)
- - Multi-language support
+
+- Static site generator
+- Files will remain markdown, with minor syntactical changes.
+- Fast builds
+- Commonly used for Golang projects, including Docker and Kubernetes.
+- Open source (Apache 2.0)
+- Multi-language support
 
 Hugo can use themes to lower the barrier to entry.
 [Docsy](https://github.com/google/docsy) is a theme specifically
@@ -79,21 +81,23 @@ including Knative and Kubeflow.
 switch to docsy as well.
 
 Key features:
- - Auto-generated Navigation
- - Versioned documentation support
- - Search
- - GitHub integration for fixing or reporting issues.
- - Open source (Apache 2.0)
+
+- Auto-generated Navigation
+- Versioned documentation support
+- Search
+- GitHub integration for fixing or reporting issues.
+- Open source (Apache 2.0)
 
 Docs will be deployed with [Netlify](https://www.netlify.com/).
 
 Key Features:
-  - Free hosting with [Open Source Project
-      Plan](https://www.netlify.com/legal/open-source-policy/)
-  - Open source plan is equivalent to [Pro
-      plan](https://www.netlify.com/pricing/#teams)
-  - Simple GitHub integration
-  - "Deploy Preview" feature builds documentation for pull requests.
+
+- Free hosting with [Open Source Project
+  Plan](https://www.netlify.com/legal/open-source-policy/)
+- Open source plan is equivalent to [Pro
+  plan](https://www.netlify.com/pricing/#teams)
+- Simple GitHub integration
+- "Deploy Preview" feature builds documentation for pull requests.
 
 ### Risks and Mitigations
 
@@ -121,4 +125,4 @@ require a more significant refactor.
 1. SSL Cert via Let's Encrypt
 1. Installation of Netlify app for GitHub repository.
 
-[operator-sdk-doc]:  https://sdk.operatorframework.io/
+[operator-sdk-doc]: https://sdk.operatorframework.io/

@@ -1,6 +1,7 @@
 ---
 title: "operator-sdk init"
 ---
+
 ## operator-sdk init
 
 Initialize a new project
@@ -10,6 +11,7 @@ Initialize a new project
 Initialize a new project including vendor/ directory and Go package directories.
 
 Writes the following files:
+
 - a boilerplate license file
 - a PROJECT file with the domain and repo
 - a Makefile to build the project
@@ -20,7 +22,6 @@ Writes the following files:
 - a cmd/manager/main.go to run
 
 project will prompt the user to run 'dep ensure' after writing the project files.
-
 
 ```
 operator-sdk init [flags]
@@ -57,5 +58,4 @@ operator-sdk init [flags]
 
 ### SEE ALSO
 
-* [operator-sdk](../operator-sdk)	 - Development kit for building Kubernetes extensions and tools.
-
+- [operator-sdk](../operator-sdk) - Development kit for building Kubernetes extensions and tools.

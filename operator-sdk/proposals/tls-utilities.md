@@ -28,75 +28,74 @@ To provide TLS utilities for operator developers to create self signed Certifica
 
 We will break down the TLS workflow into the following steps:
 
-1. Generate a Certificate Authority (CA): A CA is a centralized trusted third party that signs the certificates. We need to generate a CA key and CA Certificate to get started. If the users want to provide their own CA, we can add an option to do so. The generated CA certificate can be saved in a ConfigMap as follows:
+1.  Generate a Certificate Authority (CA): A CA is a centralized trusted third party that signs the certificates. We need to generate a CA key and CA Certificate to get started. If the users want to provide their own CA, we can add an option to do so. The generated CA certificate can be saved in a ConfigMap as follows:
 
-	Inputs:
+    Inputs:
 
-	* CR-kind
-	* CR-name
-	* namespace
+    - CR-kind
+    - CR-name
+    - namespace
 
-	Outputs:
+    Outputs:
 
         * A ConfigMap that contains the CA Cert:
 
-	```
-	kind: ConfigMap
-	apiVersion: v1
-	metadata:
-	name: <crd-kind>-<crd-name>-ca
-	namespace: <ns>
-	data:
-	ca.crt: ...
+    ````
+    kind: ConfigMap
+    apiVersion: v1
+    metadata:
+    name: <crd-kind>-<crd-name>-ca
+    namespace: <ns>
+    data:
+    ca.crt: ...
             ```
         * A secret that contains the CA key:
 
            ```
-	kind: Secret
-	apiVersion: v1
-	metadata:
-	name: <cr-kind>-<cr-name>-ca
-	namespace: <ns>
-	data:
-	ca.key: ...
-	```
+    kind: Secret
+    apiVersion: v1
+    metadata:
+    name: <cr-kind>-<cr-name>-ca
+    namespace: <ns>
+    data:
+    ca.key: ...
+    ````
 
-2. Verify the CA certificate: The newly generated CA certificate in ConfigMap should be validated i.e. the digital signature should be checked, the expiry, activation dates and validity period should be checked, etc.
+2.  Verify the CA certificate: The newly generated CA certificate in ConfigMap should be validated i.e. the digital signature should be checked, the expiry, activation dates and validity period should be checked, etc.
 
-3. Generate Server or Client Certificate: We assume that the components inside an application communicate through a service. Therefore, we generate a TLS private key and certificate for that service.
+3.  Generate Server or Client Certificate: We assume that the components inside an application communicate through a service. Therefore, we generate a TLS private key and certificate for that service.
 
-	Inputs:
+    Inputs:
 
-	* CR-kind
-	* CR-name
-	* Namespace
-	* Previously generated CA key and Certificate
+    - CR-kind
+    - CR-name
+    - Namespace
+    - Previously generated CA key and Certificate
 
-	Options:
+    Options:
 
-	* Key usage: (Server, Client or Both) If Server, needs svc obj (cluster.local can be different). If client, needs CN and possible org.
-	* Option to specify signature configuration policy i.e Signing Profile for the certificate.
+    - Key usage: (Server, Client or Both) If Server, needs svc obj (cluster.local can be different). If client, needs CN and possible org.
+    - Option to specify signature configuration policy i.e Signing Profile for the certificate.
 
-        Outputs:
+      Outputs:
 
-	* A Secret containing Private Key and Server/Client Certificate signed by the CA:
+    - A Secret containing Private Key and Server/Client Certificate signed by the CA:
 
-	```
-	kind: Secret
-	apiVersion: v1
-	metadata:
-	 name: <cr-kind>-<cr-name>-<CertName>
-	 namespace: <ns>
-	data:
-	 tls.crt: ...
-	 tls.key: …
-	type: kubernetes.io/tls
-	```
+    ```
+    kind: Secret
+    apiVersion: v1
+    metadata:
+     name: <cr-kind>-<cr-name>-<CertName>
+     namespace: <ns>
+    data:
+     tls.crt: ...
+     tls.key: …
+    type: kubernetes.io/tls
+    ```
 
-4. Verify Server or Client Certificate: The newly generated client/server certificate in should be validated i.e. the digital signature should be checked, the expiry, activation dates and validity period should be checked, certificate chain should be verified etc
+4.  Verify Server or Client Certificate: The newly generated client/server certificate in should be validated i.e. the digital signature should be checked, the expiry, activation dates and validity period should be checked, certificate chain should be verified etc
 
-
-5. Use CA configmap and TLS secret in the necessary deployment/pod object.
+5) Use CA configmap and TLS secret in the necessary deployment/pod object.
 
 ## Implementation
 
@@ -149,6 +148,7 @@ func (h *Handler) Handle(ctx types.Context, event types.Event) error {
 	}
 }
 ```
+
 ## Workflow
 
 To understand the implementation details more clearly let us run through an example operator and how it can make use of the TLS utility package:
@@ -157,8 +157,8 @@ Let us take the Vault Operator as an example. The Vault operator deploys and man
 
 1. Create the Vault CR using [`kubectl create`](https://github.com/coreos/vault-operator/blob/master/example/vault_crd.yaml)
 2. Modify the operator handler to generate the necessary vault server TLS assets:
-	1. Populate the struct `CertConfig` with required values which specify the server certificate.
-	2. Call the `GenerateCert` method which will generate and return a secret that contains a newly created TLS Private key and Certificate for the Vault server. This Certificate will be signed by a custom CA or a newly generated CA depending on the configuration in `CertConfig`.
+   1. Populate the struct `CertConfig` with required values which specify the server certificate.
+   2. Call the `GenerateCert` method which will generate and return a secret that contains a newly created TLS Private key and Certificate for the Vault server. This Certificate will be signed by a custom CA or a newly generated CA depending on the configuration in `CertConfig`.
 3. The operator is responsible for creating a service and deployment manifests for the application the user wishes to run. The deployment manifests will contain the TLS assets generated in step 2 as Volume mounts.
 
 ## Q&A

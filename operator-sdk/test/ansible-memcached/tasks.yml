@@ -5,8 +5,8 @@
       kind: Deployment
       apiVersion: apps/v1
       metadata:
-        name: '{{ ansible_operator_meta.name }}-memcached'
-        namespace: '{{ ansible_operator_meta.namespace }}'
+        name: "{{ ansible_operator_meta.name }}-memcached"
+        namespace: "{{ ansible_operator_meta.namespace }}"
         labels:
           app: memcached
       spec:
@@ -20,21 +20,21 @@
               app: memcached
           spec:
             containers:
-            - name: memcached
-              command:
-              - memcached
-              - -m=64
-              - -o
-              - modern
-              - -v
-              image: "docker.io/memcached:1.4.36-alpine"
-              ports:
-                - containerPort: 11211
-              readinessProbe:
-                tcpSocket:
-                  port: 11211
-                initialDelaySeconds: 3
-                periodSeconds: 3
+              - name: memcached
+                command:
+                  - memcached
+                  - -m=64
+                  - -o
+                  - modern
+                  - -v
+                image: "docker.io/memcached:1.4.36-alpine"
+                ports:
+                  - containerPort: 11211
+                readinessProbe:
+                  tcpSocket:
+                    port: 11211
+                  initialDelaySeconds: 3
+                  periodSeconds: 3
 
 - operator_sdk.util.k8s_status:
     api_version: ansible.example.com/v1alpha1

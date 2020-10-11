@@ -4,8 +4,7 @@ linkTitle: Retroactively Owned Resources
 weight: 20
 ---
 
-Owner references are automatically injected `only during creation of
-resources`. Enabling owner reference injection `will not update objects`
+Owner references are automatically injected `only during creation of resources`. Enabling owner reference injection `will not update objects`
 created while [owner reference injection is
 disabled](../advanced_options#owner-reference-injection)
 
@@ -33,14 +32,15 @@ for example `ownerReference` and `annotations`.
 
 ## For objects in the same namespace as the Owner (CR)
 
-Dependent resources *within the same namespace as the owning CR* are
+Dependent resources _within the same namespace as the owning CR_ are
 tracked with the `ownerReference` field.
 
 `ownerReference` structure:
-  * apiVersion: {group}/{version}
-  * kind: {kind}
-  * name: {metadata.name}
-  * uid: {metadata.uid}
+
+- apiVersion: {group}/{version}
+- kind: {kind}
+- name: {metadata.name}
+- uid: {metadata.uid}
 
 **Example ownerReference:**
 
@@ -61,11 +61,12 @@ resource is in a different namespace than the CR, or the dependent
 resource is a cluster level resource.
 
 `annotation` structure:
-  * operator-sdk/primary-resource: {metadata.namespace}/{metadata.name}
-  * operator-sdk/primary-resource-type: {kind}.{group}
+
+- operator-sdk/primary-resource: {metadata.namespace}/{metadata.name}
+- operator-sdk/primary-resource-type: {kind}.{group}
 
 **NOTE**: The {group} can be found by splitting the `apiVersion`
-metadata of the CR, into `group` and `version`. As an example, 
+metadata of the CR, into `group` and `version`. As an example,
 [this apiVersion field](https://github.com/operator-framework/operator-sdk-samples/blob/master/ansible/memcached-operator/config/samples/cache_v1alpha1_memcached.yaml#L1)
 gives us the group `cache.example.com`.
 
@@ -79,7 +80,7 @@ metadata:
     operator-sdk/primary-resource-type: Memcached.cache.example.com
 ```
 
-## Migration using Ansible assets 
+## Migration using Ansible assets
 
 If you have many resources to update, it may be easier to use the
 following Ansible assets, which **should be considered an example rather
@@ -89,7 +90,7 @@ To use these assets, create a `vars.yml` as specified below and copy
 `playbook.yml` and `each_resource.yml` into the same directory. Execute
 the playbook with:
 
-``` bash
+```bash
 $ ansible-playbook -i localhost playbook.yml
 ```
 
@@ -98,16 +99,16 @@ $ ansible-playbook -i localhost playbook.yml
 This file should be created by the user to configure the playbook, and
 needs to contain:
 
-  * owning_resource
-      * apiVersion
-      * kind
-      * name
-      * namespace
-  * resources_to_own (list): For each resource, specify:
-      * name
-      * namespace (if applicable)
-      * apiVersion
-      * kind
+- owning_resource
+  - apiVersion
+  - kind
+  - name
+  - namespace
+- resources_to_own (list): For each resource, specify:
+  - name
+  - namespace (if applicable)
+  - apiVersion
+  - kind
 
 ```yaml
 owning_resource:
@@ -165,7 +166,7 @@ This file can be used as-is without user adjustments.
 
 This file can be used as-is without user adjustments.
 
-``` yaml
+```yaml
 - name: Patch resource with owner reference
   when:
     - to_be_owned.metadata.namespace is defined

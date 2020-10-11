@@ -44,8 +44,7 @@ make docker-build docker-push IMG=<some-registry>/<project-name>:<tag>
 ```
 
 **NOTE**: To allow the cluster pull the image the repository needs to be
-          set as public or you must configure an image pull secret.
-
+set as public or you must configure an image pull secret.
 
 ### Run the operator
 
@@ -60,12 +59,14 @@ make deploy IMG=<some-registry>/<project-name>:<tag>
 ### Create a sample custom resource
 
 Create a sample CR:
+
 ```sh
 kubectl apply -f config/samples/demo_v1_nginx.yaml
 ```
 
 Watch for the CR to trigger the operator to deploy the nginx deployment
 and service:
+
 ```sh
 kubectl get all -l "app.kubernetes.io/instance=nginx-sample"
 ```
@@ -73,11 +74,13 @@ kubectl get all -l "app.kubernetes.io/instance=nginx-sample"
 ### Clean up
 
 Delete the CR to uninstall the release:
+
 ```sh
 kubectl delete -f config/samples/demo_v1_nginx.yaml
 ```
 
 Use `make undeploy` to uninstall the operator and its CRDs:
+
 ```sh
 make undeploy
 ```

@@ -1,8 +1,7 @@
 ---
-version: '3'
+version: "3"
 
 services:
-
   prometheus:
     container_name: prometheus
     labels:
@@ -18,8 +17,8 @@ services:
       - /data/prometheus/config/prometheus.yml:/etc/prometheus/prometheus.yml
       - /data/prometheus/data/:/prometheus
     command:
-      - '--log.format=json'
-      - '--config.file=/etc/prometheus/prometheus.yml'
+      - "--log.format=json"
+      - "--config.file=/etc/prometheus/prometheus.yml"
     logging:
       driver: "json-file"
       options:
@@ -30,10 +29,10 @@ services:
     deploy:
       resources:
         limits:
-          cpus: '0.50'
+          cpus: "0.50"
           memory: 1024M
         reservations:
-          cpus: '0.25'
+          cpus: "0.25"
           memory: 512M
     cap_add:
       - NET_ADMIN
@@ -59,11 +58,10 @@ services:
     deploy:
       resources:
         limits:
-          cpus: '0.50'
+          cpus: "0.50"
           memory: 1024M
         reservations:
-          cpus: '0.25'
+          cpus: "0.25"
           memory: 512M
     cap_add:
       - NET_ADMIN
-

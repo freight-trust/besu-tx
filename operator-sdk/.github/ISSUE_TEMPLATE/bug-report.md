@@ -1,15 +1,14 @@
 ---
 name: Bug Report
 about: If things aren't working as expected.
-title: ''
-labels: ''
-assignees: ''
-
+title: ""
+labels: ""
+assignees: ""
 ---
 
 ## Bug Report
 
-<!-- 
+<!--
 Note: Make sure to first check the prerequisites that can be found in the main README file!
 
 Thanks for filing an issue! Before hitting the button, please answer these questions.
@@ -25,25 +24,26 @@ A clear and concise description of what you expected to happen (or insert a code
 **What did you see instead? Under which circumstances?**
 A clear and concise description of what you expected to happen (or insert a code snippet).
 
-
 **Environment**
-* operator-sdk version:
+
+- operator-sdk version:
 
 <!--- Insert operator-sdk release or Git SHA here. -->
 
-* go version:
+- go version:
 
 <!--- Insert the output of `go version` here -->
 
-* Kubernetes version information:
+- Kubernetes version information:
 
 <!--- Insert the output of `kubectl version` here -->
 
-* Kubernetes cluster kind: 
+- Kubernetes cluster kind:
 
-* Are you writing your operator in ansible, helm, or go?
+- Are you writing your operator in ansible, helm, or go?
 
 **Possible Solution**
+
 <!--- Only if you have suggestions on a fix for the bug -->
 
 **Additional context**

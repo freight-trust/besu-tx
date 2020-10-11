@@ -18,8 +18,8 @@ This guide walks through an example of building a simple memcached-operator usin
 ### Create a project
 
 Create and change into a directory for your project. Then call `operator-sdk init`
-with the Go plugin to initialize the project. 
- 
+with the Go plugin to initialize the project.
+
 ```sh
 mkdir memcached-operator
 cd memcached-operator
@@ -58,8 +58,7 @@ make docker-build docker-push IMG=<some-registry>/<project-name>:<tag>
 ```
 
 **NOTE**: To allow the cluster pull the image the repository needs to be
-          set as public or you must configure an image pull secret.
-
+set as public or you must configure an image pull secret.
 
 ### Run the operator
 
@@ -74,11 +73,13 @@ make deploy IMG=<some-registry>/<project-name>:<tag>
 ### Create a sample custom resource
 
 Create a sample CR:
+
 ```sh
-kubectl apply -f config/samples/cache_v1_memcached.yaml 
+kubectl apply -f config/samples/cache_v1_memcached.yaml
 ```
 
 Watch for the CR be reconciled by the operator:
+
 ```
 kubectl logs deployment.apps/memcached-operator-controller-manager -n memcached-operator-system -c manager
 ```
@@ -86,22 +87,24 @@ kubectl logs deployment.apps/memcached-operator-controller-manager -n memcached-
 ## Clean up
 
 Delete the CR to uninstall memcached:
-```sh 
+
+```sh
 kubectl delete -f config/samples/cache_v1_memcached.yaml
 ```
 
 Uninstall the operator and its CRDs:
+
 ```sh
 kustomize build config/default | kubectl delete -f -
 ```
 
 ## Next Steps
+
 Read the [tutorial][tutorial] for an in-depth walkthough of building a Go operator.
 
-[go_tool]:https://golang.org/dl/
-[docker_tool]:https://docs.docker.com/install/
-[kubectl_tool]:https://kubernetes.io/docs/tasks/tools/install-kubectl/
+[go_tool]: https://golang.org/dl/
+[docker_tool]: https://docs.docker.com/install/
+[kubectl_tool]: https://kubernetes.io/docs/tasks/tools/install-kubectl/
 [operator_install]: /docs/installation/install-operator-sdk
 [envtest-setup]: /docs/building-operators/golang/references/envtest-setup
-[tutorial]: /docs/building-operators/golang/tutorial/ 
-
+[tutorial]: /docs/building-operators/golang/tutorial/

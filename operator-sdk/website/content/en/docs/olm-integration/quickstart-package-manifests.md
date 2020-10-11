@@ -4,7 +4,7 @@ linkTitle: Package Manifests Quickstart
 weight: 2
 ---
 
-This guide assumes you have followed the introduction and *Setup* section of the [bundle quickstart][quickstart-bundle],
+This guide assumes you have followed the introduction and _Setup_ section of the [bundle quickstart][quickstart-bundle],
 and have added the `packagemanifests` target to your `Makefile` as described [here][doc-olm-generate].
 
 **Important:** this guide assumes your project was scaffolded with `operator-sdk init --project-version=3-alpha`.
@@ -43,7 +43,7 @@ most use cases the following invocation is all we need:
 ```console
 $ operator-sdk run packagemanifests --version 0.0.1
 INFO[0000] Running operator from directory packagemanifests
-INFO[0000] Creating memcached-operator registry         
+INFO[0000] Creating memcached-operator registry
 INFO[0000]   Creating ConfigMap "olm/memcached-operator-registry-manifests-package"
 INFO[0000]   Creating ConfigMap "olm/memcached-operator-registry-manifests-0-0-1"
 INFO[0000]   Creating Deployment "olm/memcached-operator-registry-server"
@@ -51,7 +51,7 @@ INFO[0000]   Creating Service "olm/memcached-operator-registry-server"
 INFO[0000] Waiting for Deployment "olm/memcached-operator-registry-server" rollout to complete
 INFO[0000]   Waiting for Deployment "olm/memcached-operator-registry-server" to rollout: 0 of 1 updated replicas are available
 INFO[0066]   Deployment "olm/memcached-operator-registry-server" successfully rolled out
-INFO[0066] Creating resources                           
+INFO[0066] Creating resources
 INFO[0066]   Creating CatalogSource "default/memcached-operator-ocs"
 INFO[0066]   Creating Subscription "default/memcached-operator-v0-0-1-sub"
 INFO[0066]   Creating OperatorGroup "default/operator-sdk-og"
@@ -88,10 +88,9 @@ INFO[0000] operatorgroup "operator-sdk-og" deleted
 INFO[0001] operator "memcached-operator" uninstalled
 ```
 
-
-[quickstart-bundle]:/docs/olm-integration/quickstart-bundle
-[operator-registry]:https://github.com/operator-framework/operator-registry
-[cli-run-packagemanifests]:/docs/cli/operator-sdk_run_packagemanifests
-[cli-cleanup]:/docs/cli/operator-sdk_cleanup
-[doc-olm-generate]:/docs/olm-integration/generation#overview
-[doc-testing-deployment]:/docs/olm-integration/testing-deployment
+[quickstart-bundle]: /docs/olm-integration/quickstart-bundle
+[operator-registry]: https://github.com/operator-framework/operator-registry
+[cli-run-packagemanifests]: /docs/cli/operator-sdk_run_packagemanifests
+[cli-cleanup]: /docs/cli/operator-sdk_cleanup
+[doc-olm-generate]: /docs/olm-integration/generation#overview
+[doc-testing-deployment]: /docs/olm-integration/testing-deployment

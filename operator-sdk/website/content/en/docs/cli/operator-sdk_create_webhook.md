@@ -1,6 +1,7 @@
 ---
 title: "operator-sdk create webhook"
 ---
+
 ## operator-sdk create webhook
 
 Scaffold a webhook for an API resource
@@ -32,5 +33,4 @@ operator-sdk create webhook [flags]
 
 ### SEE ALSO
 
-* [operator-sdk create](../operator-sdk_create)	 - Scaffold a Kubernetes API or webhook
-
+- [operator-sdk create](../operator-sdk_create) - Scaffold a Kubernetes API or webhook

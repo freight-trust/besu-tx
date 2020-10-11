@@ -18,24 +18,23 @@ operator-sdk init --plugins ansible \
 The new project directory has many generated folders and files. The following
 table describes a basic rundown of each generated file/directory.
 
-| File/Folders   | Purpose |
-| :---           | :---    |
-| Dockerfile | The Dockerfile for building the container image for the operator. |
-| Makefile | Contains make targets for building, publishing, deploying the container image that wraps the operator binary, and make targets for installing and uninstalling the CRD. |
-| PROJECT | A YAML file containing meta information for the operator. |
-| config/crd | The base CRD files and the kustomization settings. |
-| config/default | Collects all operator manifests for deployment, used by `make deploy`. |
-| config/manager | The controller manager deployment. |
-| config/prometheus | The ServiceMonitor resource for monitoring the operator. |
-| config/rbac | The role, role binding for leader election and authentication proxy. |
-| config/samples | The sample resources created for the CRDs. |
-| config/testing | Some sample configurations for testing. |
-| playbooks/ | A subdirectory for the playbooks to run. |
-| roles/ | A subdirectory for the roles tree to run. |
-| watches.yaml | The Group, Version, and Kind of the resources to watch, and the Ansible invocation method. New entries are added via the 'create api' command. |
-| requirements.yml | A YAML file containing the Ansible collections and role dependencies to install during build. |
-| molecule/ | The [Molecule](https://molecule.readthedocs.io/) scenarios for end-to-end testing of your role and operator |
-
+| File/Folders      | Purpose                                                                                                                                                                 |
+| :---------------- | :---------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Dockerfile        | The Dockerfile for building the container image for the operator.                                                                                                       |
+| Makefile          | Contains make targets for building, publishing, deploying the container image that wraps the operator binary, and make targets for installing and uninstalling the CRD. |
+| PROJECT           | A YAML file containing meta information for the operator.                                                                                                               |
+| config/crd        | The base CRD files and the kustomization settings.                                                                                                                      |
+| config/default    | Collects all operator manifests for deployment, used by `make deploy`.                                                                                                  |
+| config/manager    | The controller manager deployment.                                                                                                                                      |
+| config/prometheus | The ServiceMonitor resource for monitoring the operator.                                                                                                                |
+| config/rbac       | The role, role binding for leader election and authentication proxy.                                                                                                    |
+| config/samples    | The sample resources created for the CRDs.                                                                                                                              |
+| config/testing    | Some sample configurations for testing.                                                                                                                                 |
+| playbooks/        | A subdirectory for the playbooks to run.                                                                                                                                |
+| roles/            | A subdirectory for the roles tree to run.                                                                                                                               |
+| watches.yaml      | The Group, Version, and Kind of the resources to watch, and the Ansible invocation method. New entries are added via the 'create api' command.                          |
+| requirements.yml  | A YAML file containing the Ansible collections and role dependencies to install during build.                                                                           |
+| molecule/         | The [Molecule](https://molecule.readthedocs.io/) scenarios for end-to-end testing of your role and operator                                                             |
 
 ## The Deployment
 
@@ -55,7 +54,7 @@ are then patched using kustomize.
 
 The default EmptyDir volume mounted at `/tmp/ansible-operator/runner` is used
 to serve the [input directory][runner_input_dir] in ansible-runner's terms.
-The mount path can *NOT* be changed to other paths, or else the Operator will
+The mount path can _NOT_ be changed to other paths, or else the Operator will
 fail to communicate with ansible-runner.
 
 ### The Environment Variables
@@ -86,12 +85,11 @@ some special environment variables:
     realizes that it is a comma-separated list. This means the operator will
     watch for resources in each of the listed namespaces.
 
-
-- `ANSIBLE_DEBUG_LOGS`: A boolean value for toggling the Ansible output during
+* `ANSIBLE_DEBUG_LOGS`: A boolean value for toggling the Ansible output during
   reconciliation. When set to True, the operator dumps the Ansible result into
-  its standard output. 
+  its standard output.
 
-- `ANSIBLE_ROLES_PATH`: The parent path(s) for the Ansible roles. When there
+* `ANSIBLE_ROLES_PATH`: The parent path(s) for the Ansible roles. When there
   are more than one path to set, you can use ":" to separate them. Given a
   path `/opt/foo` and a role name `bar`, the Ansible operator will check if
   the Ansible role can be found in either `/opt/foo/bar` or
@@ -99,7 +97,7 @@ some special environment variables:
 
   This value overrides the setting from the `ansible-roles-path` flag.
 
-- `ANSIBLE_COLLECTIONS_PATH`: The base path for the Ansible collections which
+* `ANSIBLE_COLLECTIONS_PATH`: The base path for the Ansible collections which
   defaults to `~/.ansible/collections` or `/usr/share/ansible/collections`
   when `ANSIBLE_COLLECTIONS_PATH` is not explicitly specified. When a fully
   qualified collection name in the [watches][watches_doc] file, the Ansible
@@ -109,18 +107,18 @@ some special environment variables:
   name set to `example.com.bar`, the Ansible operator searches for the roles
   under `/foo/ansible_collections/example/com/roles/bar`.
 
-  This value takes precedence over the `--ansible-collections-path` flag. 
+  This value takes precedence over the `--ansible-collections-path` flag.
 
-- `MAX_CONCURRENT_RECONCILES_<kind>_<group>`: This specifies the maximum number
+* `MAX_CONCURRENT_RECONCILES_<kind>_<group>`: This specifies the maximum number
   of concurrent reconciliations for the operator. It defaults to the number of
   CPUs. You can adjust this based on the cluster resources.
 
-- `WORKER_<kind>_<group>`: **Deprecated**. Use
+* `WORKER_<kind>_<group>`: **Deprecated**. Use
   `MAX_CONCURRENT_RECONCILES_<kind>_<group>` instead.
 
-- `ANSIBLE_VERBOSITY_<kind>_<group>`: This is used to customize the verbosity
+* `ANSIBLE_VERBOSITY_<kind>_<group>`: This is used to customize the verbosity
   of the ansible-runner command. The default value is 2.
-  The value must be no less than  0 and no greater than 7. 
+  The value must be no less than 0 and no greater than 7.
   This value takes precedence over the global `--ansible-verbosity` flag,
   and it can be overridden by the per-resource annotation named
   `ansible.operator-sdk/verbosity`.

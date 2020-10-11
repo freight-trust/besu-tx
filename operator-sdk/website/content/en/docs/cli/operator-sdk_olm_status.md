@@ -1,6 +1,7 @@
 ---
 title: "operator-sdk olm status"
 ---
+
 ## operator-sdk olm status
 
 Get the status of the Operator Lifecycle Manager installation in your cluster
@@ -30,5 +31,4 @@ operator-sdk olm status [flags]
 
 ### SEE ALSO
 
-* [operator-sdk olm](../operator-sdk_olm)	 - Manage the Operator Lifecycle Manager installation in your cluster
-
+- [operator-sdk olm](../operator-sdk_olm) - Manage the Operator Lifecycle Manager installation in your cluster

@@ -3,4 +3,4 @@ name: test_fixtures
 version: 0.0.0
 readme: README.md
 authors:
-- your name <example@domain.com>
+  - your name <example@domain.com>

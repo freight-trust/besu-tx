@@ -9,7 +9,6 @@ After creating a new operator project using `operator-sdk init --plugins=helm`,
 the project directory has numerous generated folders and files. The following
 table describes a basic rundown of each generated file/directory.
 
-
 | File/Folders | Purpose                                                                           |
 | :----------- | :-------------------------------------------------------------------------------- |
 | config       | Contains kustomize manifests for deploying this operator on a Kubernetes cluster. |
@@ -19,4 +18,4 @@ table describes a basic rundown of each generated file/directory.
 | Makefile     | Contains the targets used to manage the project.                                  |
 | PROJECT      | Contains meta information about the project.                                      |
 
-[docs_helm_create]:https://helm.sh/docs/intro/using_helm/#creating-your-own-charts
+[docs_helm_create]: https://helm.sh/docs/intro/using_helm/#creating-your-own-charts

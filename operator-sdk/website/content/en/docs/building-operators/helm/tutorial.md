@@ -42,14 +42,14 @@ Instead of creating your project with a boilerplate Helm chart, you can also use
 
 If `--helm-chart` is specified, the `--group`, `--version`, and `--kind` flags become optional. If left unset, the default will be:
 
-| Flag | Value |
-| :--- | :---    |
-| domain | my.domain |
-| group | charts |
-| kind |  deduce from the specified chart |
-| version | v1alpha1 |
+| Flag    | Value                           |
+| :------ | :------------------------------ |
+| domain  | my.domain                       |
+| group   | charts                          |
+| kind    | deduce from the specified chart |
+| version | v1alpha1                        |
 
-If `--helm-chart` is a local chart archive (e.g `example-chart-1.2.0.tgz`) or directory, 
+If `--helm-chart` is a local chart archive (e.g `example-chart-1.2.0.tgz`) or directory,
 it will be validated and unpacked or copied into the project.
 
 Otherwise, the SDK will attempt to fetch the specified helm chart from a remote repository.
@@ -57,16 +57,16 @@ Otherwise, the SDK will attempt to fetch the specified helm chart from a remote 
 If a custom repository URL is not specified by `--helm-chart-repo`, the following chart reference formats are supported:
 
 - `<repoName>/<chartName>`: Fetch the helm chart named `chartName` from the helm
-                            chart repository named `repoName`, as specified in the
-                           `$HELM_HOME/repositories/repositories.yaml` file.
-                            Use [`helm repo add`](https://helm.sh/docs/helm/helm_repo_add) to configure this file.
+  chart repository named `repoName`, as specified in the
+  `$HELM_HOME/repositories/repositories.yaml` file.
+  Use [`helm repo add`](https://helm.sh/docs/helm/helm_repo_add) to configure this file.
 
 - `<url>`: Fetch the helm chart archive at the specified URL.
 
 If a custom repository URL is specified by `--helm-chart-repo`, the only supported format for `--helm-chart` is:
 
 - `<chartName>`: Fetch the helm chart named `chartName` in the helm chart repository
-                 specified by the `--helm-chart-repo` URL.
+  specified by the `--helm-chart-repo` URL.
 
 If `--helm-chart-version` is not set, the SDK will fetch the latest available version of the helm chart. Otherwise, it will fetch the specified version. The option `--helm-chart-version` is not used when `--helm-chart` itself refers to a specific version, for example when it is a local path or a URL.
 
@@ -75,7 +75,6 @@ If `--helm-chart-version` is not set, the SDK will fetch the latest available ve
 ### Operator scope
 
 Read the [operator scope][operator-scope] documentation on how to run your operator as namespace-scoped vs cluster-scoped.
-
 
 ## Customize the operator logic
 
@@ -247,7 +246,7 @@ nginx-sample   2/2     2            2           2m13s
 
 Check the pods to confirm 2 replicas were created:
 
-```sh
+````sh
 $ kubectl get pods
 NAME                                                   READY   STATUS    RESTARTS   AGE
 nginx-sample-c786bfdcf-4g6md                           1/1     Running   0          81s
@@ -259,7 +258,7 @@ Check that the service port is set to `8080`:
 $ kubectl get service
 NAME                                      TYPE        CLUSTER-IP   EXTERNAL-IP   PORT(S)    AGE
 nginx-sample                              ClusterIP   10.96.26.3   <none>        8080/TCP   1m
-```
+````
 
 ### Update the replicaCount and remove the port
 
@@ -309,7 +308,7 @@ kubectl logs deployment.apps/nginx-operator-controller-manager  -n nginx-operato
 Use the following command to check the CR status and events.
 
 ```sh
-kubectl describe nginxes.example.com 
+kubectl describe nginxes.example.com
 ```
 
 ### Cleanup
@@ -320,14 +319,16 @@ Clean up the resources:
 kubectl delete -f config/samples/example_v1alpha1_nginx.yaml
 make undeploy
 ```
+
 **NOTE** Additional CR/CRD's can be added to the project by running, for example, the command :`operator-sdk create api --group=example --version=v1alpha1 --kind=AppService`
 
 <!--
-todo(camilamacedo86): https://github.com/operator-framework/operator-sdk/issues/3447 
+todo(camilamacedo86): https://github.com/operator-framework/operator-sdk/issues/3447
 -->
+
 [operator-scope]: /docs/building-operators/golang/operator-scope
 [layout-doc]: /docs/building-operators/helm/reference/project_layout/
-[helm-charts]:https://helm.sh/docs/topics/charts/
-[helm-values]:https://helm.sh/docs/intro/using_helm/#customizing-the-chart-before-installing
-[helm-official]:https://helm.sh/docs/
+[helm-charts]: https://helm.sh/docs/topics/charts/
+[helm-values]: https://helm.sh/docs/intro/using_helm/#customizing-the-chart-before-installing
+[helm-official]: https://helm.sh/docs/
 [operator_install]: /docs/installation/install-operator-sdk

@@ -23,8 +23,8 @@ finalizer configuration accepts the following options:
 See [Ansible watches documentation][ansible-watches] for more
 information.
 
-
 #### name
+
 `name` is required.
 
 This is the name of the finalizer. This is basically an arbitrary string, the existence
@@ -48,7 +48,6 @@ One of `playbook`, `role`, or `vars` must be provided. If `role` is not provided
 will default to the role specified at the top level of the [`watches.yaml`][watches] entry.
 
 This field is identical to the top-level `role` field.
-
 
 #### vars
 
@@ -96,6 +95,7 @@ This example is nearly identical to the first, except it will run the `/opt/ansi
 role, rather than a playbook, with the `state` variable set to `absent`.
 
 ### Run a different playbook or role
+
 ```yaml
 ---
 - version: v1alpha1
@@ -135,7 +135,6 @@ This example will run the `/opt/ansible/destroy.yml` playbook when the Custom Re
 
 This example will run the `myRole` when the Custom Resource is deleted. (The collection must have been installed.)
 
-
 ### Run a different playbook or role with vars
 
 You can set `playbook` or `role` and `vars` at the same time. This can be useful if only a small
@@ -156,7 +155,6 @@ interaction, with a different variable set.
       state: revoked
 ```
 
-
 For this example, assume our application configures automated backups to a third party service.
 On deletion, all we want to do is revoke the credentials used to backup the data. We run
 just the `/opt/ansible/roles/manage_credentials` role, which is imported by our playbook to
@@ -166,6 +164,7 @@ automatic deletion of dependent resources will be sufficient, so we can exit suc
 let the operator remove our finalizer and allow the resource to be deleted.
 
 ## Further reading
+
 • [Kubernetes finalizers](https://kubernetes.io/docs/tasks/extend-kubernetes/custom-resources/custom-resource-definitions/#finalizers)
 
-[ansible-watches]:/docs/building-operators/ansible/reference/watches/
+[ansible-watches]: /docs/building-operators/ansible/reference/watches/

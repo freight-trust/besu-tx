@@ -16,11 +16,13 @@ func Handle(ctx context.Context, event sdkTypes.Event) []sdkTypes.Action
 ```
 
 The provided actions were:
+
 - `kube-apply`: Create or Update or specified object
 - `kube-delete`: Delete the specified object
 
 This workflow of batch executing actions outside of the handler has the following issues:
 It makes it harder for the user to write their operator logic as a sequence of dependent actions and queries, e.g:
+
 - Create a ConfigMap
 - If it already exists
   - Query some application state and verify the ConfigMap data
@@ -35,6 +37,7 @@ The SDK should provide an API to Create, Update and Delete objects from inside t
 This method also aligns with the original goal of ensuring that all actions of the operator are taken through the SDK.
 
 ## API
+
 **Note:** `sdkTypes.Object` is just the kubernetes `runtime.Object`
 
 ### Handler:
@@ -47,6 +50,7 @@ func Handle(ctx context.Context, event sdkTypes.Event) error
 ```
 
 ### Create Update Delete:
+
 ```Go
 // Create creates the provided object on the server, and updates
 // the local object with the generated result from the server(UID, resourceVersion, etc).
@@ -147,5 +151,3 @@ func WithDeleteOptions(metaDeleteOptions *metav1.DeleteOptions) DeleteOption {
     }
 }
 ```
-
-

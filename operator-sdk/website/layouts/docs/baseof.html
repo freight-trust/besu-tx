@@ -1,4 +1,4 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="{{ .Site.Language.Lang }}" class="no-js">
   <head>
     {{ partial "head.html" . }}
@@ -14,10 +14,13 @@
             {{ partial "sidebar.html" . }}
           </div>
 
-          <main class="col-12 col-md-9 col-xl-8 pl-md-5 of-docs__wrapper" role="main">
-            {{ partial "version-banner.html" . }}
-            {{ if not .Site.Params.ui.breadcrumb_disable }}{{ partial "breadcrumb.html" . }}{{ end }}
-            {{ block "main" . }}{{ end }}
+          <main
+            class="col-12 col-md-9 col-xl-8 pl-md-5 of-docs__wrapper"
+            role="main"
+          >
+            {{ partial "version-banner.html" . }} {{ if not
+            .Site.Params.ui.breadcrumb_disable }}{{ partial "breadcrumb.html" .
+            }}{{ end }} {{ block "main" . }}{{ end }}
           </main>
         </div>
       </div>

@@ -2,7 +2,7 @@
 
 ## Goal
 
-The `operator-sdk olm-catalog gen-csv` sub-command will generate a [**Cluster Service Version (CSV)**][olm_csv_definition] customized using information contained in user-defined yaml manifests and operator source files. Operator developers, *users*, will run `operator-sdk olm-catalog gen-csv` with the `--csv-version $version` flag to have their operators' state encapsulated in a CSV with the supplied version; this action should be idempotent and only update the CSV file when a new version is supplied, or a yaml manifest or source file is changed. Users should not have to directly modify most fields in a CSV manifest. Those that require modification are defined in the [user docs][csv_user_doc]. A CSV-generating command removes the responsibility from users of having in-depth [**Operator Lifecycle Manager (OLM)**][olm_description] knowledge in order for their operator to interact with OLM or publish metadata to the [**Catalog**][catalog_description].
+The `operator-sdk olm-catalog gen-csv` sub-command will generate a [**Cluster Service Version (CSV)**][olm_csv_definition] customized using information contained in user-defined yaml manifests and operator source files. Operator developers, _users_, will run `operator-sdk olm-catalog gen-csv` with the `--csv-version $version` flag to have their operators' state encapsulated in a CSV with the supplied version; this action should be idempotent and only update the CSV file when a new version is supplied, or a yaml manifest or source file is changed. Users should not have to directly modify most fields in a CSV manifest. Those that require modification are defined in the [user docs][csv_user_doc]. A CSV-generating command removes the responsibility from users of having in-depth [**Operator Lifecycle Manager (OLM)**][olm_description] knowledge in order for their operator to interact with OLM or publish metadata to the [**Catalog**][catalog_description].
 
 ## Background
 
@@ -22,17 +22,17 @@ Assuming all configuration defaults are used, `operator-sdk olm-catalog gen-csv`
 
 1. Create a new CSV, with the same location and naming convention as exists currently, using available data in yaml manifests and source files.
 
-    1. The update mechanism will check for an existing CSV in `deploy`. Upon not finding one, a [`ClusterServiceVersion` object][olm_csv_struct_code], referred to here as a *cache*, is created and fields easily derived from operator metadata, such as Kubernetes API `ObjectMeta`, are populated.
-    1. The update mechanism will search `deploy` for manifests that contain data a CSV uses, such as a `Deployment` Kubernetes API resource, and set the appropriate CSV fields in the cache with this data.
-    1. Once the search completes, every cache field populated will be written back to a CSV yaml file.
-        - **Note:** individual yaml fields are overwritten and not the entire file, as descriptions and other non-generated parts of a CSV should be preserved.
+   1. The update mechanism will check for an existing CSV in `deploy`. Upon not finding one, a [`ClusterServiceVersion` object][olm_csv_struct_code], referred to here as a _cache_, is created and fields easily derived from operator metadata, such as Kubernetes API `ObjectMeta`, are populated.
+   1. The update mechanism will search `deploy` for manifests that contain data a CSV uses, such as a `Deployment` Kubernetes API resource, and set the appropriate CSV fields in the cache with this data.
+   1. Once the search completes, every cache field populated will be written back to a CSV yaml file.
+      - **Note:** individual yaml fields are overwritten and not the entire file, as descriptions and other non-generated parts of a CSV should be preserved.
 
 1. Update an existing CSV at the currently pre-defined location, using available data in yaml manifests and source files.
 
-    1. The update mechanism will check for an existing CSV in `deploy`. Upon finding one, the CSV yaml file contents will be marshalled into a `ClusterServiceVersion` cache.
-    1. The update mechanism will search `deploy` for manifests that contain data a CSV uses, such as a `Deployment` Kubernetes API resource, and set the appropriate CSV fields in the cache with this data.
-    1. Once the search completes, every cache field populated will be written back to a CSV yaml file.
-        - **Note:** individual yaml fields are overwritten and not the entire file, as descriptions and other non-generated parts of a CSV should be preserved.
+   1. The update mechanism will check for an existing CSV in `deploy`. Upon finding one, the CSV yaml file contents will be marshalled into a `ClusterServiceVersion` cache.
+   1. The update mechanism will search `deploy` for manifests that contain data a CSV uses, such as a `Deployment` Kubernetes API resource, and set the appropriate CSV fields in the cache with this data.
+   1. Once the search completes, every cache field populated will be written back to a CSV yaml file.
+      - **Note:** individual yaml fields are overwritten and not the entire file, as descriptions and other non-generated parts of a CSV should be preserved.
 
 ### Configuration
 
@@ -132,12 +132,12 @@ func (us *CSVInstallStrategyUpdate) Apply(csv *v1alpha1.ClusterServiceVersion) e
 }
 ```
 
-[olm_csv_definition]:https://github.com/operator-framework/operator-lifecycle-manager/blob/master/doc/design/building-your-csv.md#what-is-a-cluster-service-version-csv
-[olm_description]:https://github.com/operator-framework/operator-lifecycle-manager/blob/master/README.md
-[catalog_description]:https://github.com/operator-framework/operator-lifecycle-manager/blob/master/doc/design/architecture.md#catalog-registry-design
-[olm_csv_struct_code]:https://github.com/operator-framework/operator-lifecycle-manager/blob/8799f39ef342dc1ff7430eba7a88c1c3c70cbdcc/pkg/api/apis/operators/v1alpha1/clusterserviceversion_types.go#L261
-[olm_csv_spec_code]:https://github.com/operator-framework/operator-lifecycle-manager/blob/8799f39ef342dc1ff7430eba7a88c1c3c70cbdcc/pkg/api/apis/operators/v1alpha1/clusterserviceversion_types.go
-[olm_csv_spec_doc]:https://github.com/operator-framework/operator-lifecycle-manager/blob/16ff8f983b50503c4d8b8015bd0c14b5c7d6786a/Documentation/design/building-your-csv.md#building-a-cluster-service-version-csv-for-the-operator-framework
-[olm_csv_install_strat_doc]:https://github.com/operator-framework/operator-lifecycle-manager/blob/16ff8f983b50503c4d8b8015bd0c14b5c7d6786a/Documentation/design/building-your-csv.md#operator-install
-[olm_csv_crd_doc]:https://github.com/operator-framework/operator-lifecycle-manager/blob/16ff8f983b50503c4d8b8015bd0c14b5c7d6786a/Documentation/design/building-your-csv.md#owned-crds
-[csv_user_doc]:https://github.com/operator-framework/operator-sdk/blob/v0.7.0/doc/user/olm-catalog/generating-a-csv.md
+[olm_csv_definition]: https://github.com/operator-framework/operator-lifecycle-manager/blob/master/doc/design/building-your-csv.md#what-is-a-cluster-service-version-csv
+[olm_description]: https://github.com/operator-framework/operator-lifecycle-manager/blob/master/README.md
+[catalog_description]: https://github.com/operator-framework/operator-lifecycle-manager/blob/master/doc/design/architecture.md#catalog-registry-design
+[olm_csv_struct_code]: https://github.com/operator-framework/operator-lifecycle-manager/blob/8799f39ef342dc1ff7430eba7a88c1c3c70cbdcc/pkg/api/apis/operators/v1alpha1/clusterserviceversion_types.go#L261
+[olm_csv_spec_code]: https://github.com/operator-framework/operator-lifecycle-manager/blob/8799f39ef342dc1ff7430eba7a88c1c3c70cbdcc/pkg/api/apis/operators/v1alpha1/clusterserviceversion_types.go
+[olm_csv_spec_doc]: https://github.com/operator-framework/operator-lifecycle-manager/blob/16ff8f983b50503c4d8b8015bd0c14b5c7d6786a/Documentation/design/building-your-csv.md#building-a-cluster-service-version-csv-for-the-operator-framework
+[olm_csv_install_strat_doc]: https://github.com/operator-framework/operator-lifecycle-manager/blob/16ff8f983b50503c4d8b8015bd0c14b5c7d6786a/Documentation/design/building-your-csv.md#operator-install
+[olm_csv_crd_doc]: https://github.com/operator-framework/operator-lifecycle-manager/blob/16ff8f983b50503c4d8b8015bd0c14b5c7d6786a/Documentation/design/building-your-csv.md#owned-crds
+[csv_user_doc]: https://github.com/operator-framework/operator-sdk/blob/v0.7.0/doc/user/olm-catalog/generating-a-csv.md

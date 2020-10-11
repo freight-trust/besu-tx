@@ -1,8 +1,11 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="{{ .Site.Language.Lang }}" class="no-js">
   <head>
     {{ partial "head.html" . }}
-    <title>{{ if .IsHome }}{{ .Site.Title }}{{ else }}{{ with .Title }}{{ . }} | {{ end }}{{ .Site.Title }}{{ end }}</title>
+    <title>
+      {{ if .IsHome }}{{ .Site.Title }}{{ else }}{{ with .Title }}{{ . }} | {{
+      end }}{{ .Site.Title }}{{ end }}
+    </title>
   </head>
   <body class="td-{{ .Kind }}">
     <header>
@@ -18,8 +21,8 @@
             {{ partial "toc.html" . }}
           </div>
           <main class="col-12 col-md-9 col-xl-8 pl-md-5" role="main">
-            {{ if not .Site.Params.ui.breadcrumb_disable }}{{ partial "breadcrumb.html" . }}{{ end }}
-            {{ block "main" . }}{{ end }}
+            {{ if not .Site.Params.ui.breadcrumb_disable }}{{ partial
+            "breadcrumb.html" . }}{{ end }} {{ block "main" . }}{{ end }}
           </main>
         </div>
       </div>

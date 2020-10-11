@@ -1,6 +1,7 @@
 ---
 title: "operator-sdk version"
 ---
+
 ## operator-sdk version
 
 Prints the version of operator-sdk
@@ -27,5 +28,4 @@ operator-sdk version [flags]
 
 ### SEE ALSO
 
-* [operator-sdk](../operator-sdk)	 - Development kit for building Kubernetes extensions and tools.
-
+- [operator-sdk](../operator-sdk) - Development kit for building Kubernetes extensions and tools.

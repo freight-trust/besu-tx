@@ -10,7 +10,7 @@
           apiVersion: v1
           kind: ConfigMap
           metadata:
-            name: '{{ meta.name }}'
-            namespace: '{{ meta.namespace }}'
+            name: "{{ meta.name }}"
+            namespace: "{{ meta.namespace }}"
           data:
             hello: "world"

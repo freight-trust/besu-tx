@@ -28,7 +28,6 @@ Never seeing this warning may suggest that your watch or cache is not healthy. I
 
 For more information on `kube-apiserver` request timeout options, see the [Kubernetes API Server Command Line Tool Reference][kube-apiserver_options]
 
-
 ## My Ansible module is missing a dependency. How do I add it to the image?
 
 Unfortunately, adding the entire dependency tree for all Ansible modules would be excessive. Fortunately, you can add it easily. Simply edit your build/Dockerfile. You'll want to change to root for the install command, just be sure to swap back using a series of commands like the following right after the `FROM` line.
@@ -54,7 +53,7 @@ E0320 15:42:17.676888       1 reflector.go:280] pkg/mod/k8s.io/client-go@v0.0.0-
 
 Using controller-runtime's split client means that read operations (gets and lists) are read from a cache, and write operations are written directly to the API server. To populate the cache for reads, controller-runtime initiates a `list` and then a `watch` even when your operator is only attempting to `get` a single resource. The above scenario occurs when the operator does not have an (RBAC)[rbac] permission to `watch` the resource. The solution is to grant permission in the `config/rbac/role.yaml` file.
 
-In rare cases, it also could be that the particular resource does not implement the `watch` verb. In this case, it is necessary to use the [client.Reader][client.Reader] instead of the default split client. The manager's `GetAPIReader()` function can be used to get this reader.
+In rare cases, it also could be that the particular resource does not implement the `watch` verb. In this case, it is necessary to use the [client.Reader][client.reader] instead of the default split client. The manager's `GetAPIReader()` function can be used to get this reader.
 
 **Example**
 
@@ -104,7 +103,7 @@ func (r *ReconcileMemcached) Reconcile(request reconcile.Request) (reconcile.Res
 
 [kube-apiserver_options]: https://kubernetes.io/docs/reference/command-line-tools-reference/kube-apiserver/#options
 [controller-runtime_faq]: https://github.com/kubernetes-sigs/controller-runtime/blob/master/FAQ.md#q-how-do-i-have-different-logic-in-my-reconciler-for-different-types-of-events-eg-create-update-delete
-[finalizer]:/docs/building-operators/golang/advanced-topics/#handle-cleanup-on-deletion
-[cr-faq]:https://github.com/kubernetes-sigs/controller-runtime/blob/master/FAQ.md
-[client.Reader]:https://godoc.org/sigs.k8s.io/controller-runtime/pkg/client#Reader
-[rbac]:https://kubernetes.io/docs/reference/access-authn-authz/rbac/
+[finalizer]: /docs/building-operators/golang/advanced-topics/#handle-cleanup-on-deletion
+[cr-faq]: https://github.com/kubernetes-sigs/controller-runtime/blob/master/FAQ.md
+[client.reader]: https://godoc.org/sigs.k8s.io/controller-runtime/pkg/client#Reader
+[rbac]: https://kubernetes.io/docs/reference/access-authn-authz/rbac/

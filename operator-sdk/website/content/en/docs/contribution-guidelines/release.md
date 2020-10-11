@@ -50,23 +50,30 @@ $ git config [--global] user.email "$GPG_EMAIL"
 ```
 
 Also, make sure that you setup the git gpg config as follows.
+
 ```console
 $ cat ~/.gnupg/gpg.conf
 default-key $GPG_KEY_ID
 ```
 
 **NOTE** If you do a release from an OSX machine, you need to configure `gnu-gpg` to sign the release's tag:
+
 - Install the requirements by running: `brew install gpg2 gnupg pinentry-mac`
 - Append the following to your ~/.bash_profile or ~/.bashrc or ~/.zshrc
+
 ```sh
 export GPG_TTY=`tty`
 ```
+
 - Restart your Terminal or source your ~/.\*rc file
 - Then, make sure git uses gpg2 and not gpg
+
 ```sh
 $ git config --global gpg.program gpg2
 ```
+
 - To make sure gpg2 itself is working
+
 ```sh
 $ echo "test" | gpg2 --clearsign
 ```
@@ -258,7 +265,7 @@ Commit the following changes:
 - `website/content/en/docs/upgrading-sdk-version/v1.3.0.md`: commit changes (created by changelog generation).
 - `changelog/fragments/*`: commit deleted fragment files (deleted by changelog generation).
 - **(Major and minor releases only)** `website/config.toml`: update `version_menu = "Releases"` with the patch-less version string `version_menu = "v1.3"`,
-and add the following lines under `[[params.versions]]` for `master`:
+  and add the following lines under `[[params.versions]]` for `master`:
   ```toml
   [[params.versions]]
     version = "v1.3"
@@ -275,6 +282,7 @@ to prevent further commits between this and step 4. See [this section](#locking-
 The top-level `release.sh` script will take care of verifying versions in files described in step 1, and tagging and verifying the tag, as well as building binaries and generating signatures by calling `make release`.
 
 Prerequisites:
+
 - [`git`][doc-git-default-key] and [`gpg`][doc-gpg-default-key] default PGP keys are set locally.
 - Your PGP key is publicly available in a [public key server](#release-signing).
 - _For macOS users:_ GNU `sed` and `make` which are not installed by default. Install them with
@@ -295,6 +303,7 @@ For example, signature file `operator-sdk-v1.3.0-x86_64-apple-darwin.asc` was ge
 To verify binaries and tags, see the [verification section](#verifying-a-release).
 
 <!-- TODO: remove when ansible/helm operator repos are created and code removed from this repo -->
+
 `ansible-operator` and `helm-operator` release binaries and signatures are similarly built for upload so `make run`
 can download them in their respective operator type projects. See [#3327](https://github.com/operator-framework/operator-sdk/issues/3327) for details.
 
@@ -359,15 +368,15 @@ The release process for the samples repo is simple:
 1. Make changes to all relevant operators (at least those referenced by SDK docs) based on API changes for the new SDK release.
 1. Ensure the operators build and run as expected (see each operator's docs).
 1. Once all API changes are in `master`, create a release tag locally:
-    ```sh
-    $ git checkout master && git pull
-    $ export VER="v1.3.0"
-    $ git tag --sign --message "Operator SDK Samples $VER" "$VER"
-    ```
+   ```sh
+   $ git checkout master && git pull
+   $ export VER="v1.3.0"
+   $ git tag --sign --message "Operator SDK Samples $VER" "$VER"
+   ```
 1. Push the tag to the remote, assuming `origin` is the name of the upstream remote:
-    ```sh
-    $ git push origin $VER
-    ```
+   ```sh
+   $ git push origin $VER
+   ```
 
 ### (Post-release) Updating the release notes
 
@@ -381,15 +390,15 @@ Add the following line to the top of the GitHub release notes for `v1.3.0`:
 [doc-maintainers]: https://github.com/operator-framework/operator-sdk/blob/master/MAINTAINERS
 [doc-owners]: https://github.com/operator-framework/operator-sdk/blob/master/OWNERS
 [doc-readme-prereqs]: /docs/installation/install-operator-sdk#prerequisites
-[doc-git-default-key]:https://help.github.com/en/articles/telling-git-about-your-signing-key
-[doc-gpg-default-key]:https://lists.gnupg.org/pipermail/gnupg-users/2001-September/010163.html
-[link-github-gpg-key-upload]:https://github.com/settings/keys
-[link-git-config-gpg-key]:https://git-scm.com/book/en/v2/Git-Tools-Signing-Your-Work
+[doc-git-default-key]: https://help.github.com/en/articles/telling-git-about-your-signing-key
+[doc-gpg-default-key]: https://lists.gnupg.org/pipermail/gnupg-users/2001-September/010163.html
+[link-github-gpg-key-upload]: https://github.com/settings/keys
+[link-git-config-gpg-key]: https://git-scm.com/book/en/v2/Git-Tools-Signing-Your-Work
 [doc-changelog]: https://github.com/operator-framework/operator-sdk/blob/master/CHANGELOG.md
-[backports]:/docs/upgrading-sdk-version/backport-policy
-[release-page]:https://github.com/operator-framework/operator-sdk/releases
-[homebrew]:https://brew.sh/
-[homebrew-formula]:https://github.com/Homebrew/homebrew-core/blob/master/Formula/operator-sdk.rb
-[homebrew-readme]:https://github.com/Homebrew/homebrew-core/blob/master/CONTRIBUTING.md#to-submit-a-version-upgrade-for-the-foo-formula
-[homebrew-repo]:https://github.com/Homebrew/homebrew-core
-[sdk-samples-repo]:https://github.com/operator-framework/operator-sdk-samples
+[backports]: /docs/upgrading-sdk-version/backport-policy
+[release-page]: https://github.com/operator-framework/operator-sdk/releases
+[homebrew]: https://brew.sh/
+[homebrew-formula]: https://github.com/Homebrew/homebrew-core/blob/master/Formula/operator-sdk.rb
+[homebrew-readme]: https://github.com/Homebrew/homebrew-core/blob/master/CONTRIBUTING.md#to-submit-a-version-upgrade-for-the-foo-formula
+[homebrew-repo]: https://github.com/Homebrew/homebrew-core
+[sdk-samples-repo]: https://github.com/operator-framework/operator-sdk-samples

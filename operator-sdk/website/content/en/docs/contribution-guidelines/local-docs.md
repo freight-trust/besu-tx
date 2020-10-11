@@ -35,7 +35,6 @@ hugo server
 
 Any changes will be included in real time.
 
-
 ## Check Links
 
 `make test-links` will use containers to build html and check the links.

@@ -3,45 +3,60 @@
     <v-row>
       <v-col cols="3">
         <v-card tile>
-            <v-list max-height="800" class="overflow-y-auto">
-              <v-subheader>
-                <v-text-field
-                  v-model="searchQuery"
-                  label="Search"
-                  @input="filterTemplate"
-                ></v-text-field>
-              </v-subheader>
-              <v-list-item-group color="primary" v-if="filteredTemps.length != 0">
-                <v-list-item
-                  v-for="(template, i) in filteredTemps"
-                  :key="i"
-                  @click="updateSelectedTemplate(template)"
+          <v-list max-height="800" class="overflow-y-auto">
+            <v-subheader>
+              <v-text-field
+                v-model="searchQuery"
+                label="Search"
+                @input="filterTemplate"
+              ></v-text-field>
+            </v-subheader>
+            <v-list-item-group color="primary" v-if="filteredTemps.length != 0">
+              <v-list-item
+                v-for="(template, i) in filteredTemps"
+                :key="i"
+                @click="updateSelectedTemplate(template)"
+              >
+                <v-list-item-content
+                  v-if="template.changed"
+                  class="yellow lighten-3"
                 >
-                  <v-list-item-content v-if="template.changed" class="yellow lighten-3">
-                    <v-list-item-title v-text="template.name"></v-list-item-title>
-                  </v-list-item-content>
-                  <v-list-item-content v-else>
-                    <v-list-item-title v-text="template.name"></v-list-item-title>
-                  </v-list-item-content>
-                </v-list-item>
-              </v-list-item-group>
-            </v-list>
-          </v-card>
+                  <v-list-item-title v-text="template.name"></v-list-item-title>
+                </v-list-item-content>
+                <v-list-item-content v-else>
+                  <v-list-item-title v-text="template.name"></v-list-item-title>
+                </v-list-item-content>
+              </v-list-item>
+            </v-list-item-group>
+          </v-list>
+        </v-card>
       </v-col>
 
       <v-col cols="9">
         <div v-show="selectedTemplate.changed">
-          <v-btn small color="primary" class="ma-2" @click="switchView()" v-if="selectedTemplate.changed"> Switch view </v-btn>
+          <v-btn
+            small
+            color="primary"
+            class="ma-2"
+            @click="switchView()"
+            v-if="selectedTemplate.changed"
+          >
+            Switch view
+          </v-btn>
           <code-diff
-            :old-string="selectedTemplate.firstContent" 
-            :new-string="selectedTemplate.secondContent" 
-            :context="20" 
+            :old-string="selectedTemplate.firstContent"
+            :new-string="selectedTemplate.secondContent"
+            :context="20"
             :outputFormat="format"
             :fileName="selectedTemplate.name"
           />
         </div>
         <div v-if="selectedTemplate.name != null && !selectedTemplate.changed">
-          <code-viewer :code="selectedTemplate.firstContent" :message="selectedTemplate.name"> </code-viewer>
+          <code-viewer
+            :code="selectedTemplate.firstContent"
+            :message="selectedTemplate.name"
+          >
+          </code-viewer>
         </div>
       </v-col>
     </v-row>
@@ -49,17 +64,14 @@
 </template>
 
 <script>
-import codeDiff from 'vue-code-diff'
-import codeViewer from './CodeViewer'
+import codeDiff from "vue-code-diff";
+import codeViewer from "./CodeViewer";
 
 export default {
   components: { codeDiff, codeViewer },
-  name: 'DiffViewer',
-  props: [
-    'firstTemplates',
-    'secondTemplates',
-  ],
-  data () {
+  name: "DiffViewer",
+  props: ["firstTemplates", "secondTemplates"],
+  data() {
     return {
       searchQuery: "",
       temps: this.getMostCompletedTemplate(),
@@ -67,74 +79,77 @@ export default {
       format: "side-by-side",
       selectedTemplate: {},
       delayed: false,
-      emptyRenderMessage: '# This file empty because the file not expected to be rendered'
-    }
+      emptyRenderMessage:
+        "# This file empty because the file not expected to be rendered",
+    };
   },
   methods: {
     filterTemplate() {
-      const query = this.searchQuery
-      const temps = this.temps.filter(function(temp){
-                return temp.name.includes(query)
-              });
-            
-      this.filteredTemps = temps
+      const query = this.searchQuery;
+      const temps = this.temps.filter(function (temp) {
+        return temp.name.includes(query);
+      });
+
+      this.filteredTemps = temps;
     },
     updateSelectedTemplate(file) {
-      this.selectedTemplate = file
+      this.selectedTemplate = file;
     },
     getMostCompletedTemplate() {
-      if(this.firstTemplates.length >= this.secondTemplates.length) {
-        return this.firstTemplates
+      if (this.firstTemplates.length >= this.secondTemplates.length) {
+        return this.firstTemplates;
       }
-      return this.secondTemplates
+      return this.secondTemplates;
     },
     switchView() {
-      if(this.format === 'side-by-side') {
-        this.format = 'line-by-line'
+      if (this.format === "side-by-side") {
+        this.format = "line-by-line";
       } else {
-        this.format = 'side-by-side'
+        this.format = "side-by-side";
       }
     },
     mergeTemplates() {
-      var mergedTemplates = []
-      const mostCompletedTemplate = this.getMostCompletedTemplate()
+      var mergedTemplates = [];
+      const mostCompletedTemplate = this.getMostCompletedTemplate();
 
-      for(var i=0; i < mostCompletedTemplate.length; i++) {
-        const anchorTemplate = mostCompletedTemplate[i]
-        const templateOne = this.firstTemplates.find(temp => temp.name === anchorTemplate.name)
-        const templateTwo = this.secondTemplates.find(temp => temp.name === anchorTemplate.name)
+      for (var i = 0; i < mostCompletedTemplate.length; i++) {
+        const anchorTemplate = mostCompletedTemplate[i];
+        const templateOne = this.firstTemplates.find(
+          (temp) => temp.name === anchorTemplate.name
+        );
+        const templateTwo = this.secondTemplates.find(
+          (temp) => temp.name === anchorTemplate.name
+        );
 
-        var contentOne = this.emptyRenderMessage
-        var contentTwo = this.emptyRenderMessage
-        if(templateOne != undefined) {
-          contentOne = templateOne.content
+        var contentOne = this.emptyRenderMessage;
+        var contentTwo = this.emptyRenderMessage;
+        if (templateOne != undefined) {
+          contentOne = templateOne.content;
         }
 
-        if(templateTwo != undefined) {
-          contentTwo = templateTwo.content
+        if (templateTwo != undefined) {
+          contentTwo = templateTwo.content;
         }
 
         const mergedTemplate = {
           name: anchorTemplate.name,
           firstContent: contentOne,
           secondContent: contentTwo,
-          changed: contentOne !== contentTwo
-        }
+          changed: contentOne !== contentTwo,
+        };
 
-        mergedTemplates.push(mergedTemplate)
+        mergedTemplates.push(mergedTemplate);
       }
 
       return mergedTemplates.sort((t1, t2) => {
-        return t1.changed !== t2.changed
-      })
-    }
+        return t1.changed !== t2.changed;
+      });
+    },
   },
   async mounted() {
-    this.filteredTemps = this.mergeTemplates()
-  }
-}
+    this.filteredTemps = this.mergeTemplates();
+  },
+};
 </script>
 
-<style scoped>
-
-</style>
+<style scoped></style>

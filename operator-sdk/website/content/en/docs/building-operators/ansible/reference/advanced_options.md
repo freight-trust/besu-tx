@@ -8,7 +8,7 @@ This document shows the advanced options available to a developer of an ansible 
 
 ### Runner Directory
 
-The ansible runner will keep information about the ansible run in the container.  This is located `/tmp/ansible-operator/runner/<group>/<version>/<kind>/<namespace>/<name>`. To learn more  about the runner directory you can read the [ansible-runner docs](https://ansible-runner.readthedocs.io/en/latest/index.html).
+The ansible runner will keep information about the ansible run in the container. This is located `/tmp/ansible-operator/runner/<group>/<version>/<kind>/<namespace>/<name>`. To learn more about the runner directory you can read the [ansible-runner docs](https://ansible-runner.readthedocs.io/en/latest/index.html).
 
 ## Owner Reference Injection
 
@@ -43,7 +43,7 @@ using `runtime.NumCPU()`.)
 **NOTE:** Admins using OLM should use the environment variable instead
 of the extra args.
 
-``` yaml
+```yaml
 - name: manager
   image: "quay.io/asmacdo/memcached-operator:v0.0.0"
   imagePullPolicy: "Always"
@@ -51,6 +51,7 @@ of the extra args.
     - "--max-concurrent-reconciles"
     - "3"
 ```
+
 Operator **admins** can override the value by setting an environment
 variable in the format `MAX_CONCURRENT_RECONCILES_<kind>_<group>`. This variable must be
 all uppercase, and periods (e.g. in the group name) are replaced with underscores.
@@ -72,7 +73,7 @@ From this data, we can see that the environment variable will be
 `MAX_CONCURRENT_RECONCILES_MEMCACHED_CACHE_EXAMPLE_COM`, which we can then add to
 `config/manager/manager.yaml` and `config/default/auth_proxy_patch.yaml`:
 
-``` yaml
+```yaml
 - name: manager
   image: "quay.io/asmacdo/memcached-operator:v0.0.0"
   imagePullPolicy: "Always"
@@ -147,7 +148,7 @@ spec: {}
 
 ## Custom Resources with OpenAPI Validation
 
-Currently, SDK tool does not support and will not generate automatically the CRD's using the [OpenAPI](https://kubernetes.io/docs/tasks/extend-kubernetes/custom-resources/custom-resource-definitions/#validation) spec to perform validations. 
+Currently, SDK tool does not support and will not generate automatically the CRD's using the [OpenAPI](https://kubernetes.io/docs/tasks/extend-kubernetes/custom-resources/custom-resource-definitions/#validation) spec to perform validations.
 
 However, it can be done manually by adding its validations as you can check in the following example.
 
@@ -173,14 +174,16 @@ spec:
       description: Memcached is the Schema for the memcacheds API
       properties:
         apiVersion:
-          description: 'APIVersion defines the versioned schema of this representation
+          description:
+            "APIVersion defines the versioned schema of this representation
             of an object. Servers should convert recognized schemas to the latest
-            internal value, and may reject unrecognized values. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources'
+            internal value, and may reject unrecognized values. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources"
           type: string
         kind:
-          description: 'Kind is a string value representing the REST resource this
+          description:
+            "Kind is a string value representing the REST resource this
             object represents. Servers may infer this from the endpoint the client
-            submits requests to. Cannot be updated. In CamelCase. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds'
+            submits requests to. Cannot be updated. In CamelCase. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds"
           type: string
         metadata:
           type: object
@@ -192,7 +195,7 @@ spec:
               format: int32
               type: integer
           required:
-          - size
+            - size
           type: object
         status:
           description: MemcachedStatus defines the observed state of Memcached
@@ -203,27 +206,28 @@ spec:
                 type: string
               type: array
           required:
-          - nodes
+            - nodes
           type: object
       type: object
   versions:
-  - name: v1alpha1
-    served: true
-    storage: true
+    - name: v1alpha1
+      served: true
+      storage: true
 ```
 
 ## Passing Arbitrary Arguments to Ansible
 
-You are able to use the flag `--ansible-args` to pass an arbitrary argument to the Ansible-based Operator. With this option we can, for example, allow a playbook to run a specific part of the configuration without running the whole playbook:  
+You are able to use the flag `--ansible-args` to pass an arbitrary argument to the Ansible-based Operator. With this option we can, for example, allow a playbook to run a specific part of the configuration without running the whole playbook:
 
 ```shell
 ansible-operator run --ansible-args='--tags "configuration,packages"'
 ```
+
 ```
 ansible-operator run --ansible-args='--skip-tags "notification"'
 ```
-Ansible-runner will perform the task relevant to the command specified by the user in the ```---ansible-args``` flag.
 
+Ansible-runner will perform the task relevant to the command specified by the user in the `---ansible-args` flag.
 
 ## Using Ansible-Vault
 
@@ -248,14 +252,12 @@ Now, let's also assume that we have a password file, `pwd.yml`, that contains th
 ```
 --------------------------- Ansible Task StdOut -------------------------------
 
- TASK [debug] ******************************** 
+ TASK [debug] ********************************
 ok: [localhost] => {
     "msg": "The decrypted value is DECRYPTED-TEST-VALUE"
 }
 
 -------------------------------------------------------------------------------
 ```
+
 [ansible-vault-doc]: https://docs.ansible.com/ansible/latest/user_guide/vault.html
-
-
-

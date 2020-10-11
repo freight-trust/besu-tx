@@ -9,6 +9,7 @@ weight: 70
 An often-used pattern is to include `Conditions` in the status of custom resources. Conditions represent the latest available observations of an object's state (see the [Kubernetes API conventionsdocumentation][typical-status-properties] for more information).
 
 The `Conditions` field added to the `MemcachedStatus` struct simplifies the management of your CR's conditions. It:
+
 - Enables callers to add and remove conditions.
 - Ensures that there are no duplicates.
 - Sorts the conditions deterministically to avoid unnecessary repeated reconciliations.
@@ -32,7 +33,6 @@ Then, in your controller, you can use [`Conditions`][godoc-conditions] methods t
 
 ### Adding 3rd Party Resources To Your Operator
 
-
 The operator's Manager supports the core Kubernetes resource types as found in the client-go [scheme][scheme_package] package and will also register the schemes of all custom resource types defined in your project.
 
 ```Go
@@ -55,6 +55,7 @@ To add a 3rd party resource to an operator, you must add it to the Manager's sch
 
 Call the `AddToScheme()` function for your 3rd party resource and pass it the Manager's scheme via `mgr.GetScheme()` in `main.go`.
 Example:
+
 ```go
 import (
     routev1 "github.com/openshift/api/route/v1"
@@ -106,17 +107,14 @@ func init() {
 }
 ```
 
-
-
 **NOTES:**
 
-* After adding new import paths to your operator project, run `go mod vendor` if a `vendor/` directory is present in the root of your project directory to fulfill these dependencies.
-* Your 3rd party resource needs to be added before add the controller in `"Setup all Controllers"`.
+- After adding new import paths to your operator project, run `go mod vendor` if a `vendor/` directory is present in the root of your project directory to fulfill these dependencies.
+- Your 3rd party resource needs to be added before add the controller in `"Setup all Controllers"`.
 
 ### Metrics
 
 To learn about how metrics work in the Operator SDK read the [metrics section][metrics_doc] of the Kubebuilder documentation.
-
 
 ### Handle Cleanup on Deletion
 
@@ -260,6 +258,7 @@ func main() {
     ...
 }
 ```
+
 If the operator is not running inside a cluster `leader.Become()` will simply return without error to skip the leader election since it can't detect the operator's namespace.
 
 #### Leader with lease
@@ -288,7 +287,7 @@ When the operator is not running in a cluster, the Manager will return an error 
 
 [typical-status-properties]: https://github.com/kubernetes/community/blob/master/contributors/devel/sig-architecture/api-conventions.md#typical-status-properties
 [godoc-conditions]: https://godoc.org/github.com/operator-framework/operator-lib/status#Conditions
-[scheme_package]:https://github.com/kubernetes/client-go/blob/master/kubernetes/scheme/register.go
+[scheme_package]: https://github.com/kubernetes/client-go/blob/master/kubernetes/scheme/register.go
 [deployments_register]: https://github.com/kubernetes/api/blob/master/apps/v1/register.go#L41
 [runtime_package]: https://godoc.org/k8s.io/apimachinery/pkg/runtime
 [scheme_builder]: https://godoc.org/sigs.k8s.io/controller-runtime/pkg/scheme#Builder

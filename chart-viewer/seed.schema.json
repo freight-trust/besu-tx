@@ -1,21 +1,18 @@
 {
-    "$schema": "http://json-schema.org/draft-06/schema#",
-    "type": "array",
-    "items": [
-        {
-            "type": "object",
-            "properties": {
-                "name": {
-                    "type": "string"
-                },
-                "url": {
-                    "type": "string"
-                }
-            },
-            "required": [
-                "name",
-                "url"
-            ]
+  "$schema": "http://json-schema.org/draft-06/schema#",
+  "type": "array",
+  "items": [
+    {
+      "type": "object",
+      "properties": {
+        "name": {
+          "type": "string"
+        },
+        "url": {
+          "type": "string"
         }
-    ]
+      },
+      "required": ["name", "url"]
+    }
+  ]
 }

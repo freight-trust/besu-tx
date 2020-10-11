@@ -66,10 +66,10 @@ type PodPolicy struct {
 
 By defining a set of paths with a `:gen-csv` use case token, an annotation parser "knows" that the `EtcdCluster` spec `ClusterSpec` has a `struct` field of type `PodPolicy` that should be included in the CSV manifest `spec.customresourcedefinitions` field as a `specDescriptor` entry with a `displayName` value of `Resource Requirements`.
 
-For an annotation set to be user-friendly, these elements must be kept as simple as possible for the given task. Their parser implementation *must* be accompanied by documentation that explains how to create annotations for all supported fields, how the parser will interpret those annotations, and any constraints or requirements on paths or values.
+For an annotation set to be user-friendly, these elements must be kept as simple as possible for the given task. Their parser implementation _must_ be accompanied by documentation that explains how to create annotations for all supported fields, how the parser will interpret those annotations, and any constraints or requirements on paths or values.
 
-[go_build_tags]:https://golang.org/pkg/go/build/#hdr-Build_Constraints
-[k8s_code_gen]:https://blog.openshift.com/kubernetes-deep-dive-code-generation-customresources/
-[olm_csv]:https://github.com/operator-framework/operator-lifecycle-manager/blob/master/doc/design/building-your-csv.md
-[sdk_cli_ref_gen_csv]:https://github.com/operator-framework/operator-sdk/blob/v0.13.0/doc/sdk-cli-reference.md#gen-csv
-[etcd_operator_api]:https://github.com/coreos/etcd-operator/blob/387ece1ca4e9af764c9eb569ff995a21b10ba5ee/pkg/apis/etcd/v1beta2/cluster.go
+[go_build_tags]: https://golang.org/pkg/go/build/#hdr-Build_Constraints
+[k8s_code_gen]: https://blog.openshift.com/kubernetes-deep-dive-code-generation-customresources/
+[olm_csv]: https://github.com/operator-framework/operator-lifecycle-manager/blob/master/doc/design/building-your-csv.md
+[sdk_cli_ref_gen_csv]: https://github.com/operator-framework/operator-sdk/blob/v0.13.0/doc/sdk-cli-reference.md#gen-csv
+[etcd_operator_api]: https://github.com/coreos/etcd-operator/blob/387ece1ca4e9af764c9eb569ff995a21b10ba5ee/pkg/apis/etcd/v1beta2/cluster.go

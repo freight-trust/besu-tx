@@ -9,22 +9,23 @@ This guide walks through an example of building a simple memcached-operator powe
 
 ## Prerequisites
 
-- [Install `operator-sdk`][operator_install] and the [Ansible prequisites][ansible-operator-install] 
+- [Install `operator-sdk`][operator_install] and the [Ansible prequisites][ansible-operator-install]
 - Access to a Kubernetes v1.16.0+ cluster.
 - User authorized with `cluster-admin` permissions.
 
 ## Creating an Operator
 
 In this section we will:
-  - extend the Kubernetes API with a [Custom Resource Definition][custom-resources] that allows users to create `Memcached` resources.
-  - create a manager that updates the state of the cluster to the desired state defined by `Memcached` resources.
+
+- extend the Kubernetes API with a [Custom Resource Definition][custom-resources] that allows users to create `Memcached` resources.
+- create a manager that updates the state of the cluster to the desired state defined by `Memcached` resources.
 
 #### Scaffold a New Project
 
 Begin by generating a new project from a new directory.
 
 ```sh
-$ mkdir memcached-operator 
+$ mkdir memcached-operator
 $ cd memcached-operator
 $ operator-sdk init --plugins=ansible --domain example.com
 ```
@@ -47,10 +48,10 @@ $ operator-sdk create api --group cache --version v1alpha1 --kind Memcached --ge
 
 The scaffolded operator has the following structure:
 
- - `Memcached` Custom Resource Definition, and a sample `Memcached` resource.
- - A "Manager" that reconciles the state of the cluster to the desired state
-    - A reconciler, which is an Ansible Role or Playbook.
-    - A `watches.yaml` file, which connects the `Memcached` resource to the `memcached` Ansible Role.
+- `Memcached` Custom Resource Definition, and a sample `Memcached` resource.
+- A "Manager" that reconciles the state of the cluster to the desired state
+  - A reconciler, which is an Ansible Role or Playbook.
+  - A `watches.yaml` file, which connects the `Memcached` resource to the `memcached` Ansible Role.
 
 See [scaffolded files reference][layout-doc] and [watches reference][ansible-watches] for more detailed information
 
@@ -62,7 +63,6 @@ updated, or delete.
 
 Update `roles/memecached/tasks/main.yml`:
 
-
 ```yaml
 ---
 - name: start memcached
@@ -71,8 +71,8 @@ Update `roles/memecached/tasks/main.yml`:
       kind: Deployment
       apiVersion: apps/v1
       metadata:
-        name: '{{ ansible_operator_meta.name }}-memcached'
-        namespace: '{{ ansible_operator_meta.namespace }}'
+        name: "{{ ansible_operator_meta.name }}-memcached"
+        namespace: "{{ ansible_operator_meta.namespace }}"
       spec:
         replicas: "{{size}}"
         selector:
@@ -84,19 +84,20 @@ Update `roles/memecached/tasks/main.yml`:
               app: memcached
           spec:
             containers:
-            - name: memcached
-              command:
-              - memcached
-              - -m=64
-              - -o
-              - modern
-              - -v
-              image: "docker.io/memcached:1.4.36-alpine"
-              ports:
-                - containerPort: 11211
+              - name: memcached
+                command:
+                  - memcached
+                  - -m=64
+                  - -o
+                  - modern
+                  - -v
+                image: "docker.io/memcached:1.4.36-alpine"
+                ports:
+                  - containerPort: 11211
 ```
 
 This memcached role will:
+
 - Ensure a memcached Deployment exists
 - Set the Deployment size
 
@@ -123,7 +124,7 @@ spec:
 The key-value pairs in the Custom Resource spec are passed
 to Ansible as extra variables.
 
-__Note:__ The names of all variables in the spec field are converted to
+**Note:** The names of all variables in the spec field are converted to
 snake_case by the operator before running ansible. For example,
 serviceAccount in the spec becomes service_account in ansible. You can
 disable this case conversion by setting the `snakeCaseParameters` option
@@ -135,12 +136,11 @@ application is receiving expected input.
 
 All that remains is building and pushing the operator container to your favorite registry.
 
-``` sh
+```sh
 $  make docker-build docker-push IMG=<some-registry>/<project-name>:tag
 ```
 
 NOTE: To allow the cluster pull the image the repository needs to be set as public or you must configure an image pull secret
-
 
 ## Using the Operator
 
@@ -154,6 +154,7 @@ To apply the `Memcached` Kind (CRD):
 ```sh
 $ make install
 ```
+
 #### Deploy the Operator:
 
 ```sh
@@ -163,7 +164,7 @@ $ make deploy
 ```
 
 We are using the `memcached-operator-system` Namespace, so let's set
-that context. 
+that context.
 
 ```sh
 $ kubectl config set-context --current --namespace=memcached-operator-system
@@ -172,7 +173,7 @@ $ kubectl config set-context --current --namespace=memcached-operator-system
 Verify that the memcached-operator is up and running:
 
 ```sh
-$ kubectl get deployment 
+$ kubectl get deployment
 
 NAME                     DESIRED   CURRENT   UP-TO-DATE   AVAILABLE   AGE
 memcached-operator       1         1         1            1           1m
@@ -227,9 +228,9 @@ OLM will manage creation of most if not all resources required to run your opera
 [ansible-developer-tips]: /docs/building-operators/ansible/development-tips/
 [ansible-watches]: /docs/building-operators/ansible/reference/watches
 [custom-resources]: https://kubernetes.io/docs/concepts/extend-kubernetes/api-extension/custom-resources/
-[operator-scope]:https://v0-19-x.sdk.operatorframework.io/docs/legacy-common/operator-scope/
-[layout-doc]:../reference/scaffolding
-[docker-tool]:https://docs.docker.com/install/
-[kubectl-tool]:https://kubernetes.io/docs/tasks/tools/install-kubectl/
+[operator-scope]: https://v0-19-x.sdk.operatorframework.io/docs/legacy-common/operator-scope/
+[layout-doc]: ../reference/scaffolding
+[docker-tool]: https://docs.docker.com/install/
+[kubectl-tool]: https://kubernetes.io/docs/tasks/tools/install-kubectl/
 [quickstart-bundle]: /docs/olm-integration/quickstart-bundle/
 [operator_install]: /docs/installation/install-operator-sdk

@@ -1,48 +1,48 @@
 async function flattenJSONObject(object, parent, options) {
-  if (typeof object !== 'object' || Array.isArray(object) || object === null) {
-      const key = parent
-      const value = object
-      const type = Array.isArray(object) ? 'array' : typeof object
+  if (typeof object !== "object" || Array.isArray(object) || object === null) {
+    const key = parent;
+    const value = object;
+    const type = Array.isArray(object) ? "array" : typeof object;
 
-      options.push({key: key, value: value, type: type})
-      return options
+    options.push({ key: key, value: value, type: type });
+    return options;
   }
 
-  if (typeof object === 'object' && Object.keys(object).length === 0) {
-      const key = parent
-      const value = '{}'
-      const type = Array.isArray(object) ? 'array' : typeof object
+  if (typeof object === "object" && Object.keys(object).length === 0) {
+    const key = parent;
+    const value = "{}";
+    const type = Array.isArray(object) ? "array" : typeof object;
 
-      options.push({key: key, value: value, type: type})
-      return options
+    options.push({ key: key, value: value, type: type });
+    return options;
   }
 
-  const properties = Object.keys(object)
+  const properties = Object.keys(object);
 
   for (let i = 0; i < properties.length; i++) {
-      const name = properties[i]
+    const name = properties[i];
 
-     await flattenJSONObject(object[name], parent + '.' + name, options)
+    await flattenJSONObject(object[name], parent + "." + name, options);
   }
 
-  return options
+  return options;
 }
 
 async function simplifyValues(values) {
-  let options = []
+  let options = [];
 
   for (let i = 0; i < values.length; i++) {
-    const value = values[i]
+    const value = values[i];
 
     const path = value.key.substring(1);
 
-    options.push(path + '=' + value.value)
+    options.push(path + "=" + value.value);
   }
 
-  return options
+  return options;
 }
 
 module.exports = {
   flattenJSONObject,
-  simplifyValues
-}
+  simplifyValues,
+};

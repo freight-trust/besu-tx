@@ -7,7 +7,7 @@
       kind: CaseTest
       metadata:
         name: case-test
-        namespace: '{{ namespace }}'
+        namespace: "{{ namespace }}"
       spec:
         camelCaseVar: "true"
     wait: yes

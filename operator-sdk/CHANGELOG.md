@@ -53,7 +53,7 @@
 - **Breaking change**: The Helm operator implementation in `pkg/helm` was moved to `internal/helm`. ([#3537](https://github.com/operator-framework/operator-sdk/pull/3537))
 - **Breaking change**: The Ansible operator's `--max-workers` flag and `WORKERS_<Kind>_<Group>` environment variable have been renamed to `--max-concurrent-reconciles` and `MAX_CONCURRENT_RECONCILES_<Kind>_<Group>` respectively. ([#3452](https://github.com/operator-framework/operator-sdk/pull/3452))
 - **Breaking change**: The `meta` variable passed to Ansible playbooks and roles has been renamed to `ansible_operator_meta`. ([#3562](https://github.com/operator-framework/operator-sdk/pull/3562))
-- **Breaking change**: The scorecard configuration is now implemented as a componentconfig object and now includes a new top-level `stages` field, which allows users to define stages of tests and to enable parallelism within each stage.  ([#3490](https://github.com/operator-framework/operator-sdk/pull/3490)) & ([#3434](https://github.com/operator-framework/operator-sdk/pull/3434))
+- **Breaking change**: The scorecard configuration is now implemented as a componentconfig object and now includes a new top-level `stages` field, which allows users to define stages of tests and to enable parallelism within each stage. ([#3490](https://github.com/operator-framework/operator-sdk/pull/3490)) & ([#3434](https://github.com/operator-framework/operator-sdk/pull/3434))
 - When a namespace is not provided on the command line, the scorecard command now looks for a namespace in the kubeconfig. If a namespace can not be found in the kubeconfig file, then 'default' is used. ([#3478](https://github.com/operator-framework/operator-sdk/pull/3478))
 - Use on-disk bundle metadata in scorecard (either unpacked from an image or directly if a directory is passed) as the source of truth for bundle metadata, and not image labels which are informative only. ([#3450](https://github.com/operator-framework/operator-sdk/pull/3450))
 - **Breaking change**: The `alpha scorecard` command has been promoted to the standard scorecard command. ([#3444](https://github.com/operator-framework/operator-sdk/pull/3444))
@@ -61,6 +61,7 @@
 - Ansible & Helm-based Operators switched to using the `InstrumentedEnqueueRequestForObject` from [operator-lib](https://github.com/operator-framework/operator-lib/blob/main/handler/instrumented_enqueue_object.go) instead of controller-runtime's `EnqueueRequestForObject`. ([#3523](https://github.com/operator-framework/operator-sdk/pull/3523))
 
 #### Removals
+
 - **Breaking change**: Removed `olm-namespace` flag from `operator-sdk olm install` command. ([#3670](https://github.com/operator-framework/operator-sdk/pull/3670))
 - **Breaking change**: Docker images for s390x architecture are removed due to issues with s390x machines failing to be scheduled and run in Travis CI. ([#3710](https://github.com/operator-framework/operator-sdk/pull/3710))
 - **Breaking change**: Moved scorecard API v1alpha3 to the [api repo](https://github.com/operator-framework/api) under `pkg/apis/scorecard/v1alpha3`. All future scorecard APIs will be released in this repo. ([#3622](https://github.com/operator-framework/operator-sdk/pull/3622))
@@ -73,8 +74,8 @@
 - **Breaking change**: Removed `pkg/predicate`: `ResourceFilterPredicate`. ([#3532](https://github.com/operator-framework/operator-sdk/pull/3532))
 - **Breaking change**: Refactored and moved `pkg/predicate.GenerationChangedPredicate` (see this [operator-lib PR](https://github.com/operator-framework/operator-lib/pull/11) for details). ([#3532](https://github.com/operator-framework/operator-sdk/pull/3532))
 - **Breaking change**: Removed `test` subcommand and the test framework `pkg/test`. ([#3409](https://github.com/operator-framework/operator-sdk/pull/3409))
-- **Breaking change**: Removed `pkg/k8sutils` and its helpers methods `GetWatchNamespace()`,  `GetOperatorNamespace()`, `GetOperatorName()`, `ResourceExists()`, `GetPod()`, `GetGVKsFromAddToScheme()` and `SupportsOwnerReference()`. ([#3475](https://github.com/operator-framework/operator-sdk/pull/3475))
-- **Breaking change**: Removed `pkg/kube-metrics` and its associated helpers `NewNamespacedMetricsStores()`,  `NewClusterScopedMetricsStores()`, `ServeMetrics()`, and `GenerateAndServeCRMetrics()`. ([#3484](https://github.com/operator-framework/operator-sdk/pull/3484))
+- **Breaking change**: Removed `pkg/k8sutils` and its helpers methods `GetWatchNamespace()`, `GetOperatorNamespace()`, `GetOperatorName()`, `ResourceExists()`, `GetPod()`, `GetGVKsFromAddToScheme()` and `SupportsOwnerReference()`. ([#3475](https://github.com/operator-framework/operator-sdk/pull/3475))
+- **Breaking change**: Removed `pkg/kube-metrics` and its associated helpers `NewNamespacedMetricsStores()`, `NewClusterScopedMetricsStores()`, `ServeMetrics()`, and `GenerateAndServeCRMetrics()`. ([#3484](https://github.com/operator-framework/operator-sdk/pull/3484))
 - **Breaking change**: Removed `pkg/leader` and `pkg/status`. These are now part of operator-lib. ([#3503](https://github.com/operator-framework/operator-sdk/pull/3503))
 - **Breaking change**: Removed `pkg/metrics` and its helpers `GenerateAndServeCRMetrics()` and `GetNamespacesForMetrics()`. ([#3484](https://github.com/operator-framework/operator-sdk/pull/3484))
 - **Breaking change**: Removed `pkg/ready` and its helper utils `Ready`, `Set()`, `Unset()`. ([#3476](https://github.com/operator-framework/operator-sdk/pull/3476))
@@ -83,7 +84,7 @@
 #### Bug Fixes
 
 - Fixed incorrect (cluster) role name assignments in generated CSVs [#3600](https://github.com/operator-framework/operator-sdk/issues/3600). ([#3610](https://github.com/operator-framework/operator-sdk/pull/3610))
-- Fixed a bug that caused the Ansible operator not to set the environment variables `ANSIBLE_ROLES_PATH` and `ANSIBLE_COLLECTIONS_PATH` based on  the flags `--ansible-roles-path` and `--ansible-collections-path`. ([#3549](https://github.com/operator-framework/operator-sdk/pull/3549))
+- Fixed a bug that caused the Ansible operator not to set the environment variables `ANSIBLE_ROLES_PATH` and `ANSIBLE_COLLECTIONS_PATH` based on the flags `--ansible-roles-path` and `--ansible-collections-path`. ([#3549](https://github.com/operator-framework/operator-sdk/pull/3549))
 - Use group and kind instead of only kind when parsing manifests in the CSV generator to avoid marshaling them into the wrong Go types. ([#3334](https://github.com/operator-framework/operator-sdk/pull/3334))
 - Fixed issue that caused scorecard to fail loading local bundle due to a bug search method for the bundle metadata directory. ([#3408](https://github.com/operator-framework/operator-sdk/pull/3408))
 - Fixed CVE-2020-14040 by updating to `golang.org/x/text/0.3.3`. ([#3458](https://github.com/operator-framework/operator-sdk/pull/3458))
@@ -156,7 +157,7 @@
 - **Breaking change**: The Helm operator implementation in `pkg/helm` was moved to `internal/helm`. ([#3537](https://github.com/operator-framework/operator-sdk/pull/3537))
 - **Breaking change**: The Ansible operator's `--max-workers` flag and `WORKERS_<Kind>_<Group>` environment variable have been renamed to `--max-concurrent-reconciles` and `MAX_CONCURRENT_RECONCILES_<Kind>_<Group>` respectively. ([#3452](https://github.com/operator-framework/operator-sdk/pull/3452))
 - **Breaking change**: The `meta` variable passed to Ansible playbooks and roles has been renamed to `ansible_operator_meta`. ([#3562](https://github.com/operator-framework/operator-sdk/pull/3562))
-- **Breaking change**: The scorecard configuration is now implemented as a componentconfig object and now includes a new top-level `stages` field, which allows users to define stages of tests and to enable parallelism within each stage.  ([#3490](https://github.com/operator-framework/operator-sdk/pull/3490)) & ([#3434](https://github.com/operator-framework/operator-sdk/pull/3434))
+- **Breaking change**: The scorecard configuration is now implemented as a componentconfig object and now includes a new top-level `stages` field, which allows users to define stages of tests and to enable parallelism within each stage. ([#3490](https://github.com/operator-framework/operator-sdk/pull/3490)) & ([#3434](https://github.com/operator-framework/operator-sdk/pull/3434))
 - When a namespace is not provided on the command line, the scorecard command now looks for a namespace in the kubeconfig. If a namespace can not be found in the kubeconfig file, then 'default' is used. ([#3478](https://github.com/operator-framework/operator-sdk/pull/3478))
 - Use on-disk bundle metadata in scorecard (either unpacked from an image or directly if a directory is passed) as the source of truth for bundle metadata, and not image labels which are informative only. ([#3450](https://github.com/operator-framework/operator-sdk/pull/3450))
 - **Breaking change**: The `alpha scorecard` command has been promoted to the standard scorecard command. ([#3444](https://github.com/operator-framework/operator-sdk/pull/3444))
@@ -164,13 +165,14 @@
 - Ansible & Helm-based Operators switched to using the `InstrumentedEnqueueRequestForObject` from [operator-lib](https://github.com/operator-framework/operator-lib/blob/main/handler/instrumented_enqueue_object.go) instead of controller-runtime's `EnqueueRequestForObject`. ([#3523](https://github.com/operator-framework/operator-sdk/pull/3523))
 
 ### Removals
+
 - **Breaking change**: Removed support for the legacy layout. Operator SDK has a new CLI and project layout that is aligned with Kubebuilder. ([#3327](https://github.com/operator-framework/operator-sdk/issues/3327)) ([#3343](https://github.com/operator-framework/operator-sdk/pull/3343)) ([#3547](https://github.com/operator-framework/operator-sdk/pull/3547)) ([#3566](https://github.com/operator-framework/operator-sdk/pull/3566)) ([#3343](https://github.com/operator-framework/operator-sdk/pull/3343)) ([#3466](https://github.com/operator-framework/operator-sdk/pull/3466)) ([#3531](https://github.com/operator-framework/operator-sdk/pull/3531)) ([#3451](https://github.com/operator-framework/operator-sdk/pull/3451)) ([#3414](https://github.com/operator-framework/operator-sdk/pull/3414)) ([#3414](https://github.com/operator-framework/operator-sdk/pull/3414)) ([#3414](https://github.com/operator-framework/operator-sdk/pull/3414)) ([#3414](https://github.com/operator-framework/operator-sdk/pull/3414)) ([#3385](https://github.com/operator-framework/operator-sdk/pull/3385)) ([#3406](https://github.com/operator-framework/operator-sdk/pull/3406))
 - **Breaking change**: Moved `pkg/log/zap` to `internal/log/zap`, therefore it is no longer a public API. ([#3525](https://github.com/operator-framework/operator-sdk/pull/3525))
 - **Breaking change**: Removed `pkg/predicate`: `ResourceFilterPredicate`. ([#3532](https://github.com/operator-framework/operator-sdk/pull/3532))
 - **Breaking change**: Refactored and moved `pkg/predicate.GenerationChangedPredicate` (see this [operator-lib PR](https://github.com/operator-framework/operator-lib/pull/11) for details). ([#3532](https://github.com/operator-framework/operator-sdk/pull/3532))
 - **Breaking change**: Removed `test` subcommand and the test framework `pkg/test`. ([#3409](https://github.com/operator-framework/operator-sdk/pull/3409))
-- **Breaking change**: Removed `pkg/k8sutils` and its helpers methods `GetWatchNamespace()`,  `GetOperatorNamespace()`, `GetOperatorName()`, `ResourceExists()`, `GetPod()`, `GetGVKsFromAddToScheme()` and `SupportsOwnerReference()`. ([#3475](https://github.com/operator-framework/operator-sdk/pull/3475))
-- **Breaking change**: Removed `pkg/kube-metrics` and its associated helpers `NewNamespacedMetricsStores()`,  `NewClusterScopedMetricsStores()`, `ServeMetrics()`, and `GenerateAndServeCRMetrics()`. ([#3484](https://github.com/operator-framework/operator-sdk/pull/3484))
+- **Breaking change**: Removed `pkg/k8sutils` and its helpers methods `GetWatchNamespace()`, `GetOperatorNamespace()`, `GetOperatorName()`, `ResourceExists()`, `GetPod()`, `GetGVKsFromAddToScheme()` and `SupportsOwnerReference()`. ([#3475](https://github.com/operator-framework/operator-sdk/pull/3475))
+- **Breaking change**: Removed `pkg/kube-metrics` and its associated helpers `NewNamespacedMetricsStores()`, `NewClusterScopedMetricsStores()`, `ServeMetrics()`, and `GenerateAndServeCRMetrics()`. ([#3484](https://github.com/operator-framework/operator-sdk/pull/3484))
 - **Breaking change**: Removed `pkg/leader` and `pkg/status`. These are now part of operator-lib. ([#3503](https://github.com/operator-framework/operator-sdk/pull/3503))
 - **Breaking change**: Removed `pkg/metrics` and its helpers `GenerateAndServeCRMetrics()` and `GetNamespacesForMetrics()`. ([#3484](https://github.com/operator-framework/operator-sdk/pull/3484))
 - **Breaking change**: Removed `pkg/ready` and its helper utils `Ready`, `Set()`, `Unset()`. ([#3476](https://github.com/operator-framework/operator-sdk/pull/3476))
@@ -178,7 +180,7 @@
 
 ### Bug Fixes
 
-- Fixed a bug that caused the Ansible operator not to set the environment variables `ANSIBLE_ROLES_PATH` and `ANSIBLE_COLLECTIONS_PATH` based on  the flags `--ansible-roles-path` and `--ansible-collections-path`. ([#3549](https://github.com/operator-framework/operator-sdk/pull/3549))
+- Fixed a bug that caused the Ansible operator not to set the environment variables `ANSIBLE_ROLES_PATH` and `ANSIBLE_COLLECTIONS_PATH` based on the flags `--ansible-roles-path` and `--ansible-collections-path`. ([#3549](https://github.com/operator-framework/operator-sdk/pull/3549))
 - Use group and kind instead of only kind when parsing manifests in the CSV generator to avoid marshaling them into the wrong Go types. ([#3334](https://github.com/operator-framework/operator-sdk/pull/3334))
 - Fixed issue that caused scorecard to fail loading local bundle due to a bug search method for the bundle metadata directory. ([#3408](https://github.com/operator-framework/operator-sdk/pull/3408))
 - Fixed CVE-2020-14040 by updating to `golang.org/x/text/0.3.3`. ([#3458](https://github.com/operator-framework/operator-sdk/pull/3458))
@@ -206,7 +208,7 @@
 - **Breaking change**: The Helm operator implementation in `pkg/helm` was moved to `internal/helm`. ([#3537](https://github.com/operator-framework/operator-sdk/pull/3537))
 - **Breaking change**: The Ansible operator's `--max-workers` flag and `WORKERS_<Kind>_<Group>` environment variable have been renamed to `--max-concurrent-reconciles` and `MAX_CONCURRENT_RECONCILES_<Kind>_<Group>` respectively. ([#3452](https://github.com/operator-framework/operator-sdk/pull/3452))
 - **Breaking change**: The `meta` variable passed to Ansible playbooks and roles has been renamed to `ansible_operator_meta`. ([#3562](https://github.com/operator-framework/operator-sdk/pull/3562))
-- **Breaking change**: The scorecard configuration is now implemented as a componentconfig object and now includes a new top-level `stages` field, which allows users to define stages of tests and to enable parallelism within each stage.  ([#3490](https://github.com/operator-framework/operator-sdk/pull/3490)) & ([#3434](https://github.com/operator-framework/operator-sdk/pull/3434))
+- **Breaking change**: The scorecard configuration is now implemented as a componentconfig object and now includes a new top-level `stages` field, which allows users to define stages of tests and to enable parallelism within each stage. ([#3490](https://github.com/operator-framework/operator-sdk/pull/3490)) & ([#3434](https://github.com/operator-framework/operator-sdk/pull/3434))
 - When a namespace is not provided on the command line, the scorecard command now looks for a namespace in the kubeconfig. If a namespace can not be found in the kubeconfig file, then 'default' is used. ([#3478](https://github.com/operator-framework/operator-sdk/pull/3478))
 - Use on-disk bundle metadata in scorecard (either unpacked from an image or directly if a directory is passed) as the source of truth for bundle metadata, and not image labels which are informative only. ([#3450](https://github.com/operator-framework/operator-sdk/pull/3450))
 - **Breaking change**: The `alpha scorecard` command has been promoted to the standard scorecard command. ([#3444](https://github.com/operator-framework/operator-sdk/pull/3444))
@@ -214,13 +216,14 @@
 - Ansible & Helm-based Operators switched to using the `InstrumentedEnqueueRequestForObject` from [operator-lib](https://github.com/operator-framework/operator-lib/blob/main/handler/instrumented_enqueue_object.go) instead of controller-runtime's `EnqueueRequestForObject`. ([#3523](https://github.com/operator-framework/operator-sdk/pull/3523))
 
 ### Removals
+
 - **Breaking change**: Removed support for the legacy layout. Operator SDK has a new CLI and project layout that is aligned with Kubebuilder. ([#3327](https://github.com/operator-framework/operator-sdk/issues/3327)) ([#3343](https://github.com/operator-framework/operator-sdk/pull/3343)) ([#3547](https://github.com/operator-framework/operator-sdk/pull/3547)) ([#3566](https://github.com/operator-framework/operator-sdk/pull/3566)) ([#3343](https://github.com/operator-framework/operator-sdk/pull/3343)) ([#3466](https://github.com/operator-framework/operator-sdk/pull/3466)) ([#3531](https://github.com/operator-framework/operator-sdk/pull/3531)) ([#3451](https://github.com/operator-framework/operator-sdk/pull/3451)) ([#3414](https://github.com/operator-framework/operator-sdk/pull/3414)) ([#3414](https://github.com/operator-framework/operator-sdk/pull/3414)) ([#3414](https://github.com/operator-framework/operator-sdk/pull/3414)) ([#3414](https://github.com/operator-framework/operator-sdk/pull/3414)) ([#3385](https://github.com/operator-framework/operator-sdk/pull/3385)) ([#3406](https://github.com/operator-framework/operator-sdk/pull/3406))
 - **Breaking change**: Moved `pkg/log/zap` to `internal/log/zap`, therefore it is no longer a public API. ([#3525](https://github.com/operator-framework/operator-sdk/pull/3525))
 - **Breaking change**: Removed `pkg/predicate`: `ResourceFilterPredicate`. ([#3532](https://github.com/operator-framework/operator-sdk/pull/3532))
 - **Breaking change**: Refactored and moved `pkg/predicate.GenerationChangedPredicate` (see this [operator-lib PR](https://github.com/operator-framework/operator-lib/pull/11) for details). ([#3532](https://github.com/operator-framework/operator-sdk/pull/3532))
 - **Breaking change**: Removed `test` subcommand and the test framework `pkg/test`. ([#3409](https://github.com/operator-framework/operator-sdk/pull/3409))
-- **Breaking change**: Removed `pkg/k8sutils` and its helpers methods `GetWatchNamespace()`,  `GetOperatorNamespace()`, `GetOperatorName()`, `ResourceExists()`, `GetPod()`, `GetGVKsFromAddToScheme()` and `SupportsOwnerReference()`. ([#3475](https://github.com/operator-framework/operator-sdk/pull/3475))
-- **Breaking change**: Removed `pkg/kube-metrics` and its associated helpers `NewNamespacedMetricsStores()`,  `NewClusterScopedMetricsStores()`, `ServeMetrics()`, and `GenerateAndServeCRMetrics()`. ([#3484](https://github.com/operator-framework/operator-sdk/pull/3484))
+- **Breaking change**: Removed `pkg/k8sutils` and its helpers methods `GetWatchNamespace()`, `GetOperatorNamespace()`, `GetOperatorName()`, `ResourceExists()`, `GetPod()`, `GetGVKsFromAddToScheme()` and `SupportsOwnerReference()`. ([#3475](https://github.com/operator-framework/operator-sdk/pull/3475))
+- **Breaking change**: Removed `pkg/kube-metrics` and its associated helpers `NewNamespacedMetricsStores()`, `NewClusterScopedMetricsStores()`, `ServeMetrics()`, and `GenerateAndServeCRMetrics()`. ([#3484](https://github.com/operator-framework/operator-sdk/pull/3484))
 - **Breaking change**: Removed `pkg/leader` and `pkg/status`. These are now part of operator-lib. ([#3503](https://github.com/operator-framework/operator-sdk/pull/3503))
 - **Breaking change**: Removed `pkg/metrics` and its helpers `GenerateAndServeCRMetrics()` and `GetNamespacesForMetrics()`. ([#3484](https://github.com/operator-framework/operator-sdk/pull/3484))
 - **Breaking change**: Removed `pkg/ready` and its helper utils `Ready`, `Set()`, `Unset()`. ([#3476](https://github.com/operator-framework/operator-sdk/pull/3476))
@@ -228,7 +231,7 @@
 
 ### Bug Fixes
 
-- Fixed a bug that caused the Ansible operator not to set the environment variables `ANSIBLE_ROLES_PATH` and `ANSIBLE_COLLECTIONS_PATH` based on  the flags `--ansible-roles-path` and `--ansible-collections-path`. ([#3549](https://github.com/operator-framework/operator-sdk/pull/3549))
+- Fixed a bug that caused the Ansible operator not to set the environment variables `ANSIBLE_ROLES_PATH` and `ANSIBLE_COLLECTIONS_PATH` based on the flags `--ansible-roles-path` and `--ansible-collections-path`. ([#3549](https://github.com/operator-framework/operator-sdk/pull/3549))
 - Use group and kind instead of only kind when parsing manifests in the CSV generator to avoid marshaling them into the wrong Go types. ([#3334](https://github.com/operator-framework/operator-sdk/pull/3334))
 - Fixed issue that caused scorecard to fail loading local bundle due to a bug search method for the bundle metadata directory. ([#3408](https://github.com/operator-framework/operator-sdk/pull/3408))
 - Fixed CVE-2020-14040 by updating to `golang.org/x/text/0.3.3`. ([#3458](https://github.com/operator-framework/operator-sdk/pull/3458))
@@ -243,7 +246,7 @@
 
 ### Bug Fixes
 
-- Fixed a bug that caused the Ansible operator not to set the environment variables `ANSIBLE_ROLES_PATH` and `ANSIBLE_COLLECTIONS_PATH` based on  the flags `--ansible-roles-path` and `--ansible-collections-path`. ([#3565](https://github.com/operator-framework/operator-sdk/pull/3565))
+- Fixed a bug that caused the Ansible operator not to set the environment variables `ANSIBLE_ROLES_PATH` and `ANSIBLE_COLLECTIONS_PATH` based on the flags `--ansible-roles-path` and `--ansible-collections-path`. ([#3565](https://github.com/operator-framework/operator-sdk/pull/3565))
 
 ## v0.19.0
 
@@ -253,14 +256,14 @@
 - The `operator-sdk` binary has a new CLI workflow and project layout for scaffolding Go operators that is aligned with Kubebuilder's CLI and project layout. See the new [Quickstart Guide](https://master.sdk.operatorframework.io/docs/building-operators/golang/quickstart/) and the new [CLI reference](https://master.sdk.operatorframework.io/docs/cli) for more details. ([#3190](https://github.com/operator-framework/operator-sdk/pull/3190))
 - `bundle validate` can now use a containerd image ("none") tool to unpack images, removing the need for an external image tool like docker/podman. ([#3222](https://github.com/operator-framework/operator-sdk/pull/3222))
 - The SDK `scorecard` command adds a new test image, scorecard-test-kuttl, that allows end users to write and execute kuttl based tests. ([#3278](https://github.com/operator-framework/operator-sdk/pull/3278))
-- Add "--olm-namespace" flag to olm subcommands (install, uninstall) to allow users to specify the  namespace where olm is to be installed or uninstalled. ([#3300](https://github.com/operator-framework/operator-sdk/pull/3300))
+- Add "--olm-namespace" flag to olm subcommands (install, uninstall) to allow users to specify the namespace where olm is to be installed or uninstalled. ([#3300](https://github.com/operator-framework/operator-sdk/pull/3300))
 - Add sdk annotations to bundle resources (CSVs, `annotations.yaml` and `bundle.dockerfile`). ([#3120](https://github.com/operator-framework/operator-sdk/pull/3120))
 - Add "--version" flag to olm subcommands (uninstall, status) to allow users to override the version of olm inferred from packageserver's CSV. ([#3279](https://github.com/operator-framework/operator-sdk/pull/3279))
 - Alias `run packagemanifests` as `run pm`. ([#3314](https://github.com/operator-framework/operator-sdk/pull/3314))
 - add `generate kustomize manifests` subcommand for new project layouts. ([#3258](https://github.com/operator-framework/operator-sdk/pull/3258))
 - add `generate packagemanifests` subcommand for legacy project layouts. ([#3149](https://github.com/operator-framework/operator-sdk/pull/3149))
 - add `generate packagemanifests` subcommand for new project layouts. ([#3096](https://github.com/operator-framework/operator-sdk/pull/3096))
-- Added predicate filtering function for labels based on selectors specified in watches.yaml.  Events of resources that match the selector's labels will be skipped. ([#3275](https://github.com/operator-framework/operator-sdk/pull/3275))
+- Added predicate filtering function for labels based on selectors specified in watches.yaml. Events of resources that match the selector's labels will be skipped. ([#3275](https://github.com/operator-framework/operator-sdk/pull/3275))
 - Add builds for `ansible-operator` and `helm-operator` binaries. ([#3363](https://github.com/operator-framework/operator-sdk/pull/3363))
 - Add new scorecard APIVersion "osdk.openshift.io/v1alpha3" and types. ([#3125](https://github.com/operator-framework/operator-sdk/pull/3125))
 
@@ -271,16 +274,16 @@
 - **Breaking change**: In Helm-based operators, the `UpdateError` condition reason was renamed to `UpgradeError` to better align with Helm nomenclature. ([#3269](https://github.com/operator-framework/operator-sdk/pull/3269))
 - Upgrade Helm dependency for Helm based-Operators from `v3.2.0` to `v3.2.4` in order to fix CVE-2020-4053. ([#3313](https://github.com/operator-framework/operator-sdk/pull/3313))
 - Change default value of `--overwrite` flag in `operator-sdk generate bundle` to true. ([#3280](https://github.com/operator-framework/operator-sdk/pull/3280))
-- The scorecard-test-kuttl image was updated to be based off the v0.5.1 version of kudobuilder/kuttl.  This update fixes bugs found in kuttl v0.5.0. ([#3369](https://github.com/operator-framework/operator-sdk/pull/3369))
+- The scorecard-test-kuttl image was updated to be based off the v0.5.1 version of kudobuilder/kuttl. This update fixes bugs found in kuttl v0.5.0. ([#3369](https://github.com/operator-framework/operator-sdk/pull/3369))
 - The `alpha scorecard` subcommand now outputs results as a [scorecard.operatorframework.io/v1alpha3 Test](https://github.com/operator-framework/operator-sdk/blob/v0.19.0/pkg/apis/scorecard/v1alpha3/types.go#L65) instead of a [scorecard.operatorframework.io/v1alpha2 ScorecardOutput](https://github.com/operator-framework/operator-sdk/blob/v0.19.0/pkg/apis/scorecard/v1alpha2/types.go#L58). As a result, the `--list` argument will now just output a list of tests, without associated labels. ([#3208](https://github.com/operator-framework/operator-sdk/pull/3208))
 
 ### Removals
 
-- The `operator-sdk new` command no longer supports scaffolding new Go projects with the `--type=Go` flag.  To scaffold new projects, users are expected to use `operator-sdk init` as part of the  [new CLI](https://master.sdk.operatorframework.io/docs/cli) for Go operators. ([#3190](https://github.com/operator-framework/operator-sdk/pull/3190))
+- The `operator-sdk new` command no longer supports scaffolding new Go projects with the `--type=Go` flag. To scaffold new projects, users are expected to use `operator-sdk init` as part of the [new CLI](https://master.sdk.operatorframework.io/docs/cli) for Go operators. ([#3190](https://github.com/operator-framework/operator-sdk/pull/3190))
 
 ### Deprecations
 
-- With the introduction of the new [Kubebuilder aligned CLI](https://master.sdk.operatorframework.io/docs/cli)  and project layout for Go operators, the [old CLI](https://sdk.operatorframework.io/docs/cli)  will still continue to work for Go projects scaffolded in the old layout with `operator-sdk new`. However the old CLI is now deprecated and will be removed in a future release. ([#3190](https://github.com/operator-framework/operator-sdk/pull/3190))
+- With the introduction of the new [Kubebuilder aligned CLI](https://master.sdk.operatorframework.io/docs/cli) and project layout for Go operators, the [old CLI](https://sdk.operatorframework.io/docs/cli) will still continue to work for Go projects scaffolded in the old layout with `operator-sdk new`. However the old CLI is now deprecated and will be removed in a future release. ([#3190](https://github.com/operator-framework/operator-sdk/pull/3190))
 - The migrate sub-command is deprecated. ([#3319](https://github.com/operator-framework/operator-sdk/pull/3319))
 - Deprecate 'operator-sdk add crd'. Use 'operator-sdk add api' instead. ([#3180](https://github.com/operator-framework/operator-sdk/pull/3180))
 - `bundle create` is deprecated in favor of a combination of `generate bundle` and `docker build -f bundle.Dockerfile ...`. ([#3323](https://github.com/operator-framework/operator-sdk/pull/3323))
@@ -315,7 +318,7 @@
 - Set a default channel to the channel supplied to 'bundle create --channels=<c>' if exactly one channel is set. ([#3124](https://github.com/operator-framework/operator-sdk/pull/3124))
 - Add '--kubeconfig' flag to '<run|cleanup> packagemanifests'. ([#3067](https://github.com/operator-framework/operator-sdk/pull/3067))
 - Add support for additional API creation for Anisble/Helm based operators. ([#2703](https://github.com/operator-framework/operator-sdk/pull/2703))
-- Add flag `--interactive` to the command `operator-sdk generate csv`  in order to enable working with interactive prompts while generating CSV. ([#2891](https://github.com/operator-framework/operator-sdk/pull/2891))
+- Add flag `--interactive` to the command `operator-sdk generate csv` in order to enable working with interactive prompts while generating CSV. ([#2891](https://github.com/operator-framework/operator-sdk/pull/2891))
 - Add new hidden alpha flag `--output` to print the result of `operator-sdk bundle validate` in JSON format to stdout. Logs are printed to stderr. ([#3011](https://github.com/operator-framework/operator-sdk/pull/3011))
 - Add 'run local' subcommand, which has the same functionality of the deprecated 'run --local' mode. ([#3067](https://github.com/operator-framework/operator-sdk/pull/3067))
 - Add scorecard-test image push targets into Makefile. ([#3107](https://github.com/operator-framework/operator-sdk/pull/3107))
@@ -347,7 +350,7 @@
 ### Bug Fixes
 
 - The Ansible Operator proxy will now return a 500 if it cannot determine whether a resource is virtual or not, instead of continuing on and skipping the cache. This will prevent resources that should have ownerReferences injected from being created without them, which would leave the user in a state that cannot be recovered without manual intervention. ([#3112](https://github.com/operator-framework/operator-sdk/pull/3112))
-- The Ansible Operator proxy no longer will attempt to cache non-status  subresource requests. This will fix the issue where attempting to get Pod logs returns the API Pod resource instead of the log contents. ([#3103](https://github.com/operator-framework/operator-sdk/pull/3103))
+- The Ansible Operator proxy no longer will attempt to cache non-status subresource requests. This will fix the issue where attempting to get Pod logs returns the API Pod resource instead of the log contents. ([#3103](https://github.com/operator-framework/operator-sdk/pull/3103))
 - Fix issue faced when the `healthz` endpoint is successfully called. ([#3102](https://github.com/operator-framework/operator-sdk/pull/3102))
 
 ## v0.17.1
@@ -364,7 +367,7 @@
 - Fixed issue to convert variables with numbers for Ansible based-operator. ([#2842](https://github.com/operator-framework/operator-sdk/pull/2842))
 - Added timeout to the Ansible based-operator proxy, which enables error reporting for requests that fail due to RBAC permissions issues to List and Watch the resources. ([#2264](https://github.com/operator-framework/operator-sdk/pull/2264))
 - CSV manifests read from disk are now properly marshaled into the CSV struct. ([#3015](https://github.com/operator-framework/operator-sdk/pull/3015))
-- Helm operator now applies its uninstall finalizer only when a release is deployed. This fixes a bug that caused the  CR to be unable to be deleted without manually intervening to delete a prematurely added finalizer. ([#3039](https://github.com/operator-framework/operator-sdk/pull/3039))
+- Helm operator now applies its uninstall finalizer only when a release is deployed. This fixes a bug that caused the CR to be unable to be deleted without manually intervening to delete a prematurely added finalizer. ([#3039](https://github.com/operator-framework/operator-sdk/pull/3039))
 
 ## v0.17.0
 
@@ -373,8 +376,8 @@
 - Added support for generating kube-state-metrics metrics for cluster-scoped resources. Also added `pkg/kubemetrics.NewNamespacedMetricsStores` and `pkg/kubemetrics.NewClusterScopedMetricsStores` to support this new feature. ([#2809](https://github.com/operator-framework/operator-sdk/pull/2809))
 - Added the [`generate csv --deploy-dir --apis-dir --crd-dir`](https://github.com/operator-framework/operator-sdk/blob/v0.17.0/website/content/en/docs/cli/operator-sdk_generate_csv.md#options) flags to allow configuring input locations for operator manifests and API types directories to the CSV generator in lieu of a config. See the CLI reference doc or `generate csv -h` help text for more details. ([#2511](https://github.com/operator-framework/operator-sdk/pull/2511))
 - Added the [`generate csv --output-dir`](https://github.com/operator-framework/operator-sdk/blob/v0.17.0/website/content/en/docs/cli/operator-sdk_generate_csv.md#options) flag to allow configuring the output location for the catalog directory. ([#2511](https://github.com/operator-framework/operator-sdk/pull/2511))
-- The flag `--watch-namespace` and `--operator-namespace` was added to `operator-sdk run --local`, `operator-sdk test --local` and `operator-sdk cleanup` commands in order to replace the flag `--namespace` which was  deprecated.([#2617](https://github.com/operator-framework/operator-sdk/pull/2617))
-- The methods `ctx.GetOperatorNamespace()` and `ctx.GetWatchNamespace()` was added `pkg/test` in order to replace `ctx.GetNamespace()` which is  deprecated. ([#2617](https://github.com/operator-framework/operator-sdk/pull/2617))
+- The flag `--watch-namespace` and `--operator-namespace` was added to `operator-sdk run --local`, `operator-sdk test --local` and `operator-sdk cleanup` commands in order to replace the flag `--namespace` which was deprecated.([#2617](https://github.com/operator-framework/operator-sdk/pull/2617))
+- The methods `ctx.GetOperatorNamespace()` and `ctx.GetWatchNamespace()` was added `pkg/test` in order to replace `ctx.GetNamespace()` which is deprecated. ([#2617](https://github.com/operator-framework/operator-sdk/pull/2617))
 - The `--crd-version` flag was added to the `new`, `add api`, `add crd`, and `generate crds` commands so that users can opt-in to `v1` CRDs. ([#2684](https://github.com/operator-framework/operator-sdk/pull/2684))
 - The printout for the compatible Kubernetes Version [#2446](https://github.com/operator-framework/operator-sdk/pull/2446)
 - The `--output-dir` flag instructs [`operator-sdk bundle create`](https://github.com/operator-framework/operator-sdk/blob/v0.17.0/website/content/en/docs/cli/operator-sdk_bundle_create.md) to write manifests and metadata to a non-default directory. ([#2715](https://github.com/operator-framework/operator-sdk/pull/2715))
@@ -396,14 +399,14 @@
 - Upgrade `operator-registry` version from `v1.5.7`to `v1.6.2`. ([#2715](https://github.com/operator-framework/operator-sdk/pull/2715))
 - **Breaking Change:** [`operator-sdk bundle create`](https://github.com/operator-framework/operator-sdk/blob/v0.17.0/website/content/en/docs/cli/operator-sdk_bundle_create.md) now creates a `manifests/` directory under the parent directory of the argument passed to `--directory`, and setting `--generate-only=true` writes a Dockerfile to `<project-root>/bundle.Dockerfile` that copies bundle manifests from that `manifests/` directory. ([#2715](https://github.com/operator-framework/operator-sdk/pull/2715))
 - Upgrade Kind used for tests for Ansible based-operators from `1.16` to `1.17`. ([#2753](https://github.com/operator-framework/operator-sdk/pull/2715))
-- **Breaking Change:** Upgrade Molecule for Ansible-based operators from `2.22` to `3.0.2`. For instructions on upgrading your project to use the V3 Molecule version see [here](https://github.com/ansible-community/molecule/issues/2560).  ([#2749](https://github.com/operator-framework/operator-sdk/pull/2749))
+- **Breaking Change:** Upgrade Molecule for Ansible-based operators from `2.22` to `3.0.2`. For instructions on upgrading your project to use the V3 Molecule version see [here](https://github.com/ansible-community/molecule/issues/2560). ([#2749](https://github.com/operator-framework/operator-sdk/pull/2749))
 - **Breaking Change:** Changed Conditions from `map[ConditionType]Condition` to `[]Condition`. ([#2739](https://github.com/operator-framework/operator-sdk/pull/2739))
 - Setting [`operator-sdk generate csv --output-dir`](https://github.com/operator-framework/operator-sdk/blob/v0.17.0/website/content/en/docs/cli/operator-sdk_generate_csv.md) will search the output directory for bundles before searching the default location. ([#2776](https://github.com/operator-framework/operator-sdk/pull/2776))
 
 ### Deprecated
 
 - Deprecated `pkg/kubemetrics.NewMetricsStores`. Use `pkg/kubemetrics.NewNamespacedMetricsStores` instead. ([#2809](https://github.com/operator-framework/operator-sdk/pull/2809))
-- **Breaking Change:** The `--namespace` flag from `operator-sdk run --local`, `operator-sdk test --local` and `operator-sdk cleanup` command was deprecated and will be removed in the future versions. Use `--watch-namespace` and `--operator-namespace`  instead of. ([#2617](https://github.com/operator-framework/operator-sdk/pull/2617))
+- **Breaking Change:** The `--namespace` flag from `operator-sdk run --local`, `operator-sdk test --local` and `operator-sdk cleanup` command was deprecated and will be removed in the future versions. Use `--watch-namespace` and `--operator-namespace` instead of. ([#2617](https://github.com/operator-framework/operator-sdk/pull/2617))
 - **Breaking Change:** The method `ctx.GetNamespace()` from the `pkg/test` is deprecated and will be removed in future versions. Use `ctx.GetOperatorNamespace()` and `ctx.GetWatchNamespace()` instead of. ([#2617](https://github.com/operator-framework/operator-sdk/pull/2617))
 - **Breaking Change:** package manifests are deprecated and new manifests are no longer generated; existing manifests are still updated by `operator-sdk generate csv`, but updates will not occur in future versions. Use [`operator-sdk bundle create`](https://github.com/operator-framework/operator-sdk/blob/v0.17.0/website/content/en/docs/cli/operator-sdk_bundle_create.md) to manage operator bundle metadata. ([#2755](https://github.com/operator-framework/operator-sdk/pull/2755))
 
@@ -425,7 +428,6 @@
 - Fix issue faced in the reconciliation when arrays are used in the config YAML files for Helm based-operators. ([#2777](https://github.com/operator-framework/operator-sdk/pull/2777))
 - Fixed issue in helm-operator where empty resource in release manifest caused failures while setting up watches for dependent resources. ([#2831](https://github.com/operator-framework/operator-sdk/pull/2831))
 
-
 ## v0.16.0
 
 ### Added
@@ -437,7 +439,7 @@
 - Add Prometheus metrics support to Ansible-based operators. ([#2179](https://github.com/operator-framework/operator-sdk/pull/2179))
 - On `generate csv`, populate a CSV manifest’s `spec.icon`, `spec.keywords`, and `spec.mantainers` fields with empty values to better inform users how to add data. ([#2521](https://github.com/operator-framework/operator-sdk/pull/2521))
 - Scaffold code in `cmd/manager/main.go` for Go operators and add logic to Ansible/Helm operators to handle [multinamespace caching](https://godoc.org/github.com/kubernetes-sigs/controller-runtime/pkg/cache#MultiNamespacedCacheBuilder) if `WATCH_NAMESPACE` contains multiple namespaces. ([#2522](https://github.com/operator-framework/operator-sdk/pull/2522))
-- Add a new flag option (`--skip-cleanup-error`) to the test framework to allow skip the function which will remove all artefacts when an error be faced to perform this operation.   ([#2512](https://github.com/operator-framework/operator-sdk/pull/2512))
+- Add a new flag option (`--skip-cleanup-error`) to the test framework to allow skip the function which will remove all artefacts when an error be faced to perform this operation. ([#2512](https://github.com/operator-framework/operator-sdk/pull/2512))
 - Add event stats output to the operator logs for Ansible based-operators. ([2580](https://github.com/operator-framework/operator-sdk/pull/2580))
 - Improve Ansible logs by allowing output the full Ansible result for Ansible based-operators configurable by environment variable. ([2589](https://github.com/operator-framework/operator-sdk/pull/2589))
 - Add the --max-workers flag to the commands operator-sdk exec-entrypoint and operator-sdk run --local for Helm based-operators with the purpose of controling the number of concurrent reconcile workers. ([2607](https://github.com/operator-framework/operator-sdk/pull/2607))
@@ -447,31 +449,33 @@
 - Add a new flag option `--olm-namespace` to `operator-sdk run --olm`, `operator-sdk cleanup --olm` and `operator-sdk olm status` command, which allows specifying the namespace in which OLM is installed. ([#2613](https://github.com/operator-framework/operator-sdk/pull/2613))
 
 ### Changed
+
 - The base image now includes version 0.10.3 of the OpenShift Python client. This should fix hanging in Python3
-- The Kubernetes modules have migrated to the [Kubernetes Ansible collection](https://github.com/ansible-collections/kubernetes). All scaffolded code now references modules from this collection instead of Ansible Core. No immediate action is required for existing users of the modules from core, though it is recommended they switch to using the collection to continue to get non-critical bugfixes and features. To install the collection, users will need to add the install step to their `build/Dockerfile`.  New projects will have a `requirements.yml` scaffolded that includes the `community.kubernetes` collection, as well as the corresponding install step in the `build/Dockerfile`. ([#2646](https://github.com/operator-framework/operator-sdk/pull/2646))
+- The Kubernetes modules have migrated to the [Kubernetes Ansible collection](https://github.com/ansible-collections/kubernetes). All scaffolded code now references modules from this collection instead of Ansible Core. No immediate action is required for existing users of the modules from core, though it is recommended they switch to using the collection to continue to get non-critical bugfixes and features. To install the collection, users will need to add the install step to their `build/Dockerfile`. New projects will have a `requirements.yml` scaffolded that includes the `community.kubernetes` collection, as well as the corresponding install step in the `build/Dockerfile`. ([#2646](https://github.com/operator-framework/operator-sdk/pull/2646))
 - **Breaking change** `The operator_sdk.util` collection is no longer installed by default in the base image. Existing projects will need to install it in the `build/Dockerfile`. New projects will have a `requirements.yml` scaffolded that includes the `operator_sdk.util` collection, as well as the corresponding install step in the `build/Dockerfile`. ([#2652](https://github.com/operator-framework/operator-sdk/pull/2652))
 - Ansible scaffolding has been rewritten to be simpler and make use of newer features of Ansible and Molecule. ([#2425](https://github.com/operator-framework/operator-sdk/pull/2425))
-    - No longer generates the build/test-framework directory or molecule/test-cluster scenario
-    - Adds new `cluster` scenario that can be used to test against an existing cluster
-    - There is no longer any Ansible templating done in the `deploy/` directory, any templates used for testing will be located in `molecule/templates/` instead.
-    - The scaffolded molecule.yml files now use the Ansible verifier. All asserts.yml files were renamed to verify.yml to reflect this.
-    - The prepare/converge/verify tasks now make use of the new `k8s` `wait` option to simplify the deployment logic.
+  - No longer generates the build/test-framework directory or molecule/test-cluster scenario
+  - Adds new `cluster` scenario that can be used to test against an existing cluster
+  - There is no longer any Ansible templating done in the `deploy/` directory, any templates used for testing will be located in `molecule/templates/` instead.
+  - The scaffolded molecule.yml files now use the Ansible verifier. All asserts.yml files were renamed to verify.yml to reflect this.
+  - The prepare/converge/verify tasks now make use of the new `k8s` `wait` option to simplify the deployment logic.
 - Operator user setup and entrypoint scripts no longer insert dynamic runtime user entries into `/etc/passwd`. To use dynamic runtime users, use a container runtime that supports it (e.g. CRI-O). ([#2469](https://github.com/operator-framework/operator-sdk/pull/2469))
 - Changed the scorecard basic test, `Writing into CRs has an effect`, to include the http.MethodPatch as part of its test criteria alongside http.MethodPut and http.MethodPost. ([#2509](https://github.com/operator-framework/operator-sdk/pull/2509))
-- Changed the scorecard to use the init-timeout configuration setting as a wait time when performing cleanup instead of a hard-coded time.  ([#2597](https://github.com/operator-framework/operator-sdk/pull/2597))
+- Changed the scorecard to use the init-timeout configuration setting as a wait time when performing cleanup instead of a hard-coded time. ([#2597](https://github.com/operator-framework/operator-sdk/pull/2597))
 - Upgrade the Helm dependency version from `v3.0.1` to `v3.0.2`. ([#2621](https://github.com/operator-framework/operator-sdk/pull/2621))
 - Changed the scaffolded `serveCRMetrics` to use the namespaces informed in the environment variable `WATCH_NAMESPACE` in the MultiNamespace scenario. ([#2603](https://github.com/operator-framework/operator-sdk/pull/2603))
 - Improve skip metrics logs when running the operator locally in order to make clear the information for Helm based operators. ([#2603](https://github.com/operator-framework/operator-sdk/pull/2603))
 
 ### Deprecated
+
 - The type name `TestCtx` in `pkg/test` has been deprecated and renamed to `Context`. It now exists only as a type alias to maintain backwards compatibility. Users of the e2e framework should migrate to use the new name, `Context`. The `TestCtx` alias will be removed in a future version. ([2549](https://github.com/operator-framework/operator-sdk/pull/2549))
 
 - The additional of the dependency `inotify-tools` on Ansible based-operator images. ([#2586](https://github.com/operator-framework/operator-sdk/pull/2586))
--  **Breaking Change:** The scorecard feature now only supports YAML config files. So, any config file with other extension is deprecated and should be changed for the YAML format. For further information see [`scorecard config file`](./website/content/en/docs/advanced-topics/scorecard/_index.md#config-file) ([#2591](https://github.com/operator-framework/operator-sdk/pull/2591))
+- **Breaking Change:** The scorecard feature now only supports YAML config files. So, any config file with other extension is deprecated and should be changed for the YAML format. For further information see [`scorecard config file`](./website/content/en/docs/advanced-topics/scorecard/_index.md#config-file) ([#2591](https://github.com/operator-framework/operator-sdk/pull/2591))
 
 ### Removed
 
--  **Breaking Change:** The additional Ansible sidecar container. ([#2586](https://github.com/operator-framework/operator-sdk/pull/2586))
+- **Breaking Change:** The additional Ansible sidecar container. ([#2586](https://github.com/operator-framework/operator-sdk/pull/2586))
 
 ### Bug Fixes
 
@@ -485,6 +489,7 @@
 ## v0.15.2
 
 ### Changed
+
 - Operator user setup and entrypoint scripts no longer insert dynamic runtime user entries into `/etc/passwd`. To use dynamic runtime users, use a container runtime that supports it (e.g. CRI-O). ([#2469](https://github.com/operator-framework/operator-sdk/pull/2469))
 
 ### Bug Fixes
@@ -542,6 +547,7 @@
 - Added support for override values with environment variable expansion in the `watches.yaml` file for Helm-based operators. ([#2325](https://github.com/operator-framework/operator-sdk/pull/2325))
 
 ### Changed
+
 - Replace usage of `github.com/operator-framework/operator-sdk/pkg/restmapper.DynamicRESTMapper` with `sigs.k8s.io/controller-runtime/pkg/client/apiutil.DynamicRESTMapper`. ([#2309](https://github.com/operator-framework/operator-sdk/pull/2309))
 - Upgraded Helm operator packages and base image from Helm v2 to Helm v3. Cluster state for pre-existing CRs using Helm v2-based operators will be automatically migrated to Helm v3's new release storage format, and existing releases may be upgraded due to changes in Helm v3's label injection. ([#2080](https://github.com/operator-framework/operator-sdk/pull/2080))
 - Fail `operator-sdk olm-catalog gen-csv` if it is not run from a project's root, which the command already assumes is the case. ([#2322](https://github.com/operator-framework/operator-sdk/pull/2322))
@@ -639,7 +645,7 @@
 - Added new `--version` flag to the `operator-sdk scorecard` command to support a new output format for the scorecard. ([#1916](https://github.com/operator-framework/operator-sdk/pull/1916)
 - Added new `--selector` flag to the `operator-sdk scorecard` command to support filtering scorecard tests based on labels added to each test. ([#1916](https://github.com/operator-framework/operator-sdk/pull/1916)
 - Added new `--list` flag to the `operator-sdk scorecard` command to support listing scorecard tests that would be executed based on selector filters. ([#1916](https://github.com/operator-framework/operator-sdk/pull/1916)
-- For scorecard version v1alpha2 only, return code logic was added to return 1 if any of the selected scorecard tests fail.  A return code of 0 is returned if all selected tests pass. ([#1916](https://github.com/operator-framework/operator-sdk/pull/1916)
+- For scorecard version v1alpha2 only, return code logic was added to return 1 if any of the selected scorecard tests fail. A return code of 0 is returned if all selected tests pass. ([#1916](https://github.com/operator-framework/operator-sdk/pull/1916)
 
 ### Changed
 
@@ -656,34 +662,37 @@
 - Upgrade Kubernetes version from `kubernetes-1.13.4` to `kubernetes-1.14.1` ([#1876](https://github.com/operator-framework/operator-sdk/pull/1876))
 - Upgrade `github.com/operator-framework/operator-lifecycle-manager` version from `b8a4faf68e36feb6d99a6aec623b405e587b17b1` to `0.10.1` ([#1876](https://github.com/operator-framework/operator-sdk/pull/1876))
 - Upgrade [`controller-runtime`](https://github.com/kubernetes-sigs/controller-runtime) version from `v0.1.12` to `v0.2.0` ([#1876](https://github.com/operator-framework/operator-sdk/pull/1876))
+
   - The package `sigs.k8s.io/controller-runtime/pkg/runtime/scheme` is deprecated, and contains no code. Replace this import with `sigs.k8s.io/controller-runtime/pkg/scheme` where relevant.
   - The package `sigs.k8s.io/controller-runtime/pkg/runtime/log` is deprecated. Replace this import with `sigs.k8s.io/controller-runtime/pkg/log` where relevant.
   - The package `sigs.k8s.io/controller-runtime/pkg/runtime/signals` is deprecated. Replace this import with `sigs.k8s.io/controller-runtime/pkg/manager/signals` where relevant.
   - All methods on [`sigs.k8s.io/controller-runtime/pkg/client.Client`](https://github.com/kubernetes-sigs/controller-runtime/blob/v0.2.0/pkg/client/interfaces.go#L104) (except for `Get()`) have been updated. Instead of each using a `struct`-typed or variadic functional option parameter, or having no option parameter, each now uses a variadic interface option parameter typed for each method. See `List()` below for an example.
   - [`sigs.k8s.io/controller-runtime/pkg/client.Client`](https://github.com/kubernetes-sigs/controller-runtime/blob/v0.2.0/pkg/client/interfaces.go#L104)'s `List()` method signature has been updated: `List(ctx context.Context, opts *client.ListOptions, list runtime.Object) error` is now [`List(ctx context.Context, list runtime.Object, opts ...client.ListOption) error`](https://github.com/kubernetes-sigs/controller-runtime/blob/v0.2.0/pkg/client/interfaces.go#L61). To migrate:
-      ```go
-      import (
-        "context"
 
-        "sigs.k8s.io/controller-runtime/pkg/client"
-      )
+    ```go
+    import (
+      "context"
 
-      ...
+      "sigs.k8s.io/controller-runtime/pkg/client"
+    )
 
-      // Old
-      listOpts := &client.ListOptions{}
-      listOpts.InNamespace("namespace")
-      err = r.client.List(context.TODO(), listOps, podList)
-      // New
-      listOpts := []client.ListOption{
-        client.InNamespace("namespace"),
-      }
-      err = r.client.List(context.TODO(), podList, listOpts...)
-      ```
+    ...
+
+    // Old
+    listOpts := &client.ListOptions{}
+    listOpts.InNamespace("namespace")
+    err = r.client.List(context.TODO(), listOps, podList)
+    // New
+    listOpts := []client.ListOption{
+      client.InNamespace("namespace"),
+    }
+    err = r.client.List(context.TODO(), podList, listOpts...)
+    ```
+
 - [`pkg/test.FrameworkClient`](https://github.com/operator-framework/operator-sdk/blob/v0.11.0/pkg/test/client.go#L33) methods `List()` and `Delete()` have new signatures corresponding to the homonymous methods of `sigs.k8s.io/controller-runtime/pkg/client.Client`. ([#1876](https://github.com/operator-framework/operator-sdk/pull/1876))
 - CRD file names were previously of the form `<group>_<version>_<kind>_crd.yaml`. Now that CRD manifest `spec.version` is deprecated in favor of `spec.versions`, i.e. multiple versions can be specified in one CRD, CRD file names have the form `<full group>_<resource>_crd.yaml`. `<full group>` is the full group name of your CRD while `<group>` is the last subdomain of `<full group>`, ex. `foo.bar.com` vs `foo`. `<resource>` is the plural lower-case CRD Kind found at `spec.names.plural`. ([#1876](https://github.com/operator-framework/operator-sdk/pull/1876))
 - Upgrade Python version from `2.7` to `3.6`, Ansible version from `2.8.0` to `~=2.8` and ansible-runner from `1.2` to `1.3.4` in the Ansible based images. ([#1947](https://github.com/operator-framework/operator-sdk/pull/1947))
-- Made the default scorecard version `v1alpha2` which is new for this release and could break users that were parsing the older scorecard output (`v1alpha1`).  Users can still specify version `v1alpha1` on the scorecard configuration to use the older style for some period of time until `v1alpha1` is removed.
+- Made the default scorecard version `v1alpha2` which is new for this release and could break users that were parsing the older scorecard output (`v1alpha1`). Users can still specify version `v1alpha1` on the scorecard configuration to use the older style for some period of time until `v1alpha1` is removed.
 - Replaced `pkg/kube-metrics.NewCollectors()` with `pkg/kube-metrics.NewMetricsStores()` and changed exported function signature for `pkg/kube-metrics.ServeMetrics()` due to a [breaking change in kube-state-metrics](https://github.com/kubernetes/kube-state-metrics/pull/786). ([#1943](https://github.com/operator-framework/operator-sdk/pull/1943))
 
 ### Deprecated
@@ -744,14 +753,14 @@
 - Remove TypeMeta declaration from the implementation of the objects ([#1462](https://github.com/operator-framework/operator-sdk/pull/1462/))
 - Relaxed API version format check when parsing `pkg/apis` in code generators. API dir structures can now be of the format `pkg/apis/<group>/<anything>`, where `<anything>` was previously required to be in the Kubernetes version format, ex. `v1alpha1`. ([#1525](https://github.com/operator-framework/operator-sdk/pull/1525))
 - The SDK and operator projects will work outside of `$GOPATH/src` when using [Go modules](https://github.com/golang/go/wiki/Modules). ([#1475](https://github.com/operator-framework/operator-sdk/pull/1475))
--  `CreateMetricsService()` function from the metrics package accepts a REST config (\*rest.Config) and an array of ServicePort objects ([]v1.ServicePort) as input to create Service metrics. `CRPortName` constant is added to describe the string of custom resource port name. ([#1560](https://github.com/operator-framework/operator-sdk/pull/1560) and [#1626](https://github.com/operator-framework/operator-sdk/pull/1626))
+- `CreateMetricsService()` function from the metrics package accepts a REST config (\*rest.Config) and an array of ServicePort objects ([]v1.ServicePort) as input to create Service metrics. `CRPortName` constant is added to describe the string of custom resource port name. ([#1560](https://github.com/operator-framework/operator-sdk/pull/1560) and [#1626](https://github.com/operator-framework/operator-sdk/pull/1626))
 - Changed the flag `--skip-git-init` to [`--git-init`](https://github.com/operator-framework/operator-sdk/blob/v0.9.0/doc/sdk-cli-reference.md#new). This changes the default behavior of `operator-sdk new` to not initialize the new project directory as a git repository with `git init`. This behavior is now opt-in with `--git-init`. ([#1588](https://github.com/operator-framework/operator-sdk/pull/1588))
 - `operator-sdk new` will no longer create the initial commit for a new project, even with `--git-init=true`. ([#1588](https://github.com/operator-framework/operator-sdk/pull/1588))
 - When errors occur setting up the Kubernetes client for RBAC role generation, `operator-sdk new --type=helm` now falls back to a default RBAC role instead of failing. ([#1627](https://github.com/operator-framework/operator-sdk/pull/1627))
 
 ### Removed
 
-- The SDK no longer depends on a `vendor/` directory to manage dependencies *only if* using [Go modules](https://github.com/golang/go/wiki/Modules). The SDK and operator projects will only use vendoring if using `dep`, or modules and a `vendor/` dir is present. ([#1519](https://github.com/operator-framework/operator-sdk/pull/1519))
+- The SDK no longer depends on a `vendor/` directory to manage dependencies _only if_ using [Go modules](https://github.com/golang/go/wiki/Modules). The SDK and operator projects will only use vendoring if using `dep`, or modules and a `vendor/` dir is present. ([#1519](https://github.com/operator-framework/operator-sdk/pull/1519))
 - **Breaking change:** `ExposeMetricsPort` is removed and replaced with `CreateMetricsService()` function. `PrometheusPortName` constant is replaced with `OperatorPortName`. ([#1560](https://github.com/operator-framework/operator-sdk/pull/1560))
 - Removes `Gopkg.toml` and `Gopkg.lock` to drop the use of `dep` in favor of [Go modules](https://github.com/golang/go/wiki/Modules) to manage dependencies for the SDK project itself. ([#1566](https://github.com/operator-framework/operator-sdk/pull/1566))
 
@@ -893,7 +902,7 @@
 ### Added
 
 - A new command [`operator-sdk migrate`](https://github.com/operator-framework/operator-sdk/blob/v0.4.0/doc/sdk-cli-reference.md#migrate) which adds a main.go source file and any associated source files for an operator that is not of the "go" type. ([#887](https://github.com/operator-framework/operator-sdk/pull/887) and [#897](https://github.com/operator-framework/operator-sdk/pull/897))
-- New commands [`operator-sdk run ansible`](https://github.com/operator-framework/operator-sdk/blob/v0.4.0/doc/sdk-cli-reference.md#ansible) and [`operator-sdk run helm`](https://github.com/operator-framework/operator-sdk/blob/v0.4.0/doc/sdk-cli-reference.md#helm) which run the SDK as ansible  and helm operator processes, respectively. These are intended to be used when running in a Pod inside a cluster. Developers wanting to run their operator locally should continue to use `up local`. ([#887](https://github.com/operator-framework/operator-sdk/pull/887) and [#897](https://github.com/operator-framework/operator-sdk/pull/897))
+- New commands [`operator-sdk run ansible`](https://github.com/operator-framework/operator-sdk/blob/v0.4.0/doc/sdk-cli-reference.md#ansible) and [`operator-sdk run helm`](https://github.com/operator-framework/operator-sdk/blob/v0.4.0/doc/sdk-cli-reference.md#helm) which run the SDK as ansible and helm operator processes, respectively. These are intended to be used when running in a Pod inside a cluster. Developers wanting to run their operator locally should continue to use `up local`. ([#887](https://github.com/operator-framework/operator-sdk/pull/887) and [#897](https://github.com/operator-framework/operator-sdk/pull/897))
 - Ansible operator proxy added the cache handler which allows the get requests to use the operators cache. [#760](https://github.com/operator-framework/operator-sdk/pull/760)
 - Ansible operator proxy added ability to dynamically watch dependent resource that were created by ansible operator. [#857](https://github.com/operator-framework/operator-sdk/pull/857)
 - Ansible-based operators have leader election turned on by default. When upgrading, add environment variable `POD_NAME` to your operator's Deployment using the Kubernetes downward API. To see an example, run `operator-sdk new --type=ansible ...` and see file `deploy/operator.yaml`.
@@ -958,6 +967,7 @@
 ## v0.1.1
 
 ### Bug fixes
+
 - Fix hardcoded CRD version in crd scaffold ([#690](https://github.com/operator-framework/operator-sdk/pull/690))
 
 ## v0.1.0

@@ -9,7 +9,7 @@
             </v-list-item-action>
             <v-list-item-content>
               <v-list-item-title>
-                Inspect 
+                Inspect
               </v-list-item-title>
             </v-list-item-content>
           </v-list-item>
@@ -21,7 +21,7 @@
               <v-icon>mdi-file-compare</v-icon>
             </v-list-item-action>
             <v-list-item-content>
-              Compare 
+              Compare
             </v-list-item-content>
           </v-list-item>
         </router-link>
@@ -32,7 +32,7 @@
               <v-icon>mdi-tray-full</v-icon>
             </v-list-item-action>
             <v-list-item-content>
-              Render Manifest 
+              Render Manifest
             </v-list-item-content>
           </v-list-item>
         </router-link>
@@ -43,20 +43,14 @@
               <v-icon>mdi-select-compare</v-icon>
             </v-list-item-action>
             <v-list-item-content>
-              Compare Manifest 
+              Compare Manifest
             </v-list-item-content>
           </v-list-item>
         </router-link>
-
       </v-list>
     </v-navigation-drawer>
 
-    <v-app-bar
-      app
-      color="primary"
-      dark
-      clipped-left
-    >
+    <v-app-bar app color="primary" dark clipped-left>
       <div class="d-flex align-center">
         <h1>Chart Viewer</h1>
       </div>
@@ -79,9 +73,8 @@
 </template>
 
 <script>
-
 export default {
-  name: 'App',
+  name: "App",
   data: () => ({
     drawer: null,
   }),
@@ -89,7 +82,7 @@ export default {
 </script>
 
 <style scoped>
-  .no-style {
-    text-decoration: none;
-  }
+.no-style {
+  text-decoration: none;
+}
 </style>

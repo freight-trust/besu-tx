@@ -7,6 +7,7 @@ weight: 4
 ## Getting started
 
 ### Requirements
+
 To begin, you sould have:
 
 - The latest version of the [operator-sdk](https://github.com/operator-framework/operator-sdk) installed.
@@ -16,7 +17,7 @@ To begin, you sould have:
 - [The OpenShift Python client](https://github.com/openshift/openshift-restclient-python) >= v0.8
 - An initialized Ansible Operator project, with the molecule directory present.
 
-**NOTE**  If you initialized a project with a previous version of operator-sdk, you can generate a new dummy project and copy in the `molecule` directory. Just be sure to generate the dummy project with the same `api-version` and `kind`, or some of the generated files will not work without modification. Your top-level project structure should look like this:
+**NOTE** If you initialized a project with a previous version of operator-sdk, you can generate a new dummy project and copy in the `molecule` directory. Just be sure to generate the dummy project with the same `api-version` and `kind`, or some of the generated files will not work without modification. Your top-level project structure should look like this:
 
     ```
     .
@@ -35,8 +36,10 @@ To begin, you sould have:
 - The Ansible content specified in `requirements.yml` will also need to be installed. You can install them with `ansible-galaxy collection install -r requirements.yml`
 
 <!-- TODO(fabianvf, asmacdo): update this section based on the new molecule scaffolding -->
+
 ### Molecule scenarios
-If you look into the `molecule` directory, you will see four directories (`default`, `test-local`,`cluster`, `templates`). The `default`, `test-local`, and `cluster` directories contain a set of files that together make up what is known as a molecule *scenario*. The `templates` directory contains Jinja templates that are used by multiple scenarios to configure the Kubernetes cluster.
+
+If you look into the `molecule` directory, you will see four directories (`default`, `test-local`,`cluster`, `templates`). The `default`, `test-local`, and `cluster` directories contain a set of files that together make up what is known as a molecule _scenario_. The `templates` directory contains Jinja templates that are used by multiple scenarios to configure the Kubernetes cluster.
 
 Our molecule scenarios have the following basic structure:
 
@@ -57,6 +60,7 @@ Our molecule scenarios have the following basic structure:
 Below we will walk through the structure and function of each file for each scenario.
 
 #### default
+
 The default scenario is intended for use during the development of your Ansible role or playbook, and will run it outside of the context of an operator. You can run this scenario with
 `molecule test` or `molecule converge`. There is no corresponding `operator-sdk` command for this scenario.
 
@@ -71,11 +75,11 @@ molecule/default
 ```
 
 - `molecule.yml` for this scenario tells molecule to use the docker driver to bring up a Kubernetes-in-Docker container,
-and by default exposes the API on the host's port 9443. It also specifies a few inventory and environment
-variables which are used in `prepare.yml` and `converge.yml`.
+  and by default exposes the API on the host's port 9443. It also specifies a few inventory and environment
+  variables which are used in `prepare.yml` and `converge.yml`.
 
 - `prepare.yml` ensures that a kubeconfig properly configured to connect to the Kubernetes-in-Docker cluster exists and
-is mapped to the proper port, and also waits for the Kubernetes API to become available before allowing testing to begin.
+  is mapped to the proper port, and also waits for the Kubernetes API to become available before allowing testing to begin.
 
 - `converge.yml` imports and runs your role or playbook.
 
@@ -88,11 +92,11 @@ You can change these parameters by setting the environment variable before invok
 
 The options supported by the default scenario are:
 
-| Environment variable | Default | Purpose |
-| :---                 | :---    | :---    |
-| KUBE_VERSION | 1.17 | The Kubernetes version to deploy |
-| TEST_CLUSTER_PORT | 9443 | The port on the host to expose the Kubernetes API |
-| TEST_OPERATOR_NAMESPACE | osdk-test | The namespace to run your role against |
+| Environment variable    | Default   | Purpose                                           |
+| :---------------------- | :-------- | :------------------------------------------------ |
+| KUBE_VERSION            | 1.17      | The Kubernetes version to deploy                  |
+| TEST_CLUSTER_PORT       | 9443      | The port on the host to expose the Kubernetes API |
+| TEST_OPERATOR_NAMESPACE | osdk-test | The namespace to run your role against            |
 
 #### cluster
 
@@ -134,14 +138,15 @@ You can change these parameters by setting the environment variable before invok
 
 The options supported by the default scenario are:
 
-| Environment variable | Default | Purpose |
-| :---                 | :---    | :---    |
-| OPERATOR_IMAGE | None | *Required* The image to use when deploying the operator into the cluster |
-| OPERATOR_PULL_POLICY | Always | The pull policy to use when deploying the operator into the cluster |
-| KUBECONFIG | ~/.kube/config | The path to the Kubeconfig for the cluster to test against |
-| TEST_OPERATOR_NAMESPACE | osdk-test | The namespace to run your role against |
+| Environment variable    | Default        | Purpose                                                                  |
+| :---------------------- | :------------- | :----------------------------------------------------------------------- |
+| OPERATOR_IMAGE          | None           | _Required_ The image to use when deploying the operator into the cluster |
+| OPERATOR_PULL_POLICY    | Always         | The pull policy to use when deploying the operator into the cluster      |
+| KUBECONFIG              | ~/.kube/config | The path to the Kubeconfig for the cluster to test against               |
+| TEST_OPERATOR_NAMESPACE | osdk-test      | The namespace to run your role against                                   |
 
 #### test-local
+
 The test-local scenario runs a full end-to-end test of your operator that does not require an existing
 cluster or external registry, and can run in CI environments that allow users to run privileged containers
 (such as Travis).
@@ -162,7 +167,7 @@ molecule/test-local
 - `molecule.yml` for this scenario tells molecule to use the docker driver to bring up a Kubernetes-in-Docker container with the project root mounted, and exposes the API on the host's port 10443. It also specifies a few inventory and environment variables which are used in `prepare.yml` and `converge.yml`. It is very similar to the default scenario's configuration.
 
 - `prepare.yml` first runs the `prepare.yml` from the default scenario to ensure the kubeconfig is present and the API is up.
-It then runs the `prepare.yml` from the cluster scenario to configure your cluster's CRDs and RBAC.
+  It then runs the `prepare.yml` from the cluster scenario to configure your cluster's CRDs and RBAC.
 
 - `converge.yml` connects to your Kubernetes-in-Docker container, and uses your mounted project root to build your Operator. This makes your Operator available to the cluster without needing to push it to an external registry. Then, it will ensure that a fresh deployment of your Operator is present in the cluster, using the template `molecule/templates/operator.yaml.j2`.
 
@@ -175,13 +180,14 @@ You can change these parameters by setting the environment variable before invok
 
 The options supported by the default scenario are:
 
-| Environment variable | Default | Purpose |
-| :---                 | :---    | :---    |
-| KUBE_VERSION | 1.17 | The Kubernetes version to deploy |
-| TEST_CLUSTER_PORT | 10443 | The port on the host to expose the Kubernetes API |
+| Environment variable    | Default   | Purpose                                                       |
+| :---------------------- | :-------- | :------------------------------------------------------------ |
+| KUBE_VERSION            | 1.17      | The Kubernetes version to deploy                              |
+| TEST_CLUSTER_PORT       | 10443     | The port on the host to expose the Kubernetes API             |
 | TEST_OPERATOR_NAMESPACE | osdk-test | The namespace to deploy the operator and associated resources |
 
 #### converge vs test
+
 The two most common molecule commands for testing during development are `molecule test` and `molecule converge`.
 `molecule test` performs a full loop, bringing a cluster up, preparing it, running your tasks, and tearing it down.
 `molecule converge` is more useful for iterative development, as it leaves your environment up between runs. This
@@ -194,6 +200,7 @@ will reset it.
 ## Writing tests
 
 ### Adding a task
+
 The default operator that is generated by `operator-sdk new` doesn't do anything, so first we will need to add an
 Ansible task so that the Operator does something we can verify. For this example, we will create a simple ConfigMap
 with a single key.
@@ -213,8 +220,6 @@ We'll be adding the task to `roles/example/tasks/main.yml`, which should now loo
       data:
         hello: world
 ```
-
-
 
 ### Adding a test
 
@@ -242,6 +247,7 @@ Now that we have a functional Operator, and an assertion of its behavior, we can
 by running `molecule test -s local`.
 
 #### The Ansible `assert` and `fail` modules
+
 These modules are handy for adding assertions and failure conditions to your Ansible Operator tests:
 
 - [assert](https://docs.ansible.com/ansible/latest/modules/assert_module.html)

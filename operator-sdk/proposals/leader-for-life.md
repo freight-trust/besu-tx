@@ -35,12 +35,12 @@ life" model, which does not allow for multiple concurrent leaders.
 
 ## Goals
 
-* Provide leader election that is easy to use
-* Provide leader election that prohibits multiple leaders
+- Provide leader election that is easy to use
+- Provide leader election that prohibits multiple leaders
 
 ## Non-Goals
 
-* Make operators highly available
+- Make operators highly available
 
 ## Solution
 

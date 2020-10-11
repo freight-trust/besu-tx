@@ -2,7 +2,7 @@
 - name: Create the test.example.com/v1alpha1.CollectionTest
   k8s:
     state: present
-    namespace: '{{ namespace }}'
+    namespace: "{{ namespace }}"
     definition:
       apiVersion: test.example.com/v1alpha1
       kind: CollectionTest

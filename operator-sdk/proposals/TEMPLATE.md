@@ -12,7 +12,7 @@ creation-date: yyyy-mm-dd
 last-updated: yyyy-mm-dd
 status: provisional|implementable|implemented|deferred|rejected|withdrawn|replaced
 see-also:
-  - "/proposals/this-other-neat-thing.md"  
+  - "/proposals/this-other-neat-thing.md"
 replaces:
   - "/proposals/that-less-than-great-idea.md"
 superseded-by:
@@ -26,6 +26,7 @@ title can help communicate what the enhancement is and should be considered as
 part of any review.
 
 To get started with this template:
+
 1. **Pick a domain.** Find the appropriate domain to discuss your enhancement.
 1. **Make a copy of this template.** Copy this template into the directory for
    the domain.
@@ -59,9 +60,10 @@ around the enhancement process.
 ## Open Questions (optional)
 
 This is where to call out areas of the design that require closure before deciding
-to implement the design.  For instance, 
- > 1. This requires exposing previously private resources which contain sensitive
-  information.  Can we do this? 
+to implement the design. For instance,
+
+> 1.  This requires exposing previously private resources which contain sensitive
+>     information. Can we do this?
 
 ## Summary
 
@@ -69,7 +71,7 @@ The `Summary` section is incredibly important for producing high quality
 user-focused documentation such as release notes or a development roadmap. It
 should be possible to collect this information before implementation begins in
 order to avoid requiring implementors to split their attention between writing
-release notes and implementing the feature itself. 
+release notes and implementing the feature itself.
 
 A good summary is probably at least a paragraph in length.
 
@@ -122,9 +124,10 @@ Consider including folks that also work outside your immediate sub-project.
 
 ### Test Plan
 
-**Note:** *Section not required until targeted at a release.*
+**Note:** _Section not required until targeted at a release._
 
 Consider the following in developing a test plan for this enhancement:
+
 - Will there be e2e and integration tests, in addition to unit tests?
 - How will it be tested in isolation vs with other components?
 
@@ -137,7 +140,7 @@ expectations).
 
 ### Graduation Criteria
 
-**Note:** *Section not required until targeted at a release.*
+**Note:** _Section not required until targeted at a release._
 
 Define graduation milestones.
 
@@ -147,6 +150,7 @@ determine graduation.
 
 Consider the following in developing the graduation criteria for this
 enhancement:
+
 - Maturity levels - `Dev Preview`, `Tech Preview`, `GA`
 - Deprecation
 
@@ -163,7 +167,7 @@ These are generalized examples to consider, in addition to the aforementioned ma
 - Sufficient test coverage
 - Gather feedback from users rather than just developers
 
-##### Tech Preview -> GA 
+##### Tech Preview -> GA
 
 - More testing (upgrade, downgrade, scale)
 - Sufficient time for feedback
@@ -184,6 +188,7 @@ is in the test plan.
 
 Consider the following in developing an upgrade/downgrade strategy for this
 enhancement:
+
 - What changes (in invocations, configurations, API use, etc.) is an existing
   cluster required to make on upgrade in order to keep previous behavior?
 - What changes (in invocations, configurations, API use, etc.) is an existing
@@ -196,6 +201,7 @@ What are the guarantees? Make sure this is in the test plan.
 
 Consider the following in developing a version skew strategy for this
 enhancement:
+
 - During an upgrade, we will always have skew among components, how will this impact your work?
 - Does this enhancement involve coordinating behavior in the control plane and
   in the kubelet? How does an n-2 kubelet without this feature available behave
@@ -205,8 +211,7 @@ enhancement:
 
 ## Implementation History
 
-Major milestones in the life cycle of a proposal should be tracked in `Implementation
-History`.
+Major milestones in the life cycle of a proposal should be tracked in `Implementation History`.
 
 ## Drawbacks
 
@@ -226,4 +231,4 @@ subproject, repos requested, github details, and/or testing infrastructure.
 Listing these here allows the community to get the process for these resources
 started right away.
 
-[operator-sdk-doc]:  https://sdk.operatorframework.io/
+[operator-sdk-doc]: https://sdk.operatorframework.io/

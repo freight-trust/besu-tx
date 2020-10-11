@@ -23,13 +23,11 @@ status: implementable
 - Design details are appropriately documented from clear requirements
 - Test plan is defined
 
-
 ## Summary
 
 An operator project scaffolded with the Operator SDK will primarily use library code that lives upstream in the controller-runtime project. There is a small set of packages in the SDK that extends the functionality of the controller-runtime APIs to cover more specific use cases. Most of these features along with their documentation should be contributed upstream to the controller-runtime.
 
 Additionally the Operator SDK is preparing to use Kubebuilder for scaffolding Go operator projects for better alignment with the upstream community. See [kubebuilder-project-board][kubebuilder-project-board] and [upstream proposal for the integration of Operator SDK and Kubebuilder][sdk-kubebuilder-integration-proposal]. As part of this integration some features from the SDK’s scaffolding machinery need to be contributed upstream to Kubebuilder before the SDK can use Kubebuilder as its upstream.
-
 
 ## Motivation
 
@@ -37,14 +35,12 @@ Contributing the extra features in the SDK to the controller-runtime would make 
 
 Contributing scaffolding enhancements to Kubebuilder that cover the SDK’s use cases removes blockers in the SDK’s proposal to use Kubebuilder as upstream, and helps align the SDK and Kubebuilder on a common project layout and workflow.
 
-
 ### Goals
 
 - The packages and features that are suitable for upstream contribution should be made available in the controller-runtime such that they cover the same use cases.
-- Downstream SDK users can easily switch over to using those features in the controller-runtime. In most cases this should amount to just changing the import paths. For function signature changes there should be documentation to explain the breaking changes.  
+- Downstream SDK users can easily switch over to using those features in the controller-runtime. In most cases this should amount to just changing the import paths. For function signature changes there should be documentation to explain the breaking changes.
 - The contributed features should have sufficient documentation in the upstream godocs.
 - Once available upstream, those packages and APIs should be marked as deprecated and eventually removed from the SDK.
-
 
 ### Non-Goals
 
@@ -52,11 +48,9 @@ Contributing scaffolding enhancements to Kubebuilder that cover the SDK’s use 
   - For instance the test-framework library is closely tied to the SDK’s testing workflow and not generally applicable outside SDK projects.
   - The SDK's leader-for-life leader election package already has an alternative in the controller-runtime’s leader election package which uses lease based leader election.
 
-
 ## Proposal
 
 The user stories outline the individual features that are suitable for upstream contribution. Some of these features may already be merged upstream or are currently under review.
-
 
 ### User Stories
 
@@ -66,13 +60,11 @@ The default RestMapper used in the controller-runtime will not update to reflect
 
 The SDK has pkg/restmapper (see [operator-sdk #1329][operator-sdk-1329]) that provides a dynamic RestMapper which will reload the cached rest mappings on lookup errors due to a stale cache. This dynamic restmapper is currently under review for upstream contribution with some improvements like thread safety and rate limiting. See [controller-runtime #554][controller-runtime-554].
 
-
 #### Story 2 - GenerationChangedPredicate that can filter watch events with no generation change
 
 The SDK provides a predicate called GenerationChangedPredicate in [pkg/predicate][sdk-pkg-predicate] that will filter out update events for objects that have no change in their metadata.Generation. This is commonly used for ignoring update events for CustomResource objects that only have their status block updated with no change to the spec block.
 
 This feature has already been incorporated upstream with godocs on the predicate and its caveats. See [controller-runtime-553][controller-runtime-553] and [GenerationChangedPredicate godocs][gen-change-predicate-godocs].
-
 
 #### Story 3 - Add command line flags to make the controller-runtime’s zap based logger configurable
 
@@ -82,7 +74,6 @@ The controller-runtime’s zap based logger has recently been made configurable 
 
 Ideally the flagset for setting all the logger configurations could also live upstream but given that the controller-runtime’s [pkg/log/zap][cr-pkg-log-zap] allows instantiating multiple zap loggers with different configs, it may not be suitable to have a global flagset that provides a singular configuration for all instantiated loggers.
 This point needs more discussion and it’s possible that the configuration flags may have to live downstream in the SDK.
-
 
 #### Story 4 - Operator Developers can use SDK’s method of building images that run as non-root users in Kubebuilder projects
 
@@ -94,9 +85,8 @@ Operator SDK scaffolds a project Dockerfile such that it runs as non-root by def
 - [internal/pkg/scaffold/entrypoint.go][sdk-scaffold-entrypoint]
 - [internal/pkg/scaffold/usersetup.go][sdk-scaffold-user-setup]
 
-Kubebuilder should support scaffolding projects that will allow the base image to run as non-root and support arbitrary user ids. 
+Kubebuilder should support scaffolding projects that will allow the base image to run as non-root and support arbitrary user ids.
 Currently with [kubebuilder #983][kubebuilder-983], a non-root base image should be supported by Kubebuilder.
-
 
 #### Story 5 - Operator Developers can use the prometheus-operator’s ServiceMonitor API to configure prometheus to scrape their operator metrics in Kubebuilder projects
 
@@ -104,12 +94,9 @@ The Operator SDK’s [pkg/metrics][sdk-pkg-metrics] has helpers that let’s ope
 
 Instead of having this functionality live in controller-runtime as helpers that can be called to setup ServiceMonitors, this can added as manifests that are scaffolded by Kubebuilder for an operator project. This would be similar to other resources that need to be created alongside the operator and can be customized in the manifest. Upstream issue at [kubebuilder #887][kubebuilder-887].
 
-
 #### Story 6 - Operator Developers have documentation that demonstrates how to create and expose custom operator metrics
 
 Once Kubebuilder supports scaffolding ServiceMonitor manifests, the [Kubebuilder book][kubebuilder-book] documentation on [recording custom metrics][recording-custom-metrics] should be extended to show how to expose these metrics via the ServiceMonitor.
-
-
 
 ### Risks and Mitigations
 
@@ -118,13 +105,11 @@ Before the features are removed from the SDK they should first be deprecated in 
 
 The features that have replacements in kubebuilder will need to wait until the SDK is ready to upstream kubebuilder for Go operators before being removed.
 
-
 ### Test Plan
 
 All library features being upstreamed into the controller-runtime would need to have unit tests to run as part of its CI.
 
 Similarly any scaffolding and manifest changes to Kubebuilder would need e2e tests that verify the effects of those manifest changes as part of Kubebuilder’s CI.
-
 
 [kubebuilder-project-board]: https://github.com/kubernetes-sigs/kubebuilder/projects/7
 [sdk-kubebuilder-integration-proposal]: https://github.com/kubernetes-sigs/kubebuilder/blob/992ecdfd3f47e4cca79937a4fd46a0ee10f477d7/designs/integrating-kubebuilder-and-osdk.md

@@ -1,18 +1,17 @@
 ---
 title: "operator-sdk generate kustomize manifests"
 ---
+
 ## operator-sdk generate kustomize manifests
 
 Generates kustomize bases and a kustomization.yaml for operator-framework manifests
 
 ### Synopsis
 
-
 Running 'generate kustomize manifests' will (re)generate kustomize bases and a kustomization.yaml in
 'config/manifests', which are used to build operator-framework manifests by other operator-sdk commands.
 This command will interactively ask for UI metadata, an important component of manifest bases,
 by default unless a base already exists or you set '--interactive=false'.
-
 
 ```
 operator-sdk generate kustomize manifests [flags]
@@ -63,5 +62,4 @@ operator-sdk generate kustomize manifests [flags]
 
 ### SEE ALSO
 
-* [operator-sdk generate kustomize](../operator-sdk_generate_kustomize)	 - Contains subcommands that generate operator-framework kustomize data for the operator
-
+- [operator-sdk generate kustomize](../operator-sdk_generate_kustomize) - Contains subcommands that generate operator-framework kustomize data for the operator

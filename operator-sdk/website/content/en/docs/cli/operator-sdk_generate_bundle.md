@@ -1,12 +1,12 @@
 ---
 title: "operator-sdk generate bundle"
 ---
+
 ## operator-sdk generate bundle
 
 Generates bundle data for the operator
 
 ### Synopsis
-
 
 Running 'generate bundle' is the first step to publishing your operator to a catalog and/or deploying it with OLM.
 This command generates a set of bundle manifests, metadata, and a bundle.Dockerfile for your operator.
@@ -20,7 +20,6 @@ either manually update your bundle.Dockerfile or set '--overwrite'.
 
 More information on bundles:
 https://github.com/operator-framework/operator-registry/#manifest-format
-
 
 ```
 operator-sdk generate bundle [flags]
@@ -103,5 +102,4 @@ operator-sdk generate bundle [flags]
 
 ### SEE ALSO
 
-* [operator-sdk generate](../operator-sdk_generate)	 - Invokes a specific generator
-
+- [operator-sdk generate](../operator-sdk_generate) - Invokes a specific generator

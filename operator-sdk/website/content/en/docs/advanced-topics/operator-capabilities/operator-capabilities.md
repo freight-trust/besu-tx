@@ -10,7 +10,6 @@ Operators come in different maturity levels in regards to their lifecycle manage
 
 Each capability level is associated with a certain set of management features the Operator offers around the managed workload. Operator that do not manage a workload and/or are delegating to off-clusters orchestration services would remain at Level 1. Capability levels are accumulating, i.e. Level 3 capabilities require all capabilities desired from Level 1 and 2.
 
-
 ## Terminology
 
 **Operator** - the custom controller installed on a Kubernetes cluster
@@ -72,13 +71,13 @@ Automated application provisioning and configuration management. This first capa
 
 Seamless upgrades mean the upgrade is as easy as possible for the user. You should support seamless upgrades of both your operator and operand, these would normally go hand in hand, an upgrade of the operator would automatically ensure the instantiated resources for each CR are in the new desired state and which would upgrade your operand. Upgrade may also be defined in multiple ways, such as updating the software of the operand - and other internals specific to the application - such as schema migrations. It should be very clear what is upgraded when this takes place, and what is not.
 
-### Upgrade of the managed workload**
+### Upgrade of the managed workload\*\*
 
 - Operand can be upgraded in the process of upgrading the Operator, or
 - Operand can be upgraded as part of changing the CR
 - Operator understands how to upgrade older versions of the Operand, managed previously by an older version of the Operator
 
-### Upgrade of the Operator**
+### Upgrade of the Operator\*\*
 
 - Operator can be upgraded seamlessly and can either still manage older versions of the Operand or update them
 - Operator conveys inability to manage an unsupported version of the Operand in the `status` section of the CR
@@ -97,15 +96,13 @@ Seamless upgrades mean the upgrade is as easy as possible for the user. You shou
 
 5. If there is downtime during an upgrade, does the Operator convey this in the `status` of the CR?
 
-
 ---
 
 ## Level 3 - Full Lifecycle
 
 It should be possible to backup and restore the operand from the operator itself without any additional manual intervention other than triggering these operations. The operand data that should be backed up is any stateful data managed by the operand. You don’t need to backup the CR itself or the k8s resources created by the operator as the operator should return all resources to the same state if the CR is recreated. If your operator does not already setup the operand with other k8s resilient best practices, this should be completed to achieve this capability level. This includes liveness and readiness probes, multiple replicas, rolling deployment strategies, pod disruption budgets, CPU and memory requests and limits.
 
-
-### Lifecycle features**
+### Lifecycle features\*\*
 
 - Operator provides the ability to create backups of the Operand
 - Operator is able to restore a backup of an Operand
@@ -138,15 +135,13 @@ It should be possible to backup and restore the operand from the operator itself
 
 10. Does your operand have CPU requests and limits set?
 
-
-
 ---
 
 ## Level 4 - Deep Insights
 
 Setup full monitoring and alerting for your operand. All resources such as Prometheus rules (alerts) and Grafana dashboards should be created by the operator when the operand CR is instantiated. The RED method<sup>1</sup> is a good place to start with knowing what metrics to expose.
 Aim to have as few alerts as possible, by alerting on symptoms that are associated with end-user pain rather than trying to catch every possible way that pain could be caused. Alerts should link to relevant consoles and make it easy to figure out which component is at fault
-Native k8s objects emit events (“Events” objects) as their states change. Your operator should do similar for state changes related to your operand. “Custom”, here, means that it should emit events specific to your operator/operand outside of the events already emitted by their deployment methodology.  This, in conjunction with status descriptors, give much needed visibility into actions taken by your operator/operand. Operators are codified domain-specific knowledge. Your end user should not need this domain-specific knowledge to gain visibility into what’s happening with their resource.
+Native k8s objects emit events (“Events” objects) as their states change. Your operator should do similar for state changes related to your operand. “Custom”, here, means that it should emit events specific to your operator/operand outside of the events already emitted by their deployment methodology. This, in conjunction with status descriptors, give much needed visibility into actions taken by your operator/operand. Operators are codified domain-specific knowledge. Your end user should not need this domain-specific knowledge to gain visibility into what’s happening with their resource.
 
 ### Monitoring
 
@@ -170,21 +165,22 @@ Native k8s objects emit events (“Events” objects) as their states change. Yo
 
 2. Does your Operator expose Operand alerts?
 
-4. Do you have Standard Operating Procedures (SOPs) for each alert?
+3. Do you have Standard Operating Procedures (SOPs) for each alert?
 
-5. Does you operator create critical alerts when the service is down and warning alerts for all other alerts?
+4. Does you operator create critical alerts when the service is down and warning alerts for all other alerts?
 
-6. Does your Operator watch the Operand to create alerts?
+5. Does your Operator watch the Operand to create alerts?
 
-7. Does your Operator emit custom Kubernetes events?
+6. Does your Operator emit custom Kubernetes events?
 
-8. Does your Operator expose Operand performance metrics?
+7. Does your Operator expose Operand performance metrics?
 
 <sup>1</sup> The RED method  
 The RED Method defines the three key metrics for every service in your architecture.
-* Rate (the number of requests per second)
-* Errors (the number of those requests that are failing)
-* Duration (the amount of time those requests take)
+
+- Rate (the number of requests per second)
+- Errors (the number of those requests that are failing)
+- Duration (the amount of time those requests take)
 
 ---
 
@@ -215,7 +211,7 @@ The highest capability level aims to significantly reduce/eliminate any remainin
 
 **Guiding questions to determine Operator reaching Level 5**
 
-1. Can your operator read metrics such as requests per second or other relevant metrics and auto-scale horizontally or vertically, i.e., increasing the number of pods or  resources used by pods?
+1. Can your operator read metrics such as requests per second or other relevant metrics and auto-scale horizontally or vertically, i.e., increasing the number of pods or resources used by pods?
 
 2. Based on question number 1 can it scale down or decrease the number of pods or the total amount of resources used by pods?
 
@@ -226,4 +222,3 @@ The highest capability level aims to significantly reduce/eliminate any remainin
 5. Can it move the workloads to better nodes, storage or networks to do so?
 
 6. Can it detect and alert when anything is working below the learned performance baseline that can’t be corrected automatically?
-

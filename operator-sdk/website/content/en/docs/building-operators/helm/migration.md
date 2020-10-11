@@ -7,17 +7,16 @@ description: Instructions for migrating a legacy Helm-based project to use the n
 
 ## Overview
 
-The motivations for the new layout are related to bringing more flexibility to users and 
+The motivations for the new layout are related to bringing more flexibility to users and
 part of the process to [Integrating Kubebuilder and Operator SDK][integration-doc].
 
 ### What was changed
- 
+
 - The `deploy` directory was replaced with the `config` directory including a new layout of Kubernetes manifests files:
-    * CRD manifests in `deploy/crds/` are now in `config/crd/bases`
-    * CR manifests in `deploy/crds/` are now in `config/samples`
-    * Controller manifest `deploy/operator.yaml` is now in `config/manager/manager.yaml` 
-    * RBAC manifests in `deploy` are now in `config/rbac/`
-    
+  - CRD manifests in `deploy/crds/` are now in `config/crd/bases`
+  - CR manifests in `deploy/crds/` are now in `config/samples`
+  - Controller manifest `deploy/operator.yaml` is now in `config/manager/manager.yaml`
+  - RBAC manifests in `deploy` are now in `config/rbac/`
 - `build/Dockerfile` is moved to `Dockerfile` in the project root directory
 
 ### What is new
@@ -30,9 +29,9 @@ Projects are now scaffold using:
 
 ## How to migrate
 
-The easy migration path is to create a new project from the scratch and let the tool scaffold the files properly and then, 
-just replace with your customizations and implementations. Following an example. 
- 
+The easy migration path is to create a new project from the scratch and let the tool scaffold the files properly and then,
+just replace with your customizations and implementations. Following an example.
+
 ### Creating a new project
 
 In Kubebuilder-style projects, CRD groups are defined using two different flags
@@ -63,6 +62,7 @@ Using our API example from earlier (`cache.example.com`), we'll use `cache` for 
 For `--version` and `--kind`, we use `spec.versions[0].name` and `spec.names.kind`, respectively.
 
 For each API in the existing project, run:
+
 ```sh
 operator-sdk create api \
     --group=cache \
@@ -88,7 +88,7 @@ Check if you have custom options in the `watches.yaml` file of your existing pro
 # +kubebuilder:scaffold:watch
 ```
 
-**NOTE**: Do not remove the `+kubebuilder:scaffold:watch` [marker][marker]. It allows the tool to update the watches file when new APIs are created. 
+**NOTE**: Do not remove the `+kubebuilder:scaffold:watch` [marker][marker]. It allows the tool to update the watches file when new APIs are created.
 
 ### Checking the Permissions (RBAC)
 
@@ -96,53 +96,53 @@ In your new project, roles are automatically generated in `config/rbac/role.yaml
 If you modified these permissions manually in `deploy/role.yaml` in your existing
 project, you need to re-apply them in `config/rbac/role.yaml`.
 
-New projects are configured to watch all namespaces by default, so they need a `ClusterRole` to have the necessary permissions. Ensure that `config/rbac/role.yaml` remains a `ClusterRole` if you want to retain the default behavior of the new project conventions. For further information refer to the [operator scope][operator-scope] documentation.  
+New projects are configured to watch all namespaces by default, so they need a `ClusterRole` to have the necessary permissions. Ensure that `config/rbac/role.yaml` remains a `ClusterRole` if you want to retain the default behavior of the new project conventions. For further information refer to the [operator scope][operator-scope] documentation.
 
 The following rules were used in earlier versions of helm-operator to automatically create and manage services and servicemonitors for metrics collection. If your operator's charts don't require these rules, they can safely be left out of the new `config/rbac/role.yaml` file:
 
-```yaml  
-  - apiGroups:
+```yaml
+- apiGroups:
     - monitoring.coreos.com
-    resources:
+  resources:
     - servicemonitors
-    verbs:
+  verbs:
     - get
     - create
-  - apiGroups:
+- apiGroups:
     - apps
-    resourceNames:
+  resourceNames:
     - memcached-operator
-    resources:
+  resources:
     - deployments/finalizers
-    verbs:
+  verbs:
     - update
 ```
 
 ### Configuring your Operator
 
-If your existing project has customizations in `deploy/operator.yaml`, they need to be ported to 
+If your existing project has customizations in `deploy/operator.yaml`, they need to be ported to
 `config/manager/manager.yaml`. If you are passing custom arguments in your deployment, make sure to also update `config/default/auth_proxy_patch.yaml`.
 
-Note that the following environment variables are no longer used. 
+Note that the following environment variables are no longer used.
 
 - `OPERATOR_NAME` is deprecated. It is used to define the name for a leader election config map. Operator authors should begin using `--leader-election-id` instead.
 - `POD_NAME` was used to enable a particular pod to hold the leader election lock when the Helm operator used the leader for life mechanism. Helm operator now uses controller-runtime's leader with lease mechanism, and `POD_NAME` is no longer necessary.
 
-## Exporting metrics 
+## Exporting metrics
 
-If you are using metrics and would like to keep them exported you will need to configure 
-it in the `config/default/kustomization.yaml`. Please see the [metrics][metrics] doc to know how you can perform this setup. 
+If you are using metrics and would like to keep them exported you will need to configure
+it in the `config/default/kustomization.yaml`. Please see the [metrics][metrics] doc to know how you can perform this setup.
 
-The default port used by the metric endpoint binds to was changed from `:8383` to `:8080`. To continue using port `8383`, specify `--metrics-addr=:8383` when you start the operator. 
+The default port used by the metric endpoint binds to was changed from `:8383` to `:8080`. To continue using port `8383`, specify `--metrics-addr=:8383` when you start the operator.
 
 ## Checking the changes
 
-Finally, follow the steps in the section [Build and run the operator][build-and-run-the-operator] to verify your project is running. 
+Finally, follow the steps in the section [Build and run the operator][build-and-run-the-operator] to verify your project is running.
 
 [quickstart]: /docs/building-operators/helm/quickstart
 [integration-doc]: https://github.com/kubernetes-sigs/kubebuilder/blob/master/designs/integrating-kubebuilder-and-osdk.md
 [build-and-run-the-operator]: /docs/building-operators/helm/tutorial#build-and-run-the-operator
-[kustomize]: https://github.com/kubernetes-sigs/kustomize 
-[kube-auth-proxy]: https://github.com/brancz/kube-rbac-proxy 
+[kustomize]: https://github.com/kubernetes-sigs/kustomize
+[kube-auth-proxy]: https://github.com/brancz/kube-rbac-proxy
 [metrics]: https://book.kubebuilder.io/reference/metrics.html?highlight=metr#metrics
 [marker]: https://book.kubebuilder.io/reference/markers.html?highlight=markers#marker-syntax

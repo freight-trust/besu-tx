@@ -19,6 +19,7 @@ $ cat config/manager/manager.yaml
 ```
 
 While running locally, this flag can also be added to the helm binary. For example, running `helm-operator` binary with the above mentioned flag would give us a similar result:
+
 ```
 helm-operator --max-concurrent-reconciles=10
 ```

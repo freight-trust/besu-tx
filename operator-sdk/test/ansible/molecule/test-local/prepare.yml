@@ -8,19 +8,19 @@
   gather_facts: no
 
   tasks:
-  - name: Dump the dev image
-    command: docker save -o /tmp/dev-operator.tar quay.io/operator-framework/ansible-operator:dev
+    - name: Dump the dev image
+      command: docker save -o /tmp/dev-operator.tar quay.io/operator-framework/ansible-operator:dev
 
-  - name: Copy the image to the kind container
-    command: docker cp /tmp/dev-operator.tar kind-test-local:/dev-operator.tar
+    - name: Copy the image to the kind container
+      command: docker cp /tmp/dev-operator.tar kind-test-local:/dev-operator.tar
 
 - name: Make dev operator image available for Molecule Test
   hosts: k8s
   gather_facts: no
 
   tasks:
-  - name: Make dev operator available
-    command: docker load -i /dev-operator.tar
+    - name: Make dev operator available
+      command: docker load -i /dev-operator.tar
 
 - name: Clean up for Molecule Test
   hosts: localhost
@@ -28,7 +28,7 @@
   gather_facts: no
 
   tasks:
-  - name: remove dev-operator.tar
-    file:
-      path: /tmp/dev-operator.tar
-      state: absent
+    - name: remove dev-operator.tar
+      file:
+        path: /tmp/dev-operator.tar
+        state: absent

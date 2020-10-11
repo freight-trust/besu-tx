@@ -15,13 +15,12 @@
       register: prev_hash_raw
       changed_when: false
 
-
     - name: Build Operator Image
       command: docker build -f /build/build/Dockerfile -t {{ image }} /build
       register: build_cmd
       changed_when: not hash or (hash and hash not in cmd_out)
       vars:
-        hash: '{{ prev_hash_raw.stdout }}'
+        hash: "{{ prev_hash_raw.stdout }}"
         cmd_out: '{{ "".join(build_cmd.stdout_lines[-2:]) }}'
 
     - name: Get new image hash
@@ -31,7 +30,7 @@
 
     - name: Set localhost hash fact
       set_fact:
-        hash: '{{ hash_raw.stdout }}'
+        hash: "{{ hash_raw.stdout }}"
       delegate_to: localhost
       delegate_facts: true
 
@@ -48,7 +47,7 @@
   tasks:
     - name: Create the Operator Deployment
       k8s:
-        namespace: '{{ namespace }}'
+        namespace: "{{ namespace }}"
         definition: "{{ lookup('template', operator_template) }}"
         wait: yes
       vars:

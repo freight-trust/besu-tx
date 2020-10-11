@@ -10,11 +10,12 @@ Kubernetes cluster.
 
 This document succinctly walks through getting an Operator OLM-ready with [bundles][bundle], and glosses over
 explanations of certain steps for brevity. The following documents contain more detail on these steps:
+
 - All operator-framework manifest commands supported by the SDK: [CLI overview][doc-cli-overview].
 - Generating operator-framework manifests: [generation overview][doc-olm-generate].
 
 If you are working with package manifests, see the [package manifests quickstart][quickstart-package-manifests]
-once you have completed the *Setup* section below.
+once you have completed the _Setup_ section below.
 
 **Important:** this guide assumes your project was scaffolded with `operator-sdk init --project-version=3-alpha`.
 These features are unavailable to projects of version `2` or less; this information can be found by inspecting
@@ -88,10 +89,10 @@ We will now create bundle manifests by running `make bundle` in the root of the 
 $ make bundle
 /home/user/go/bin/controller-gen "crd:trivialVersions=true" rbac:roleName=manager-role webhook paths="./..." output:crd:artifacts:config=config/crd/bases
 operator-sdk generate kustomize manifests -q
-kustomize build config/manifests | operator-sdk generate bundle -q --overwrite --version 0.0.1  
-INFO[0000] Building annotations.yaml                    
+kustomize build config/manifests | operator-sdk generate bundle -q --overwrite --version 0.0.1
+INFO[0000] Building annotations.yaml
 INFO[0000] Writing annotations.yaml in /home/user/go/src/github.com/test-org/memcached-operator/bundle/metadata
-INFO[0000] Building Dockerfile                          
+INFO[0000] Building Dockerfile
 INFO[0000] Writing bundle.Dockerfile in /home/user/go/src/github.com/test-org/memcached-operator
 operator-sdk bundle validate ./bundle
 INFO[0000] Found annotations file                        bundle-dir=bundle container-tool=docker
@@ -114,6 +115,7 @@ Now we're ready to test and deploy the Operator with OLM.
 <!-- TODO(jmrodri): `run bundle` usage here -->
 <!-- TODO(jmccormick2001): add `scorecard` usage here -->
 <!-- TODO(rashmigottipati): `run bundle-upgrade` usage here -->
+
 Coming soon.
 
 ### Deploying bundles in production
@@ -141,20 +143,19 @@ The SDK does not build index images; instead, use the Operator package manager t
 to add an index to a cluster catalog, and the catalog [discovery docs][doc-olm-discovery] to tell OLM
 about your cataloged Operator.
 
-
-[sdk-user-guide-go]:/docs/building-operators/golang/quickstart
-[sdk-user-guide-ansible]:/docs/building-operators/ansible/quickstart
-[sdk-user-guide-helm]:/docs/building-operators/helm/quickstart
-[quickstart-package-manifests]:/docs/olm-integration/quickstart-package-manifests
-[olm]:https://github.com/operator-framework/operator-lifecycle-manager/
-[bundle]:https://github.com/operator-framework/operator-registry/blob/v1.12.6/docs/design/operator-bundle.md
-[bundle-metadata]:https://github.com/operator-framework/operator-registry/blob/v1.12.6/docs/design/operator-bundle.md#bundle-annotations
-[bundle-dockerfile]:https://github.com/operator-framework/operator-registry/blob/v1.12.6/docs/design/operator-bundle.md#bundle-dockerfile
-[cli-olm]:/docs/cli/operator-sdk_olm
-[doc-cli-overview]:/docs/olm-integration/cli-overview
-[doc-olm-generate]:/docs/olm-integration/generation
-[opm]:https://github.com/operator-framework/operator-registry/blob/master/docs/design/opm-tooling.md
-[index-image]:https://github.com/operator-framework/operator-registry/blob/master/docs/design/opm-tooling.md#index
-[doc-index-build]:https://github.com/operator-framework/operator-registry#building-an-index-of-operators-using-opm
-[doc-olm-index]:https://github.com/operator-framework/operator-registry#using-the-index-with-operator-lifecycle-manager
-[doc-olm-discovery]:https://github.com/operator-framework/operator-lifecycle-manager/#discovery-catalogs-and-automated-upgrades
+[sdk-user-guide-go]: /docs/building-operators/golang/quickstart
+[sdk-user-guide-ansible]: /docs/building-operators/ansible/quickstart
+[sdk-user-guide-helm]: /docs/building-operators/helm/quickstart
+[quickstart-package-manifests]: /docs/olm-integration/quickstart-package-manifests
+[olm]: https://github.com/operator-framework/operator-lifecycle-manager/
+[bundle]: https://github.com/operator-framework/operator-registry/blob/v1.12.6/docs/design/operator-bundle.md
+[bundle-metadata]: https://github.com/operator-framework/operator-registry/blob/v1.12.6/docs/design/operator-bundle.md#bundle-annotations
+[bundle-dockerfile]: https://github.com/operator-framework/operator-registry/blob/v1.12.6/docs/design/operator-bundle.md#bundle-dockerfile
+[cli-olm]: /docs/cli/operator-sdk_olm
+[doc-cli-overview]: /docs/olm-integration/cli-overview
+[doc-olm-generate]: /docs/olm-integration/generation
+[opm]: https://github.com/operator-framework/operator-registry/blob/master/docs/design/opm-tooling.md
+[index-image]: https://github.com/operator-framework/operator-registry/blob/master/docs/design/opm-tooling.md#index
+[doc-index-build]: https://github.com/operator-framework/operator-registry#building-an-index-of-operators-using-opm
+[doc-olm-index]: https://github.com/operator-framework/operator-registry#using-the-index-with-operator-lifecycle-manager
+[doc-olm-discovery]: https://github.com/operator-framework/operator-lifecycle-manager/#discovery-catalogs-and-automated-upgrades

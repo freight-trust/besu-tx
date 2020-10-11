@@ -9,6 +9,7 @@ In order to build a functional operator, the ability to observe state is a must.
 Client-go provides APIs for querying objects in the standard Kubernetes groups via `Get` and `List`.
 However, each client is specific to an object’s APIVersion and Kind which makes the API too verbose.
 For example, to get a specific Deployment object:
+
 - Create a Kubernetes clientset that implements kubernetes.Interface.
 - Call `kubeclient.AppsV1().Deployments("default").Get("name", v1.GetOptions{})`
 
@@ -41,6 +42,7 @@ Get() accepts GetOption as variadic functional parameters. In this way, we follo
 which allows us to extend the Get API with unforeseen parameters without modifying the API itself. See the reference section on how the options are implemented.
 
 Example Usage:
+
 ```Go
 // meta_v1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 
@@ -94,8 +96,6 @@ labelSelector := getLabelSelector("app", "dev")
 o := &meta_v1.ListOptions{LabelSelector: labelSelector}
 err = sdk.List("default", dl, op.WithListOptions(o))
 ```
-
-
 
 ## Reference:
 

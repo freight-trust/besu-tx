@@ -10,7 +10,6 @@ For some versions it might also be necessary to update the upstream Kubernetes a
 
 The full list of dependencies and their versions required by a particular version of the SDK can be viewed by using the [`operator-sdk print-deps`][print-deps-cli] command. Use this command to update the project `Gopkg.toml`/`go.mod` file accordingly as you upgrade to a new SDK version.
 
-
 For some SDK versions after `v0.1.0` there might be minor breaking changes in the controller-runtime APIs, `operator-sdk` CLI or the expected project layout and file names. These breaking changes will usually be outlined in the [CHANGELOG][changelog]/[release-notes][release-notes] for each release version.
 
 For releases that have a large number of breaking changes or involve a significant refactoring of the APIs and project layout there will be a migration guide similar to the [v0.1.0 migration guide][v0.1.0-migration-guide].
@@ -29,6 +28,7 @@ The following sections outline the upgrade steps for each SDK version along with
 ## `v0.3.x`
 
 - Update the SDK constraint in `Gopkg.toml` to version `v0.3.0`, the kubernetes dependencies to `kubernetes-1.12.3` revisions, and the controller-runtime version to `v0.1.8`. Then run `dep ensure` to update the vendor directory.
+
   ```TOML
   [[override]]
     name = "k8s.io/code-generator"
@@ -76,6 +76,7 @@ The following sections outline the upgrade steps for each SDK version along with
 ## `v0.5.x`
 
 - Update the SDK constraint in `Gopkg.toml` to version `v0.5.0`, the kubernetes dependencies to `kubernetes-1.13.1` revisions, and the controller-runtime version to `v0.1.10`.
+
   ```TOML
   [[override]]
     name = "k8s.io/code-generator"
@@ -112,6 +113,7 @@ The following sections outline the upgrade steps for each SDK version along with
   ```
 
 - Append the following new constraints to your `Gopkg.toml`.
+
   ```TOML
   [[override]]
     name = "k8s.io/kube-openapi"
@@ -144,6 +146,7 @@ The following sections outline the upgrade steps for each SDK version along with
 ## `v0.6.x`
 
 - Update the SDK constraint in `Gopkg.toml` to version `v0.6.0` and run `dep ensure` to update the vendor directory.
+
   ```TOML
   [[constraint]]
     name = "github.com/operator-framework/operator-sdk"
@@ -199,6 +202,7 @@ To get familiar with Go modules read the [modules wiki][modules-wiki]. In partic
 - Activate Go modules support for your project in `$GOPATH/src` by setting the env `GO111MODULE=on`. See [activating modules][activating-modules] for more details.
 - Initialize a new `go.mod` file by running `go mod init`.
 - Append the following to the end of your `go.mod` file to pin the operator-sdk and other upstream dependencies to the required versions.
+
 ```
 // Pinned to kubernetes-1.13.1
 replace (
@@ -218,6 +222,7 @@ replace (
 
 replace github.com/operator-framework/operator-sdk => github.com/operator-framework/operator-sdk v0.8.2
 ```
+
 - Run `go mod tidy` to clean up the `go.mod` file.
   - In case of any go module loading errors, consult the default [`v0.8.2` go.mod dependencies][v0.8.2-go-mod] scaffolded by the operator-sdk to resolve any differences. You can also view this file by scaffolding a new project with operator-sdk `v0.8.2`.
 - Ensure that you can build the project with `operator-sdk build`
@@ -232,6 +237,7 @@ Upon updating the project to `v0.8.2` the following breaking changes apply:
   The correct way to specify CRD fields like naming, validation, subresources etc is by using `// +kubebuilder` marker comments. Consult the [legacy kubebuilder documentation][legacy-kubebuilder-doc-crd] to see what CRD fields can be generated via `// +kubebuilder` marker comments.
 
   **Note:** The version of controller-tools tied to this release does not support settting the `spec.scope` field of the CRD. Use the marker comment `+genclient:nonNamespaced` to set `spec.scope=Cluster` if necessary. See the example below:
+
   ```Go
   // MemcachedSpec defines the desired state of Memcached
   type MemcachedSpec struct {
@@ -267,12 +273,15 @@ Upon updating the project to `v0.8.2` the following breaking changes apply:
 - The function `ExposeMetricsPort()` has been replaced with `CreateMetricsService()` [#1560](https://github.com/operator-framework/operator-sdk/pull/1560).
 
   Replace the following line in `cmd/manager/main.go`
+
   ```Go
     _, err = metrics.ExposeMetricsPort(ctx, metricsPort)
   ```
+
   with
+
   ```Go
-	servicePorts := []v1.ServicePort{
+  {
     {Port: metricsPort, Name: metrics.OperatorPortName, Protocol: v1.ProtocolTCP, TargetPort: intstr.IntOrString{Type: intstr.Int, IntVal: metricsPort}},
     {Port: operatorMetricsPort, Name: metrics.CRPortName, Protocol: v1.ProtocolTCP, TargetPort: intstr.IntOrString{Type: intstr.Int, IntVal: operatorMetricsPort}},
   }
@@ -342,32 +351,33 @@ Upon updating the project to `v0.8.2` the following breaking changes apply:
 
 - The scorecard configuration format for the `operator-sdk scorecard` command has changed. See [`doc/test-framework/scorecard`](https://github.com/operator-framework/operator-sdk/blob/v0.10.x/doc/test-framework/scorecard.md) for more info.
 - The CSV config field `role-path` is now `role-paths` and takes a list of strings.
-    Replace:
-    ```yaml
-    role-path: path/to/role.yaml
-    ```
-    with:
-    ```yaml
-    role-paths:
+  Replace:
+  ```yaml
+  role-path: path/to/role.yaml
+  ```
+  with:
+  ```yaml
+  role-paths:
     - path/to/role.yaml
-    ```
+  ```
 
 **modules**
 
 - Ensure the the following `replace` directives are present in your `go.mod` file:
-    ```
-    replace (
-            github.com/coreos/prometheus-operator => github.com/coreos/prometheus-operator v0.29.0
-            // Pinned to v2.9.2 (kubernetes-1.13.1) so https://proxy.golang.org can
-            // resolve it correctly.
-            github.com/prometheus/prometheus => github.com/prometheus/prometheus v0.0.0-20190424153033-d3245f150225
-            k8s.io/kube-state-metrics => k8s.io/kube-state-metrics v1.6.0
-            sigs.k8s.io/controller-runtime => sigs.k8s.io/controller-runtime v0.1.12
-            sigs.k8s.io/controller-tools => sigs.k8s.io/controller-tools v0.1.11-0.20190411181648-9d55346c2bde
-    )
 
-    replace github.com/operator-framework/operator-sdk => github.com/operator-framework/operator-sdk v0.10.0
-    ```
+  ```
+  replace (
+          github.com/coreos/prometheus-operator => github.com/coreos/prometheus-operator v0.29.0
+          // Pinned to v2.9.2 (kubernetes-1.13.1) so https://proxy.golang.org can
+          // resolve it correctly.
+          github.com/prometheus/prometheus => github.com/prometheus/prometheus v0.0.0-20190424153033-d3245f150225
+          k8s.io/kube-state-metrics => k8s.io/kube-state-metrics v1.6.0
+          sigs.k8s.io/controller-runtime => sigs.k8s.io/controller-runtime v0.1.12
+          sigs.k8s.io/controller-tools => sigs.k8s.io/controller-tools v0.1.11-0.20190411181648-9d55346c2bde
+  )
+
+  replace github.com/operator-framework/operator-sdk => github.com/operator-framework/operator-sdk v0.10.0
+  ```
 
 ## `v0.11.x`
 
@@ -377,68 +387,69 @@ Upon updating the project to `v0.8.2` the following breaking changes apply:
 
 - Remove the `required = [ ... ]` section and comment from the top of your `Gopkg.toml` file.
 - Update the following overrides in `Gopkg.toml`:
-    ```TOML
-    [[override]]
-      name = "k8s.io/api"
-      **revision for tag "kubernetes-1.14.1"**
-      revision = "6e4e0e4f393bf5e8bbff570acd13217aa5a770cd"
-    [[override]]
-      name = "k8s.io/apiextensions-apiserver"
-      **revision for tag "kubernetes-1.14.1"**
-      revision = "727a075fdec8319bf095330e344b3ccc668abc73"
-    [[override]]
-      name = "k8s.io/apimachinery"
-      **revision for tag "kubernetes-1.14.1"**
-      revision = "6a84e37a896db9780c75367af8d2ed2bb944022e"
-    [[override]]
-      name = "k8s.io/client-go"
-      **revision for tag "kubernetes-1.14.1"**
-      revision = "1a26190bd76a9017e289958b9fba936430aa3704"
-    [[override]]
-      name = "github.com/coreos/prometheus-operator"
-      version = "=v0.31.1"
-    [[override]]
-      name = "sigs.k8s.io/controller-runtime"
-      version = "=v0.2.2"
-    [[constraint]]
-      name = "github.com/operator-framework/operator-sdk"
-      version = "=v0.11.0"
-    ```
+  ```TOML
+  [[override]]
+    name = "k8s.io/api"
+    **revision for tag "kubernetes-1.14.1"**
+    revision = "6e4e0e4f393bf5e8bbff570acd13217aa5a770cd"
+  [[override]]
+    name = "k8s.io/apiextensions-apiserver"
+    **revision for tag "kubernetes-1.14.1"**
+    revision = "727a075fdec8319bf095330e344b3ccc668abc73"
+  [[override]]
+    name = "k8s.io/apimachinery"
+    **revision for tag "kubernetes-1.14.1"**
+    revision = "6a84e37a896db9780c75367af8d2ed2bb944022e"
+  [[override]]
+    name = "k8s.io/client-go"
+    **revision for tag "kubernetes-1.14.1"**
+    revision = "1a26190bd76a9017e289958b9fba936430aa3704"
+  [[override]]
+    name = "github.com/coreos/prometheus-operator"
+    version = "=v0.31.1"
+  [[override]]
+    name = "sigs.k8s.io/controller-runtime"
+    version = "=v0.2.2"
+  [[constraint]]
+    name = "github.com/operator-framework/operator-sdk"
+    version = "=v0.11.0"
+  ```
 - Append an override for `gopkg.in/fsnotify.v1`, which is required when resolving controller-runtime dependencies:
-    ```TOML
-    [[override]]
-      name = "gopkg.in/fsnotify.v1"
-      source = "https://github.com/fsnotify/fsnotify.git"
-    ```
+  ```TOML
+  [[override]]
+    name = "gopkg.in/fsnotify.v1"
+    source = "https://github.com/fsnotify/fsnotify.git"
+  ```
 - Remove the `k8s.io/kube-state-metrics` override.
 - Run `dep ensure` to update the vendor directory.
 
 **modules**
 
 - Ensure the the following `replace` directives are present in your `go.mod` file:
-    ```
-    // Pinned to kubernetes-1.14.1
-    replace (
-    	k8s.io/api => k8s.io/api kubernetes-1.14.1
-    	k8s.io/apiextensions-apiserver => k8s.io/apiextensions-apiserver kubernetes-1.14.1
-    	k8s.io/apimachinery => k8s.io/apimachinery kubernetes-1.14.1
-    	k8s.io/client-go => k8s.io/client-go kubernetes-1.14.1
-    	k8s.io/cloud-provider => k8s.io/cloud-provider kubernetes-1.14.1
-    )
 
-    replace (
-    	// Indirect operator-sdk dependencies use git.apache.org, which is frequently
-    	// down. The github mirror should be used instead.
-    	// Locking to a specific version (from 'go mod graph'):
-    	git.apache.org/thrift.git => github.com/apache/thrift v0.0.0-20180902110319-2566ecd5d999
-    	github.com/coreos/prometheus-operator => github.com/coreos/prometheus-operator v0.31.1
-    	// Pinned to v2.10.0 (kubernetes-1.14.1) so https://proxy.golang.org can
-    	// resolve it correctly.
-    	github.com/prometheus/prometheus => github.com/prometheus/prometheus d20e84d0fb64aff2f62a977adc8cfb656da4e286
-    )
+  ```
+  // Pinned to kubernetes-1.14.1
+  replace (
+  	k8s.io/api => k8s.io/api kubernetes-1.14.1
+  	k8s.io/apiextensions-apiserver => k8s.io/apiextensions-apiserver kubernetes-1.14.1
+  	k8s.io/apimachinery => k8s.io/apimachinery kubernetes-1.14.1
+  	k8s.io/client-go => k8s.io/client-go kubernetes-1.14.1
+  	k8s.io/cloud-provider => k8s.io/cloud-provider kubernetes-1.14.1
+  )
 
-    replace github.com/operator-framework/operator-sdk => github.com/operator-framework/operator-sdk v0.11.0
-    ```
+  replace (
+  	// Indirect operator-sdk dependencies use git.apache.org, which is frequently
+  	// down. The github mirror should be used instead.
+  	// Locking to a specific version (from 'go mod graph'):
+  	git.apache.org/thrift.git => github.com/apache/thrift v0.0.0-20180902110319-2566ecd5d999
+  	github.com/coreos/prometheus-operator => github.com/coreos/prometheus-operator v0.31.1
+  	// Pinned to v2.10.0 (kubernetes-1.14.1) so https://proxy.golang.org can
+  	// resolve it correctly.
+  	github.com/prometheus/prometheus => github.com/prometheus/prometheus d20e84d0fb64aff2f62a977adc8cfb656da4e286
+  )
+
+  replace github.com/operator-framework/operator-sdk => github.com/operator-framework/operator-sdk v0.11.0
+  ```
 
 **Import updates**
 
@@ -455,20 +466,21 @@ Upon updating the project to `v0.8.2` the following breaking changes apply:
 **controller-runtime API updates**
 
 All method signatures for [`sigs.k8s.io/controller-runtime/pkg/client.Client`](https://github.com/kubernetes-sigs/controller-runtime/blob/v0.2.0/pkg/client/interfaces.go#L104) and [`sigs.k8s.io/controller-runtime/pkg/client.StatusWriter`](https://github.com/kubernetes-sigs/controller-runtime/blob/v0.2.0/pkg/client/interfaces.go#L91) (except for `Client.Get()`) have been updated. Each now uses a variadic option interface parameter typed for each method.
+
 - `Client.List(ctx context.Context, opts *client.ListOptions, list runtime.Object) error` is now [`Client.List(ctx context.Context, list runtime.Object, opts ...client.ListOption) error`](https://github.com/kubernetes-sigs/controller-runtime/blob/v0.2.0/pkg/client/interfaces.go#L61).
-    Replace:
-    ```go
-    listOpts := &client.ListOptions{}
-    listOpts.InNamespace("namespace")
-    err = r.client.List(context.TODO(), listOps, podList)
-    ```
-    with:
-    ```go
-    listOpts := []client.ListOption{
-      client.InNamespace("namespace"),        
-    }
-    err = r.client.List(context.TODO(), podList, listOpts...)
-    ```
+  Replace:
+  ```go
+  listOpts := &client.ListOptions{}
+  listOpts.InNamespace("namespace")
+  err = r.client.List(context.TODO(), listOps, podList)
+  ```
+  with:
+  ```go
+  listOpts := []client.ListOption{
+    client.InNamespace("namespace"),
+  }
+  err = r.client.List(context.TODO(), podList, listOpts...)
+  ```
 - `Client.Create(ctx context.Context, obj runtime.Object) error` is now [`Client.Create(ctx context.Context, obj runtime.Object, opts ...client.CreateOption) error`](https://github.com/kubernetes-sigs/controller-runtime/blob/v0.2.0/pkg/client/interfaces.go#L67). No updates need to be made. See the [client doc][client-doc] for a discussion of `client.CreateOption`.
 - `Client.Update(ctx context.Context, obj runtime.Object) error` is now [`Client.Update(ctx context.Context, obj runtime.Object, opts ...client.UpdateOption) error`](https://github.com/kubernetes-sigs/controller-runtime/blob/v0.2.0/pkg/client/interfaces.go#L74). No updates need to be made. See the [client doc][client-doc] for a discussion of `client.UpdateOption`.
 - `Client.Delete(ctx context.Context, obj runtime.Object, opts ...DeleteOptionFunc) error` is now [`Client.Delete(ctx context.Context, obj runtime.Object, opts ...DeleteOption) error`](https://github.com/kubernetes-sigs/controller-runtime/blob/v0.2.0/pkg/client/interfaces.go#L70). Although the option interface has changed, the way each `client.DeleteOption` is created is the same as before. No updates need to be made. See the [client doc][client-doc] for a discussion of `client.DeleteOption`.
@@ -481,6 +493,7 @@ All method signatures for [`sigs.k8s.io/controller-runtime/pkg/client.Client`](h
 **NOTE:** You may need to add or remove markers (code annotations) to fix issues found when running `generate openapi`. Usage of markers in API code is discussed in the kubebuilder CRD generation [documentation][generating-crd] and in marker [documentation][markers]. A full list of OpenAPIv3 validation markers can be found [here](https://book.kubebuilder.io/reference/markers/crd-validation.html).
 
 **TIPS:**
+
 - If the `+kubebuilder:validation:Pattern` has commas, then surround the expressions in backticks.
 - If you are using `+kubebuilder:validation:Enum` then either surround the expression list in curly braces and quote each expression, or separate each expression using semicolons.
 
@@ -488,12 +501,12 @@ All method signatures for [`sigs.k8s.io/controller-runtime/pkg/client.Client`](h
 
 - [`pkg/test.FrameworkClient`](https://github.com/operator-framework/operator-sdk/blob/947a464/pkg/test/client.go#L33) `List()` and `Delete()` method invocations should be updated to match those of `Client.List()` and `Client.Delete()`, described above.
 - The annotation to assign a scope to your CRD has changed. For the following changes, note that `<resource>` is the plural lower-case CRD Kind found at `spec.names.plural`.
-    - For `Namespaced`-scoped operators, add a `+kubebuilder:resource:path=<resource>,scope=Namespaced` comment above your kind type in `pkg/apis/<group>/<version>/<kind>_types.go`.
-    - For `Cluster`-scoped operators, replace the `+genclient:nonNamespaced` comment above your kind type in `pkg/apis/<group>/<version>/<kind>_types.go` with `+kubebuilder:resource:path=<resource>,scope=Cluster`.
+  - For `Namespaced`-scoped operators, add a `+kubebuilder:resource:path=<resource>,scope=Namespaced` comment above your kind type in `pkg/apis/<group>/<version>/<kind>_types.go`.
+  - For `Cluster`-scoped operators, replace the `+genclient:nonNamespaced` comment above your kind type in `pkg/apis/<group>/<version>/<kind>_types.go` with `+kubebuilder:resource:path=<resource>,scope=Cluster`.
 - CRD file names now have the form `<full group>_<resource>_crd.yaml`, and CR file names now have the form `<full group>_<version>_<kind>_cr.yaml`. `<full group>` is the full group name of your CRD found at `spec.group`, and `<resource>` is the plural lower-case CRD Kind found at `spec.names.plural`. To migrate:
-    - Run `operator-sdk generate openapi`. CRD manifest files with new names containing versioned validation and subresource blocks will be generated.
-    - Delete the old CRD manifest files.
-    - Rename CR manifest file names from `<group>_<version>_<kind>_cr.yaml` to `<full group>_<version>_<kind>_cr.yaml`.
+  - Run `operator-sdk generate openapi`. CRD manifest files with new names containing versioned validation and subresource blocks will be generated.
+  - Delete the old CRD manifest files.
+  - Rename CR manifest file names from `<group>_<version>_<kind>_cr.yaml` to `<full group>_<version>_<kind>_cr.yaml`.
 
 ## `v0.12.x`
 
@@ -788,6 +801,7 @@ func addMetrics(ctx context.Context, cfg *rest.Config, namespace string) {
 The `github.com/operator-framework/operator-sdk/pkg/restmapper` package was deprecated in favor of the `DynamicRESTMapper` implementation in [controller-runtime](https://godoc.org/github.com/kubernetes-sigs/controller-runtime/pkg/client/apiutil#NewDiscoveryRESTMapper). Users should migrate to controller-runtime's implementation, which is a drop-in replacement.
 
 Replace:
+
 ```
 github.com/operator-framework/operator-sdk/pkg/restmapper.DynamicRESTMapper
 ```
@@ -805,35 +819,38 @@ sigs.k8s.io/controller-runtime/pkg/client/apiutil.DynamicRESTMapper
 The Ansible module `k8s_status` was extracted and is now provided by the `operator_sdk.util` Ansible collection. See [developer_guide](/docs/building-operators/ansible/development-tips/#custom-resource-status-management) for new usage.
 
 To use the collection in a role, declare it at the root level in `meta/main.yaml`:
+
 ```yaml
 collections:
-- operator_sdk.util
+  - operator_sdk.util
 ```
 
 To use it in a playbook, declare it in the play:
+
 ```yaml
 - hosts: all
   collections:
-   - operator_sdk.util
+    - operator_sdk.util
   tasks:
-   - k8s_status:
-       api_version: app.example.com/v1
-       kind: Foo
-       name: "{{ meta.name }}"
-       namespace: "{{ meta.namespace }}"
-       status:
-         foo: bar
+    - k8s_status:
+        api_version: app.example.com/v1
+        kind: Foo
+        name: "{{ meta.name }}"
+        namespace: "{{ meta.namespace }}"
+        status:
+          foo: bar
 ```
 
 You can also use the fully-qualified name without declaring the collection:
+
 ```yaml
-   - operator_sdk.util.k8s_status:
-       api_version: app.example.com/v1
-       kind: Foo
-       name: "{{ meta.name }}"
-       namespace: "{{ meta.namespace }}"
-       status:
-         foo: bar
+- operator_sdk.util.k8s_status:
+    api_version: app.example.com/v1
+    kind: Foo
+    name: "{{ meta.name }}"
+    namespace: "{{ meta.namespace }}"
+    status:
+      foo: bar
 ```
 
 **Notable Changes**
@@ -845,17 +862,19 @@ These notable changes contain just the most important user-facing changes. See t
 The Ansible version in the init projects was upgraded from `2.6` to `2.9` for collections support. Update the `meta/main.yaml` file.
 
 Replace:
+
 ```yaml
-...
- min_ansible_version: 2.6
-...
+
+---
+min_ansible_version: 2.6
 ```
 
 With:
+
 ```yaml
-...
- min_ansible_version: 2.9
-...
+
+---
+min_ansible_version: 2.9
 ```
 
 **Helm Upgrade to V3**
@@ -930,7 +949,6 @@ With:
 ```
 oprator-sdk exec-entrypoint ansible --watches-file=/opt/ansible/watches.yaml
 ```
-
 
 Replace:
 
@@ -1156,10 +1174,10 @@ func main() {
 
 **`TestCtx` in `pkg/test` has been deprecated**
 
- The type name `TestCtx` in `pkg/test` has been deprecated and renamed to `Context`. Users of the e2e framework should do the following:
+The type name `TestCtx` in `pkg/test` has been deprecated and renamed to `Context`. Users of the e2e framework should do the following:
 
- - Replace `TestCtx` with `Context`
- - Replace `NewTestCtx` with `NewContext`
+- Replace `TestCtx` with `Context`
+- Replace `NewTestCtx` with `NewContext`
 
 **Scorecard only supports YAML config files**
 
@@ -1197,7 +1215,8 @@ Replace:
 With:
 
 ```yaml
-- name: {{your operator name which is the value of metadata.name in this file}}
+- name:
+    { { your operator name which is the value of metadata.name in this file } }
 ```
 
 By default the full Ansible logs will not be output, however, you can setup it via the `ANSIBLE_DEBUG_LOGS` environment variable in the `deploy/operator.yaml` file. See:
@@ -1332,31 +1351,31 @@ install:
   - pip3 install docker molecule ansible-lint yamllint flake8 openshift jmespath
 ```
 
-**NOTE** To know more about how to upgrade your project to use the V3 Molecule version see [here](https://github.com/ansible-community/molecule/issues/2560).  
+**NOTE** To know more about how to upgrade your project to use the V3 Molecule version see [here](https://github.com/ansible-community/molecule/issues/2560).
 
 **Deprecations**
 
 **Test Framework**
 
 - The methods `ctx.GetOperatorNamespace()` and `ctx.GetWatchNamespace()` were added to `pkg/test` in order to replace
-`ctx.GetNamespace()` which is deprecated. In this way, replace the use of `ctx.GetNamespace()` in your project with
-`ctx.GetOperatorNamespace()`.
+  `ctx.GetNamespace()` which is deprecated. In this way, replace the use of `ctx.GetNamespace()` in your project with
+  `ctx.GetOperatorNamespace()`.
 - The `--namespace` flag from `operator-sdk run --local`, `operator-sdk test --local`, and `operator-sdk cleanup` was
-deprecated and is replaced by `--watch-namespace` and `--operator-namespace`.
+  deprecated and is replaced by `--watch-namespace` and `--operator-namespace`.
 
-    The `--operator-namespace` flag can be used to set the namespace where the operator will be deployed. It will set the
-    environment variable `OPERATOR_NAMESPACE`. If this value is not set, then it will be the namespace defined as in your
-    current kubeconfig context.
+      The `--operator-namespace` flag can be used to set the namespace where the operator will be deployed. It will set the
+      environment variable `OPERATOR_NAMESPACE`. If this value is not set, then it will be the namespace defined as in your
+      current kubeconfig context.
 
-    The `--watch-namespace` flag can be used to set the namespace(s) which the operator will watch for changes. It will set
-    the environment variable `WATCH_NAMESPACE`. Use an explicit empty string to watch all namespaces or a comma-separated
-    list of namespaces (e.g. "ns1,ns2") to watch multiple namespace when the operator is cluster-scoped. If using a list,
-    then it should contain the namespace where the operator is deployed since the default metrics implementation will
-    manage resources in the Operator's namespace. By default, `--watch-namespace` will be set to the operator namespace.
+      The `--watch-namespace` flag can be used to set the namespace(s) which the operator will watch for changes. It will set
+      the environment variable `WATCH_NAMESPACE`. Use an explicit empty string to watch all namespaces or a comma-separated
+      list of namespaces (e.g. "ns1,ns2") to watch multiple namespace when the operator is cluster-scoped. If using a list,
+      then it should contain the namespace where the operator is deployed since the default metrics implementation will
+      manage resources in the Operator's namespace. By default, `--watch-namespace` will be set to the operator namespace.
 
 - If you've run `operator-sdk bundle create --generate-only`, move your bundle Dockerfile at
-`<project-root>/deploy/olm-catalog/<operator-name>/Dockerfile` to `<project-root>/bundle.Dockerfile` and update the
-first `COPY` from `COPY /*.yaml manifests/` to `COPY deploy/olm-catalog/<operator-name>/manifests manifests/`.
+  `<project-root>/deploy/olm-catalog/<operator-name>/Dockerfile` to `<project-root>/bundle.Dockerfile` and update the
+  first `COPY` from `COPY /*.yaml manifests/` to `COPY deploy/olm-catalog/<operator-name>/manifests manifests/`.
 
 [legacy-kubebuilder-doc-crd]: https://book-v1.book.kubebuilder.io/beyond_basics/generating_crd.html
 [v0.8.2-go-mod]: https://github.com/operator-framework/operator-sdk/blob/28bd2b0d4fd25aa68e15d928ae09d3c18c3b51da/internal/pkg/scaffold/go_mod.go#L40-L94

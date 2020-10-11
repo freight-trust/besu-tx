@@ -6,11 +6,11 @@ weight: 20
 
 This document describes how to manage packaging and shipping your Operator in the following stages:
 
-* **Generate your first release** - encapsulate the metadata needed to install your Operator with the
-[Operator Lifecycle Manager][olm] and configure the permissions it needs from the generated SDK files.
-* **Update your Operator** - apply any updates to Operator manifests made during development.
-* **Upgrade your Operator** - carry over any customizations you have made and ensure a rolling update to the
-next version of your Operator.
+- **Generate your first release** - encapsulate the metadata needed to install your Operator with the
+  [Operator Lifecycle Manager][olm] and configure the permissions it needs from the generated SDK files.
+- **Update your Operator** - apply any updates to Operator manifests made during development.
+- **Upgrade your Operator** - carry over any customizations you have made and ensure a rolling update to the
+  next version of your Operator.
 
 ## Overview
 
@@ -57,11 +57,12 @@ by `generate <bundle|packagemanifests>` requires certain input manifests to cons
 are read when either command is invoked, along with a CSV's [base](#kustomize-files), to idempotently regenerate a CSV.
 
 The following resource kinds are typically included in a CSV, which are addressed by `config/manifests/bases/kustomization.yaml`:
-  - `Role`: define Operator permissions within a namespace.
-  - `ClusterRole`: define cluster-wide Operator permissions.
-  - `Deployment`: define how the Operator's operand is run in pods.
-  - `CustomResourceDefinition`: definitions of custom objects your Operator reconciles.
-  - Custom resource examples: examples of objects adhering to the spec of a particular CRD.
+
+- `Role`: define Operator permissions within a namespace.
+- `ClusterRole`: define cluster-wide Operator permissions.
+- `Deployment`: define how the Operator's operand is run in pods.
+- `CustomResourceDefinition`: definitions of custom objects your Operator reconciles.
+- Custom resource examples: examples of objects adhering to the spec of a particular CRD.
 
 ## Generate your first release
 
@@ -231,25 +232,27 @@ Below are two lists of fields: the first is a list of all fields the SDK and OLM
 These markers are not available to Ansible or Helm project types.
 
 Required:
-- `metadata.name`: a *unique* name for this CSV of the format `<project-name>.vX.Y.Z`, ex. `app-operator.v0.0.1`.
+
+- `metadata.name`: a _unique_ name for this CSV of the format `<project-name>.vX.Y.Z`, ex. `app-operator.v0.0.1`.
 - `spec.version`: semantic version of the Operator, ex. `0.0.1`.
 - `spec.installModes`: what mode of [installation namespacing][install-modes] OLM should use.
-Currently all but `MultiNamespace` are supported by SDK Operators.
+  Currently all but `MultiNamespace` are supported by SDK Operators.
 - `spec.customresourcedefinitions`: any CRDs the Operator uses. Certain fields in elements of `owned` will be filled by the SDK.
-    - `owned`: all CRDs the Operator deploys itself from it's bundle.
-        - `name`: CRD's `metadata.name`.
-        - `kind`: CRD's `metadata.spec.names.kind`.
-        - `version`: CRD's `metadata.spec.version`.
-        - `description` _(marker)_ : description of the CRD.
-        - `displayName` _(marker)_ : display name of the CRD.
-        - `resources` _(marker)_ : any Kubernetes resources used by the CRD, ex. `Pod`'s and `ConfigMap`'s.
-        - `specDescriptors` _(marker)_ : UI hints for inputs and outputs of the Operator's spec.
-        - `statusDescriptors` _(marker)_ : UI hints for inputs and outputs of the Operator's status.
-        - `actionDescriptors` _(user)_ : UI hints for an Operator's in-cluster actions.
-    - `required` _(user)_ : all CRDs the Operator expects to be present in-cluster, if any.
+  - `owned`: all CRDs the Operator deploys itself from it's bundle.
+    - `name`: CRD's `metadata.name`.
+    - `kind`: CRD's `metadata.spec.names.kind`.
+    - `version`: CRD's `metadata.spec.version`.
+    - `description` _(marker)_ : description of the CRD.
+    - `displayName` _(marker)_ : display name of the CRD.
+    - `resources` _(marker)_ : any Kubernetes resources used by the CRD, ex. `Pod`'s and `ConfigMap`'s.
+    - `specDescriptors` _(marker)_ : UI hints for inputs and outputs of the Operator's spec.
+    - `statusDescriptors` _(marker)_ : UI hints for inputs and outputs of the Operator's status.
+    - `actionDescriptors` _(user)_ : UI hints for an Operator's in-cluster actions.
+  - `required` _(user)_ : all CRDs the Operator expects to be present in-cluster, if any.
     All `required` element fields must be populated manually.
 
 Optional:
+
 - `spec.description` _(user)_ : a thorough description of the Operator's functionality.
 - `spec.displayName` _(user)_ : a name to display for the Operator in Operator Hub.
 - `spec.keywords` _(user)_ : a list of keywords describing the Operator.
@@ -258,25 +261,24 @@ Optional:
 - `spec.labels` _(user)_ : a list of `key:value` pairs to be used by Operator internals.
 - `metadata.annotations.alm-examples`: CR examples, in JSON string literal format, for your CRD's. Ideally one per CRD.
 - `metadata.annotations.capabilities`: level of Operator capability. See the [Operator maturity model][olm-capabilities]
-for a list of valid values.
+  for a list of valid values.
 - `spec.replaces`: the name of the CSV being replaced by this CSV.
 - `spec.links` _(user)_ : a list of URL's to websites, documentation, etc. pertaining to the Operator or application
-being managed, each with a `name` and `url`.
+  being managed, each with a `name` and `url`.
 - `spec.selector` _(user)_ : selectors by which the Operator can pair resources in a cluster.
 - `spec.icon` _(user)_ : a base64-encoded icon unique to the Operator, set in a `base64data` field with a `mediatype`.
 - `spec.maturity`: the Operator's maturity, ex. `alpha`.
 
-
-[olm]:https://github.com/operator-framework/operator-lifecycle-manager
-[doc-csv]:https://github.com/operator-framework/operator-lifecycle-manager/blob/0.15.1/doc/design/building-your-csv.md
-[cli-overview]:/docs/olm-integration/cli-overview
-[cli-gen-kustomize-manifests]:/docs/cli/operator-sdk_generate_kustomize_manifests
-[cli-gen-bundle]:/docs/cli/operator-sdk_generate_bundle
-[cli-gen-packagemanifests]:/docs/cli/operator-sdk_generate_packagemanifests
-[bundle]:https://github.com/operator-framework/operator-registry/blob/v1.12.6/docs/design/operator-bundle.md
-[bundle-metadata]:https://github.com/operator-framework/operator-registry/blob/v1.12.6/docs/design/operator-bundle.md#bundle-annotations
-[package-manifests]:https://github.com/operator-framework/operator-registry/tree/v1.5.3#manifest-format
-[install-modes]:https://github.com/operator-framework/operator-lifecycle-manager/blob/4197455/Documentation/design/building-your-csv.md#operator-metadata
-[olm-capabilities]:/docs/advanced-topics/operator-capabilities/operator-capabilities
-[csv-markers]:/docs/building-operators/golang/references/markers
-[operatorhub]:https://operatorhub.io/
+[olm]: https://github.com/operator-framework/operator-lifecycle-manager
+[doc-csv]: https://github.com/operator-framework/operator-lifecycle-manager/blob/0.15.1/doc/design/building-your-csv.md
+[cli-overview]: /docs/olm-integration/cli-overview
+[cli-gen-kustomize-manifests]: /docs/cli/operator-sdk_generate_kustomize_manifests
+[cli-gen-bundle]: /docs/cli/operator-sdk_generate_bundle
+[cli-gen-packagemanifests]: /docs/cli/operator-sdk_generate_packagemanifests
+[bundle]: https://github.com/operator-framework/operator-registry/blob/v1.12.6/docs/design/operator-bundle.md
+[bundle-metadata]: https://github.com/operator-framework/operator-registry/blob/v1.12.6/docs/design/operator-bundle.md#bundle-annotations
+[package-manifests]: https://github.com/operator-framework/operator-registry/tree/v1.5.3#manifest-format
+[install-modes]: https://github.com/operator-framework/operator-lifecycle-manager/blob/4197455/Documentation/design/building-your-csv.md#operator-metadata
+[olm-capabilities]: /docs/advanced-topics/operator-capabilities/operator-capabilities
+[csv-markers]: /docs/building-operators/golang/references/markers
+[operatorhub]: https://operatorhub.io/

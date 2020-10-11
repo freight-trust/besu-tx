@@ -28,9 +28,10 @@ superseded-by: []
 ## Open Questions (optional)
 
 This is where to call out areas of the design that require closure before deciding
-to implement the design.  For instance,
- > 1. This requires exposing previously private resources which contain sensitive
-  information.  Can we do this?
+to implement the design. For instance,
+
+> 1.  This requires exposing previously private resources which contain sensitive
+>     information. Can we do this?
 
 ## Summary
 
@@ -38,12 +39,12 @@ During the OpenShift 4.4 development timeframe, we plan to improve the developer
 experience, focusing on a few key areas:
 
 1. Ease development/debugging friction by making it easier to debug and test
-    locally.
+   locally.
 2. Allow users to customize the behavior of the proxy, to allow them to work around
-    APIs that do not follow conventions rather than requiring additional logic in
-    the Golang controller.
+   APIs that do not follow conventions rather than requiring additional logic in
+   the Golang controller.
 3. Update scaffolding and examples to take new tooling and best practices into
-    consideration.
+   consideration.
 
 ## Motivation
 
@@ -56,20 +57,20 @@ Kubernetes/OpenShift API inconsistencies or operator-sdk bugs/behaviors.
 
 1. Allow users to whitelist/blacklist resources to be passed through the cache
 2. Update Ansible scaffolding, test scenarios, and examples to make use of newer
-    Ansible features and best practices, including support for collections and
-    simpler and more flexible test scenarios.
+   Ansible features and best practices, including support for collections and
+   simpler and more flexible test scenarios.
 3. Readable logs without additional dependencies, and ideally without a sidecar
-    container.
+   container.
 
 ### Non-Goals
 
 - Perfection of the logging. We are trying to get incremental improvement for the
-    logs of the Ansible Operator, but there will likely be additional changes and
-    improvements that we make before a 1.0 release.
+  logs of the Ansible Operator, but there will likely be additional changes and
+  improvements that we make before a 1.0 release.
 - Significant changes to the tooling used for tests. We are aiming primarily to
-    remove/refactor unnecessarily complicated aspects of the scaffolded tests,
-    while making it easier for the user to get the behavior that they need without
-    needing to delve into some of the nittier aspects of the testing logic.
+  remove/refactor unnecessarily complicated aspects of the scaffolded tests,
+  while making it easier for the user to get the behavior that they need without
+  needing to delve into some of the nittier aspects of the testing logic.
 
 ## Proposal
 
@@ -85,11 +86,11 @@ it is currently possible to use `up local`, there are a variety of limitations
 that make the experience inferior to deploying the operator to a real cluster.
 
 1. I would like to be able to run `up local`, and see both the operator logs as
-    well as the logs from the Ansible stdout. I would like both logs to be useful
-    and readable.
+   well as the logs from the Ansible stdout. I would like both logs to be useful
+   and readable.
 1. I would like to be able to run `up local` and not need to change my
-    `watches.yaml` to reflect the different paths of my host vs the operator
-    container.
+   `watches.yaml` to reflect the different paths of my host vs the operator
+   container.
 
 #### Story 2 - Use the molecule scenarios to test in a variety of environments
 
@@ -102,7 +103,6 @@ run the same set of tests against Kubernetes clusters in the following scenarios
 1. A cluster with OLM installed
 1. A cluster without OLM installed
 
-
 #### Story 3 - Customize the cache to work around API issues
 
 As a user, if there are issues in the way the proxy/cache handles a certain resource,
@@ -112,13 +112,11 @@ the cache at all. For example, if I need to access an OpenShift Project resource
 is not cacheable, because it is not watchable), I should be able to specify that the
 Project resource skips the cache in my watches.yaml.
 
-
 #### Story 4 - Readable logs by default
 
 As a user, I would like to be able to tail the log of the primary operator pod and be
 able to see both what the Golang process and the child Ansible processes are doing,
 in a human readable way.
-
 
 ### Risks and Mitigations
 
@@ -134,7 +132,7 @@ marginally higher maintenance burden when changing Ansible versions.
 
 1. We will add at least one test for each molecule scenario (when possible).
 1. We will add tests that make Ansible emit messages of each type that it supports,
-    to help ensure that we can easily catch changes to the messag format.
+   to help ensure that we can easily catch changes to the messag format.
 1. We will add a test scenario that uses `up local`.
 
 ### Graduation Criteria
@@ -151,8 +149,7 @@ N/A
 
 ## Implementation History
 
-Major milestones in the life cycle of a proposal should be tracked in `Implementation
-History`.
+Major milestones in the life cycle of a proposal should be tracked in `Implementation History`.
 
 ## Drawbacks
 
@@ -162,4 +159,4 @@ None
 
 None
 
-[operator-sdk-doc]:  https://sdk.operatorframework.io/
+[operator-sdk-doc]: https://sdk.operatorframework.io/

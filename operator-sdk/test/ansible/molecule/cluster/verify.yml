@@ -7,16 +7,16 @@
     - community.kubernetes
   tasks:
     - block:
-      - name: Import all test files from tasks/
-        include_tasks: '{{ item }}'
-        with_fileglob:
-          - tasks/*_test.yml
+        - name: Import all test files from tasks/
+          include_tasks: "{{ item }}"
+          with_fileglob:
+            - tasks/*_test.yml
       rescue:
         - name: Retrieve relevant resources
           k8s_info:
-            api_version: '{{ item.api_version }}'
-            kind: '{{ item.kind }}'
-            namespace: '{{ namespace }}'
+            api_version: "{{ item.api_version }}"
+            kind: "{{ item.kind }}"
+            namespace: "{{ namespace }}"
           loop:
             - api_version: v1
               kind: Pod
@@ -30,8 +30,8 @@
 
         - name: Retrieve Pod logs
           k8s_log:
-            name: '{{ item.metadata.name }}'
-            namespace: '{{ namespace }}'
+            name: "{{ item.metadata.name }}"
+            namespace: "{{ namespace }}"
           loop: '{{ q("k8s", api_version="v1", kind="Pod", namespace=namespace) }}'
           register: debug_logs
 
@@ -42,12 +42,12 @@
         - name: Output gathered logs
           debug:
             var: item.log_lines
-          loop: '{{ debug_logs.results }}'
+          loop: "{{ debug_logs.results }}"
 
         - name: Re-emit failure
           vars:
             failed_task:
-              name: '{{ ansible_failed_task.name }}'
-              result: '{{ ansible_failed_result }}'
+              name: "{{ ansible_failed_task.name }}"
+              result: "{{ ansible_failed_result }}"
           fail:
-            msg: '{{ failed_task }}'
+            msg: "{{ failed_task }}"

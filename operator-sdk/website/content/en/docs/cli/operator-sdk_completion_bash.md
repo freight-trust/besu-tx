@@ -1,6 +1,7 @@
 ---
 title: "operator-sdk completion bash"
 ---
+
 ## operator-sdk completion bash
 
 Generate bash completions
@@ -27,5 +28,4 @@ operator-sdk completion bash [flags]
 
 ### SEE ALSO
 
-* [operator-sdk completion](../operator-sdk_completion)	 - Generators for shell completions
-
+- [operator-sdk completion](../operator-sdk_completion) - Generators for shell completions

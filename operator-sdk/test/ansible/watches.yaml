@@ -4,21 +4,21 @@
   kind: InventoryTest
   playbook: playbooks/inventory.yml
   vars:
-    meta: '{{ ansible_operator_meta }}'
+    meta: "{{ ansible_operator_meta }}"
 
 - version: v1alpha1
   group: test.example.com
   kind: CollectionTest
   role: operator_sdk.test_fixtures.dummy
   vars:
-    meta: '{{ ansible_operator_meta }}'
+    meta: "{{ ansible_operator_meta }}"
 
 - version: v1alpha1
   group: test.example.com
   kind: SubresourcesTest
   playbook: playbooks/subresources.yml
   vars:
-    meta: '{{ ansible_operator_meta }}'
+    meta: "{{ ansible_operator_meta }}"
 
 - version: v1
   group: ""
@@ -26,7 +26,7 @@
   playbook: playbooks/secret.yml
   manageStatus: false
   vars:
-    meta: '{{ ansible_operator_meta }}'
+    meta: "{{ ansible_operator_meta }}"
 
 - version: v1alpha1
   group: test.example.com
@@ -34,9 +34,9 @@
   playbook: playbooks/selector.yml
   selector:
     matchExpressions:
-     - {key: testLabel, operator: Exists, values: []}
+      - { key: testLabel, operator: Exists, values: [] }
   vars:
-    meta: '{{ ansible_operator_meta }}'
+    meta: "{{ ansible_operator_meta }}"
 
 - version: v1alpha1
   group: test.example.com
@@ -44,11 +44,11 @@
   playbook: playbooks/case.yml
   snakeCaseParameters: false
   vars:
-    meta: '{{ ansible_operator_meta }}'
+    meta: "{{ ansible_operator_meta }}"
 
 - version: v1alpha1
   group: test.example.com
   kind: ArgsTest
   playbook: playbooks/args.yml
   vars:
-    meta: '{{ ansible_operator_meta }}'
+    meta: "{{ ansible_operator_meta }}"

@@ -19,7 +19,7 @@ In Travis CI, 4 jobs are run to test the sdk:
 For the Go, Ansible, and Helm tests, the `before_install` and `install` stages are the same:
 
 1. Check if non documentation files have been updated.
-    - If only documentation has been updated, skip these tests.
+   - If only documentation has been updated, skip these tests.
 2. Run `make tidy` to ensure `go.mod` and `go.sum` are up-to-date.
 3. Build and install the sdk using `make install`.
 4. Install ansible using `sudo pip install ansible`.
@@ -30,35 +30,35 @@ The Go, Ansible, and Helm tests then differ in what tests they run.
 ### Go Tests
 
 1. Run some basic [sanity checks][sanity].
-    1. Run `go vet`.
-    2. Check that all source files have a license.
-    3. Check that all error messages start with a lower case alphabetical character and do not end with punctuation, and log messages start with an upper case alphabetical character.
-    4. Make sure the repo is in a clean state (this is particularly useful for making sure `go.mod` and `go.sum` are up-to-date after running `make tidy`).
+   1. Run `go vet`.
+   2. Check that all source files have a license.
+   3. Check that all error messages start with a lower case alphabetical character and do not end with punctuation, and log messages start with an upper case alphabetical character.
+   4. Make sure the repo is in a clean state (this is particularly useful for making sure `go.mod` and `go.sum` are up-to-date after running `make tidy`).
 2. Run unit tests.
-    1. Run `make test-unit`.
+   1. Run `make test-unit`.
 3. Run [go e2e tests][go-e2e].
-    1. Run `make test-e2e-go`.
+   1. Run `make test-e2e-go`.
 
 ### Ansible tests
 
 1. Run [ansible molecule tests][ansible-molecule]. (`make test-e2e-ansible-molecule`)
-    1. Create and configure a new ansible type memcached-operator.
-    2. Create cluster resources.
-    4. Change directory to [`test/ansible`][ansible-test] and run `molecule test -s local`
+   1. Create and configure a new ansible type memcached-operator.
+   2. Create cluster resources.
+   3. Change directory to [`test/ansible`][ansible-test] and run `molecule test -s local`
 
 **NOTE**: All created resources, including the namespace, are deleted using a bash trap when the test finishes
 
 ### Helm Tests
 
 1. Run [helm e2e tests][helm-e2e].
-    1. Build base helm operator image.
-    1. Create and configure a new helm type nginx-operator.
-    1. Create cluster resources.
-    1. Wait for operator to be ready.
-    1. Create nginx CR and wait for it to be ready.
-    1. Scale up the dependent deployment and verify the operator reconciles it back down.
-    1. Scale up the CR and verify the dependent deployment scales up accordingly.
-    1. Delete nginx CR and verify that finalizer (which writes a message in the operator logs) ran.
+   1. Build base helm operator image.
+   1. Create and configure a new helm type nginx-operator.
+   1. Create cluster resources.
+   1. Wait for operator to be ready.
+   1. Create nginx CR and wait for it to be ready.
+   1. Scale up the dependent deployment and verify the operator reconciles it back down.
+   1. Scale up the CR and verify the dependent deployment scales up accordingly.
+   1. Delete nginx CR and verify that finalizer (which writes a message in the operator logs) ran.
 
 **NOTE**: All created resources, including the namespace, are deleted using a bash trap when the test finishes
 

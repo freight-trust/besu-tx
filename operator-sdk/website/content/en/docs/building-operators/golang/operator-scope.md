@@ -7,7 +7,7 @@ weight: 50
 ## Overview
 
 A namespace-scoped operator watches and manages resources in a single Namespace, whereas a cluster-scoped operator
- watches and manages resources cluster-wide.
+watches and manages resources cluster-wide.
 
 An operator should be cluster-scoped if it watches resources that can be created in any Namespace. An operator should
 be namespace-scoped if it is intended to be flexibly deployed. This scope permits
@@ -71,6 +71,7 @@ mgr, err = ctrl.NewManager(ctrl.GetConfigOrDie(), ctrl.Options{
 })
 ...
 ```
+
 In the above example, a CR created in a Namespace not in the set passed to `Options` will not be reconciled by
 its controller because the [Manager][ctrl-manager] does not manage that Namespace.
 
@@ -96,10 +97,10 @@ and `RoleBinding`s instead of `ClusterRole`s and `ClusterRoleBinding`s, respecti
 
 [`RBAC markers`][rbac-markers] defined in the controller (e.g `controllers/memcached_controller.go`)
 are used to generate the operator's [RBAC ClusterRole][rbac-clusterrole] (e.g `config/rbac/role.yaml`). The default
- markers don't specify a `namespace` property and will result in a `ClusterRole`.
+markers don't specify a `namespace` property and will result in a `ClusterRole`.
 
 Update the RBAC markers to specify a `namespace` property so that `config/rbac/role.yaml` is generated as a `Role`
- instead of a `ClusterRole`.
+instead of a `ClusterRole`.
 
 Replace:
 
@@ -121,13 +122,11 @@ And then, run `make manifests` to update `config/rbac/role.yaml`:
 apiVersion: rbac.authorization.k8s.io/v1
 kind: Role
 metadata:
-...
 ```
 
 We also need to update our `ClusterRoleBindings` to `RoleBindings` since they are not regenerated:
 
 ```yaml
-
 apiVersion: rbac.authorization.k8s.io/v1
 kind: RoleBinding
 metadata:
@@ -137,9 +136,9 @@ roleRef:
   kind: Role
   name: manager-role
 subjects:
-- kind: ServiceAccount
-  name: default
-  namespace: system
+  - kind: ServiceAccount
+    name: default
+    namespace: system
 ```
 
 <!-- todo(camilamacedo86): The need for the RoleBinding show an issue tracked
@@ -196,24 +195,24 @@ mgr, err := ctrl.NewManager(ctrl.GetConfigOrDie(), ctrl.Options{
 ```yaml
 spec:
   containers:
-  - command:
-    - /manager
-    args:
-    - --enable-leader-election
-    image: controller:latest
-    name: manager
-    resources:
-      limits:
-        cpu: 100m
-        memory: 30Mi
-      requests:
-        cpu: 100m
-        memory: 20Mi
-    env:
-      - name: WATCH_NAMESPACE
-        valueFrom:
-          fieldRef:
-            fieldPath: metadata.namespace
+    - command:
+        - /manager
+      args:
+        - --enable-leader-election
+      image: controller:latest
+      name: manager
+      resources:
+        limits:
+          cpu: 100m
+          memory: 30Mi
+        requests:
+          cpu: 100m
+          memory: 20Mi
+      env:
+        - name: WATCH_NAMESPACE
+          valueFrom:
+            fieldRef:
+              fieldPath: metadata.namespace
   terminationGracePeriodSeconds: 10
 ```
 
@@ -278,15 +277,15 @@ Only the `AllNamespaces` install mode is `supported: true` by default, so no cha
 If the operator can watch its own namespace, set the following in your `spec.installModes` list:
 
 ```yaml
-  - type: OwnNamespace
-    supported: true
+- type: OwnNamespace
+  supported: true
 ```
 
 If the operator can watch a single namespace that is not its own, set the following in your `spec.installModes` list:
 
 ```yaml
-  - type: SingleNamespace
-    supported: true
+- type: SingleNamespace
+  supported: true
 ```
 
 ## Watching resources in multiple Namespaces
@@ -294,8 +293,8 @@ If the operator can watch a single namespace that is not its own, set the follow
 If the operator can watch multiple namespaces, set the following in your `spec.installModes` list:
 
 ```yaml
-  - type: MultiNamespace
-    supported: true
+- type: MultiNamespace
+  supported: true
 ```
 
 [cert-manager]: https://github.com/jetstack/cert-manager

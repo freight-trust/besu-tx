@@ -1,6 +1,7 @@
 ---
 title: "operator-sdk bundle validate"
 ---
+
 ## operator-sdk bundle validate
 
 Validate an operator bundle
@@ -15,7 +16,6 @@ More information about operator bundles and metadata:
 https://github.com/operator-framework/operator-registry/blob/master/docs/design/operator-bundle.md
 
 NOTE: if validating an image, the image must exist in a remote registry, not just locally.
-
 
 ```
 operator-sdk bundle validate [flags]
@@ -62,5 +62,4 @@ To build and validate an image built with the above manifests and metadata:
 
 ### SEE ALSO
 
-* [operator-sdk bundle](../operator-sdk_bundle)	 - Manage operator bundle metadata
-
+- [operator-sdk bundle](../operator-sdk_bundle) - Manage operator bundle metadata

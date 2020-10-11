@@ -1,8 +1,11 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="{{ .Site.Language.Lang }}" class="no-js">
   <head>
     {{ partial "head.html" . }}
-    <title>{{ if .IsHome }}{{ .Site.Title }}{{ else }}{{ with .Title }}{{ . }} | {{ end }}{{ .Site.Title }}{{ end }}</title>
+    <title>
+      {{ if .IsHome }}{{ .Site.Title }}{{ else }}{{ with .Title }}{{ . }} | {{
+      end }}{{ .Site.Title }}{{ end }}
+    </title>
   </head>
   <body class="td-{{ .Kind }} td-blog">
     <header>
@@ -19,11 +22,14 @@
           </div>
           <main class="col-12 col-md-9 col-xl-8 pl-md-5 pr-md-4" role="main">
             {{ with .CurrentSection.OutputFormats.Get "rss" -}}
-            <a class="btn btn-lg -bg-orange td-rss-button d-none d-lg-block" href="{{ .Permalink | safeURL }}" target="_blank">
-              RSS <i class="fa fa-rss ml-2 "></i>
+            <a
+              class="btn btn-lg -bg-orange td-rss-button d-none d-lg-block"
+              href="{{ .Permalink | safeURL }}"
+              target="_blank"
+            >
+              RSS <i class="fa fa-rss ml-2"></i>
             </a>
-            {{ end -}}
-            {{ block "main" . }}{{ end }}
+            {{ end -}} {{ block "main" . }}{{ end }}
           </main>
         </div>
       </div>

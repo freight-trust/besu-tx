@@ -16,8 +16,8 @@ description: Install the Operator SDK CLI
 - [docker][docker-tool] version 17.03+ (or another tool compatible with multi-stage Dockerfiles).
 - [kubectl][kubectl-tool] version v1.11.3+ (v1.16.0+ if using `apiextensions.k8s.io/v1` CRDs).
 
-[docker-tool]:https://docs.docker.com/install/
-[kubectl-tool]:https://kubernetes.io/docs/tasks/tools/install-kubectl/
+[docker-tool]: https://docs.docker.com/install/
+[kubectl-tool]: https://kubernetes.io/docs/tasks/tools/install-kubectl/
 
 ## Install from Homebrew (macOS)
 
@@ -127,8 +127,8 @@ $ make install
 **Note:** Ensure that your `GOPROXY` is set with its default value for Go
 versions 1.13+ which is `https://proxy.golang.org,direct`.
 
-[homebrew_tool]:https://brew.sh/
-[git_tool]:https://git-scm.com/downloads
-[mercurial_tool]:https://www.mercurial-scm.org/downloads
-[bazaar_tool]:http://wiki.bazaar.canonical.com/Download
-[go_tool]:https://golang.org/dl/
+[homebrew_tool]: https://brew.sh/
+[git_tool]: https://git-scm.com/downloads
+[mercurial_tool]: https://www.mercurial-scm.org/downloads
+[bazaar_tool]: http://wiki.bazaar.canonical.com/Download
+[go_tool]: https://golang.org/dl/

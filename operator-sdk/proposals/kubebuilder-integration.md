@@ -15,8 +15,8 @@ creation-date: 2019-12-19
 last-updated: 2020-03-05
 status: implementable
 see-also:
-- https://github.com/kubernetes-sigs/kubebuilder/blob/master/designs/integrating-kubebuilder-and-osdk.md
-- https://github.com/kubernetes-sigs/kubebuilder/blob/master/designs/extensible-cli-and-scaffolding-plugins-phase-1.md
+  - https://github.com/kubernetes-sigs/kubebuilder/blob/master/designs/integrating-kubebuilder-and-osdk.md
+  - https://github.com/kubernetes-sigs/kubebuilder/blob/master/designs/extensible-cli-and-scaffolding-plugins-phase-1.md
 replaces: []
 superseded-by: []
 ---
@@ -47,7 +47,6 @@ scaffolding code for Go operators, while still being able to extend the CLI for 
 specific features/sub-commands and provide custom plugins that will allow the SDK to
 scaffold different project types like Helm/Ansible in the future.
 
-
 ## Motivation
 
 The Operator SDK and Kubebuilder largely provide the same experience for developing
@@ -68,7 +67,6 @@ Reusing the project scaffolding from Kubebuilder also reduces duplication in
 the SDK. This frees up Operator SDK maintainers to focus more on collaborating
 with the Kubebuilder maintainers on the upstream controller-runtime and controller-tools projects
 
-
 ## Goals
 
 - Operator developers get the project layout and scaffolding for Golang Operators from Kubebuilder
@@ -86,7 +84,7 @@ with the Kubebuilder maintainers on the upstream controller-runtime and controll
 
 - An Operator Developer can use the new plugin interface to scaffold and manage helm and ansible projects
   - While Kubebuilder’s new plugin based CLI architecture should allow the SDK to extend it for scaffolding
-  Helm/Ansible projects, the implementation of those plugins is not currently in scope for this proposal.
+    Helm/Ansible projects, the implementation of those plugins is not currently in scope for this proposal.
 - An Operator Developer can use the Makefile to run an Operator and is notified about the deprecation of `up local`
 - Webhook support for Ansible/Helm based operators
 
@@ -134,7 +132,6 @@ subcommands in Kubebuilder so that the SDK can register them for reuse in its ow
 The goal of this story is to ensure a release of Kubebuilder that supports the
 new plugin interface that the SDK can integrate downstream into its own CLI.
 
-
 #### Story 3 - Integrate the Kubebuilder CLI into the SDK CLI to achieve the same workflow and project layout for Go operators
 
 Once Kubebuilder supports plugin registration, the SDK CLI should be modified
@@ -142,7 +139,7 @@ to reuse Kubebuilder’s CLI and plugins so that the SDK workflow for developing
 Go operators is identical to Kubebuilder’s workflow.
 
 Project initialization and api/webhook scaffolding would be provided by the
-upstream Kubebuilder CLI and plugins:  
+upstream Kubebuilder CLI and plugins:
 
 - `operator-sdk new` ==> `operator-sdk init`
 - `operator-sdk add api/controller` ==> `operator-sdk create api`
@@ -177,12 +174,10 @@ equivalent in the Kubebuilder workflow, those subcommands would be unchanged on 
 Where necessary the above commands should be adjusted to reflect the changes to
 their expected input and output manifest paths that is consistent with the new project layout.
 
-
 #### Story 5 - Update the Operator SDK e2e tests to work with the new project layout
 
 The existing e2e tests and CI scripts for testing Go operators would need to be
 updated to use the new layout so that CI passes for the new CLI workflow in the master branch.
-
 
 #### Story 6 - Update the Go operator related documentation per the Kubebuilder workflow and project layout
 
@@ -192,7 +187,6 @@ These doc updates must include a detailed explanation of Dockerfile usage in
 Kubebuilder projects and how users can modify their vanilla Dockerfile to use
 a parent UBI image.
 
-
 ### Implementation Details/Notes/Constraints
 
 The integration work for the Go Operator CLI workflow can be done in the master
@@ -201,22 +195,20 @@ The new CLI can be worked on behind a hidden subcommand, `operator-sdk alpha`, u
 replace the existing workflow. This would help avoid exposing it too early while
 still providing the ability to test it on the master branch.
 
-
 ### Risks and Mitigations
 
 - This proposal involves major breaking changes in all aspects of the project
-that will discourage users from making the upgrade to the release involving these changes.
+  that will discourage users from making the upgrade to the release involving these changes.
   - Besides having enough documentation to guide users to make the switch over
-  to the new release, there should be some migration tooling to assist users in
-  switching over their existing projects. **TODO:** These efforts will be
-  addressed in a separate enhancement proposal.
+    to the new release, there should be some migration tooling to assist users in
+    switching over their existing projects. **TODO:** These efforts will be
+    addressed in a separate enhancement proposal.
 - Once the SDK switches to using Kubebuilder for Go operators, the CLI UX for
-Go vs Ansible/Helm operators will be fragmented. While they don’t target the
-same users it could be confusing to see the operator-sdk binary support
-different commands for initializing different project types.
+  Go vs Ansible/Helm operators will be fragmented. While they don’t target the
+  same users it could be confusing to see the operator-sdk binary support
+  different commands for initializing different project types.
   - With the proposed plugin architecture it should be possible to update the
-  workflow for Helm/Ansible operators to be the same as Kubebuilder. However
-  that is not currently in scope for this proposal.
+    workflow for Helm/Ansible operators to be the same as Kubebuilder. However
+    that is not currently in scope for this proposal.
 
-
-[operator-sdk-doc]:  https://sdk.operatorframework.io/
+[operator-sdk-doc]: https://sdk.operatorframework.io/

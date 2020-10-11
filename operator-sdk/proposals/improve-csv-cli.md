@@ -14,7 +14,7 @@ creation-date: 2019-11-27
 last-updated: 2019-11-27
 status: implementable
 see-also:
-  - "doc/user/olm-catalog/generating-a-csv.md"  
+  - "doc/user/olm-catalog/generating-a-csv.md"
 ---
 
 # Improve `generate csv` CLI
@@ -61,9 +61,10 @@ In summary: a config file for CSV manifest generation is too heavy-handed, since
 ### Implementation Details/Notes/Constraints
 
 `--inputs` will take a list of patterns, which will be matched against files in the Operator project using [`strings.HasPrefix()`](https://golang.org/pkg/strings/#HasPrefix).
-  - The default path for Go projects, if `--inputs` is not set, will be `deploy/`. This emulates current behavior.
-  - An error is returned if no matches are found for a pattern in the list.
-  - Future non-Go CSV generators can use `--inputs` easily, with new/additional defaults set by individual generators.
+
+- The default path for Go projects, if `--inputs` is not set, will be `deploy/`. This emulates current behavior.
+- An error is returned if no matches are found for a pattern in the list.
+- Future non-Go CSV generators can use `--inputs` easily, with new/additional defaults set by individual generators.
 
 ### Risks and Mitigations
 
@@ -98,4 +99,4 @@ Unit tests will be implemented for scenarios described above.
 - An `--exclude` flag to which a list of patterns that should be excluded from CSV generation is passed.
   - This alternative would not easily support non-standard Operator project structures.
 
-[operator-sdk-doc]:  https://sdk.operatorframework.io/
+[operator-sdk-doc]: https://sdk.operatorframework.io/

@@ -14,7 +14,7 @@ creation-date: 2019-09-12
 last-updated: 2019-09-12
 status: implementable
 see-also:
-  - "./cli-ux-phase1.md"  
+  - "./cli-ux-phase1.md"
 ---
 
 # sdk integration with olm
@@ -39,18 +39,18 @@ OLM is an incredibly useful cluster management tool. There is currently no integ
 
 #### General
 
-* Operator developers can use `operator-sdk` to quickly deploy OLM on a given Kubernetes cluster
-* Operator developers can use `operator-sdk` to run their Operator under OLM
-* Operator developers can use `operator-sdk` to build a catalog/bundle containing their Operator for use with OLM
+- Operator developers can use `operator-sdk` to quickly deploy OLM on a given Kubernetes cluster
+- Operator developers can use `operator-sdk` to run their Operator under OLM
+- Operator developers can use `operator-sdk` to build a catalog/bundle containing their Operator for use with OLM
 
 #### Specific
 
-* `operator-sdk` creates a [bundle][bundle] from an Operator project to deploy with OLM
-* `operator-sdk` has a CLI interface to interact with OLM
-* `operator-sdk` installs a specific version of OLM onto Kubernetes cluster
-* `operator-sdk` uninstalls a specific version of OLM onto Kubernetes cluster
-* `operator-sdk` accepts a bundle and deploys that operator onto an OLM-enabled Kubernetes cluster
-* `operator-sdk` accepts a bundle and removes that operator onto an OLM-enabled Kubernetes cluster
+- `operator-sdk` creates a [bundle][bundle] from an Operator project to deploy with OLM
+- `operator-sdk` has a CLI interface to interact with OLM
+- `operator-sdk` installs a specific version of OLM onto Kubernetes cluster
+- `operator-sdk` uninstalls a specific version of OLM onto Kubernetes cluster
+- `operator-sdk` accepts a bundle and deploys that operator onto an OLM-enabled Kubernetes cluster
+- `operator-sdk` accepts a bundle and removes that operator onto an OLM-enabled Kubernetes cluster
 
 ### Non-Goals
 
@@ -97,9 +97,10 @@ One risk factor is how hidden OLM nuances are from users. Much of how an Operato
 
 ### Test Plan
 
-**Note:** *Section not required until targeted at a release.*
+**Note:** _Section not required until targeted at a release._
 
 Consider the following in developing a test plan for this enhancement:
+
 - Will there be e2e and integration tests, in addition to unit tests?
 - How will it be tested in isolation vs with other components?
 
@@ -112,7 +113,7 @@ expectations).
 
 ### Graduation Criteria
 
-**Note:** *Section not required until targeted at a release.*
+**Note:** _Section not required until targeted at a release._
 
 Define graduation milestones.
 
@@ -122,6 +123,7 @@ determine graduation.
 
 Consider the following in developing the graduation criteria for this
 enhancement:
+
 - Maturity levels - `Dev Preview`, `Tech Preview`, `GA`
 - Deprecation
 
@@ -160,6 +162,7 @@ is in the test plan.
 
 Consider the following in developing an upgrade/downgrade strategy for this
 enhancement:
+
 - What changes (in invocations, configurations, API use, etc.) is an existing
   cluster required to make on upgrade in order to keep previous behavior?
 - What changes (in invocations, configurations, API use, etc.) is an existing
@@ -172,6 +175,7 @@ What are the guarantees? Make sure this is in the test plan.
 
 Consider the following in developing a version skew strategy for this
 enhancement:
+
 - During an upgrade, we will always have skew among components, how will this impact your work?
 - Does this enhancement involve coordinating behavior in the control plane and
   in the kubelet? How does an n-2 kubelet without this feature available behave
@@ -181,8 +185,7 @@ enhancement:
 
 ## Implementation History
 
-Major milestones in the life cycle of a proposal should be tracked in `Implementation
-History`.
+Major milestones in the life cycle of a proposal should be tracked in `Implementation History`.
 
 ## Drawbacks
 
@@ -202,11 +205,11 @@ subproject, repos requested, github details, and/or testing infrastructure.
 Listing these here allows the community to get the process for these resources
 started right away.
 
-[olm]:https://github.com/operator-framework/operator-lifecycle-manager/
-[olm-operatorgroup]:https://github.com/operator-framework/operator-lifecycle-manager/blob/master/doc/design/operatorgroups.md
-[olm-subscription]:https://github.com/operator-framework/community-operators/blob/master/docs/testing-operators.md#7-create-a-subscription
-[olm-catalogsource]:https://github.com/operator-framework/operator-lifecycle-manager/blob/master/doc/design/philosophy.md#catalogsource
-[registry]:https://github.com/operator-framework/operator-registry/
-[bundle]:https://github.com/operator-framework/operator-registry/#manifest-format
-[registry-image]:https://quay.io/organization/openshift/origin-operator-registry
-[of-api]:https://github.com/operator-framework/api
+[olm]: https://github.com/operator-framework/operator-lifecycle-manager/
+[olm-operatorgroup]: https://github.com/operator-framework/operator-lifecycle-manager/blob/master/doc/design/operatorgroups.md
+[olm-subscription]: https://github.com/operator-framework/community-operators/blob/master/docs/testing-operators.md#7-create-a-subscription
+[olm-catalogsource]: https://github.com/operator-framework/operator-lifecycle-manager/blob/master/doc/design/philosophy.md#catalogsource
+[registry]: https://github.com/operator-framework/operator-registry/
+[bundle]: https://github.com/operator-framework/operator-registry/#manifest-format
+[registry-image]: https://quay.io/organization/openshift/origin-operator-registry
+[of-api]: https://github.com/operator-framework/api

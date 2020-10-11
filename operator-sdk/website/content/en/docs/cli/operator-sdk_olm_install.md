@@ -1,6 +1,7 @@
 ---
 title: "operator-sdk olm install"
 ---
+
 ## operator-sdk olm install
 
 Install Operator Lifecycle Manager in your cluster
@@ -29,5 +30,4 @@ operator-sdk olm install [flags]
 
 ### SEE ALSO
 
-* [operator-sdk olm](../operator-sdk_olm)	 - Manage the Operator Lifecycle Manager installation in your cluster
-
+- [operator-sdk olm](../operator-sdk_olm) - Manage the Operator Lifecycle Manager installation in your cluster

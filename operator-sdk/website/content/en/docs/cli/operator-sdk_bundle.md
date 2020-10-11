@@ -1,6 +1,7 @@
 ---
 title: "operator-sdk bundle"
 ---
+
 ## operator-sdk bundle
 
 Manage operator bundle metadata
@@ -17,7 +18,6 @@ https://github.com/operator-framework/operator-registry/blob/master/docs/design/
 More information about the integration with OLM via SDK:
 https://sdk.operatorframework.io/docs/olm-integration
 
-
 ### Options
 
 ```
@@ -32,6 +32,5 @@ https://sdk.operatorframework.io/docs/olm-integration
 
 ### SEE ALSO
 
-* [operator-sdk](../operator-sdk)	 - Development kit for building Kubernetes extensions and tools.
-* [operator-sdk bundle validate](../operator-sdk_bundle_validate)	 - Validate an operator bundle
-
+- [operator-sdk](../operator-sdk) - Development kit for building Kubernetes extensions and tools.
+- [operator-sdk bundle validate](../operator-sdk_bundle_validate) - Validate an operator bundle
